@@ -17,4 +17,6 @@ const walletSchema = new schema({
         type: Date,
         default: Date.now,
     }
-})
+});
+
+module.exports = mongoose.model('Wallet', walletSchema);

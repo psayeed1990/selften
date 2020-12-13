@@ -1,6 +1,17 @@
 import { API } from "../config";
 import queryString from "query-string";
 
+//get wallet
+export const getWallet = (id) => {
+    return fetch(`${API}/wallet/${id}`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 //get topup thumbs
 export const getTopupThumbs = () => {
     return fetch(`${API}/topup-thumbs`, {

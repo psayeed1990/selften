@@ -15,6 +15,7 @@ const braintreeRoutes = require('./routes/braintree');
 const orderRoutes = require('./routes/order');
 const topupRoutes = require('./routes/topup');
 const rechargePackageRoutes = require('./routes/rechargePackage');
+const wallet = require('./routes/wallet');
 // app
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api', braintreeRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', topupRoutes);
 app.use('/api', rechargePackageRoutes);
+app.use('/api', wallet);
 
 const port = process.env.PORT || 8000;
 

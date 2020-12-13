@@ -1,19 +1,25 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
-import { getRechargePackagesByGameName } from './../apiCore';
+import { getRechargePackagesByGameName, getWallet } from './../apiCore';
 import { useParams } from 'react-router';
+
+
 
 const TopupForm = () => {
 
     // Id for the game name to load packages under it
     // id comes from parameter url
     const { id } = useParams();
+    const [wallet, setWallet] = useState(null);
+    const [amount, setAmount] = useState(null);
+
 
     const [values, setValues] = useState({
         accountType: '',
         gmailOrFacebook: '',
         password: '',
+        price:'',
         securityCode: '',
         selectRecharge: '',
         selectRecharges:[],
@@ -29,6 +35,7 @@ const TopupForm = () => {
         accountType,
         gmailOrFacebook,
         password,
+        price,
         securityCode,
         selectRecharge,
         selectRecharges,
@@ -38,6 +45,17 @@ const TopupForm = () => {
         redirectToProfile,
         formData
     } = values;
+
+    //setwallet
+    useEffect(()=>{
+        getWallet(user._id).then(data=>{
+            if (!data) {
+                //console.log(err)
+            } else {
+                setWallet(data);
+            }
+        })
+    }, []);
 
     // load Recharge packages and set form data
 
@@ -58,6 +76,20 @@ const TopupForm = () => {
     useEffect(() => {
         init();
     }, []);
+
+    useEffect(()=>{
+        if(selectRecharges.length > 0){
+    
+            let selectedpack = selectRecharges.filter(sr =>{
+                return sr._id === selectRecharge;
+            });
+            console.log('se', selectedpack);
+
+            if(selectedpack.length > 0){
+                setAmount(selectedpack[0].packageAmount);
+            }
+        }
+    }, [selectRecharge, selectRecharges])
 
     const handleChange = name => event => {
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
@@ -142,7 +174,7 @@ const TopupForm = () => {
             }
 
             <div className="form-group">
-                <label className="text-muted">Recharge Packag</label>
+                <label className="text-muted">Recharge Package</label>
                 <select name="selectRecharge" onChange={handleChange('selectRecharge')} className="form-control">
                     <option disabled selected>Please select</option>
                     {selectRecharges &&
@@ -154,6 +186,17 @@ const TopupForm = () => {
                             
                         ))}
                 </select>
+            </div>
+
+            <div className="form-group col-md-4">
+                <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
+                <input hidden onChange={handleChange('price')} type="text" className="form-control" name="price" value={price} />
+            </div>
+
+            
+
+            <div className="money">
+                <h4>Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
             </div>
 
 
