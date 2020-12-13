@@ -1,15 +1,22 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
-
+import { getRechargePackagesByGameName } from './../apiCore';
+import { useParams } from 'react-router';
 
 const TopupForm = () => {
+
+    // Id for the game name to load packages under it
+    // id comes from parameter url
+    const { id } = useParams();
+
     const [values, setValues] = useState({
         accountType: '',
         gmailOrFacebook: '',
         password: '',
         securityCode: '',
         selectRecharge: '',
+        selectRecharges:[],
         loading: false,
         error: '',
         createdTopupOrder: '',
@@ -24,6 +31,7 @@ const TopupForm = () => {
         password,
         securityCode,
         selectRecharge,
+        selectRecharges,
         loading,
         error,
         createdTopupOrder,
@@ -31,15 +39,20 @@ const TopupForm = () => {
         formData
     } = values;
 
-    // load categories and set form data
+    // load Recharge packages and set form data
+
     const init = () => {
-            
-        setValues({
-            ...values,
-            formData: new FormData()
+        getRechargePackagesByGameName(id).then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error });
+            } else {
+                setValues({
+                    ...values,
+                    selectRecharges: data,
+                    formData: new FormData()
+                });
+            }
         });
-            
-        
     };
 
     useEffect(() => {
@@ -129,12 +142,17 @@ const TopupForm = () => {
             }
 
             <div className="form-group">
-                <label className="text-muted">Select Recharge</label>
+                <label className="text-muted">Recharge Packag</label>
                 <select name="selectRecharge" onChange={handleChange('selectRecharge')} className="form-control">
                     <option disabled selected>Please select</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    
+                    {selectRecharges &&
+                        selectRecharges.map((c, i) => (
+                            
+                            <option key={i} value={c._id}>
+                                {c.packageName}
+                            </option>
+                            
+                        ))}
                 </select>
             </div>
 

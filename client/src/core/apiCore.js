@@ -12,6 +12,28 @@ export const getTopupThumbs = () => {
         .catch(err => console.log(err));
 };
 
+//get Recharge Packages for admin
+export const getRechargePackages = () => {
+    return fetch(`${API}/recharge-package`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+//get recharge packages by game id
+export const getRechargePackagesByGameName = (game) => {
+    return fetch(`${API}/recharge-package/get-by-game/${game}`, {
+        method: "GET"
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
 export const getProducts = sortBy => {
     return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
         method: "GET"

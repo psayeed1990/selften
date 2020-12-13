@@ -1,6 +1,23 @@
 
 import { API } from '../config';
 
+export const createRechargePackage = (userId, token, rechargePackage)=>{
+    return fetch(`${API}/recharge-package/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: rechargePackage
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
 export const createTopupThumb = (userId, token, topup) => {
     return fetch(`${API}/topup-thumbs/${userId}`, {
         method: 'POST',

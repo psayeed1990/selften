@@ -22,7 +22,7 @@
   margin-left: -15%;
 }
 .jumbotron {
-  background-image: url("/static/media/FF.5a5ff0f3.jpg") !important;
+  background-image: url("http://localhost:8000/api/topup-thumbs/photo/5fd44dda4e4ba31beb84a7f4") !important;
   background-size: 60% 135% !important;
   border-radius: 20px !important;
   width: 50%;
