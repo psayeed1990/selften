@@ -20,6 +20,7 @@ import UpdateCategory from './admin/updateCategory';
 import AddTopupThumb from './admin/topup/AddTopupThumb';
 import TopupForm from './core/topup/TopupForm.js';
 import AddRechargePackage from './admin/rechargePackage/AddRechargePackage';
+import ShowTopupOrders from './admin/topupOrder/ShowTopupOrders';
 
 const Routes = () => {
     return (
@@ -27,6 +28,7 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Home} />
                 <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
+                <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
                 <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
                 <PrivateRoute path="/topups/:id" exact component={TopupForm} />
                 <Route path="/shop" exact component={Shop} />

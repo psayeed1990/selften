@@ -33,7 +33,7 @@ const ShowTopups = ()=>{
                     )
                 })
                 :
-                <Fragment></Fragment>
+                <Fragment>Loading...</Fragment>
             }
         </div>
     )

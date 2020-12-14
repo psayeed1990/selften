@@ -33,6 +33,21 @@ const AdminDashboard = () => {
                             Manage Products
                         </Link>
                     </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/admin/recharge-package">
+                            Create Recharge Package
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/admin/topup">
+                            Create Game for Topup
+                        </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/admin/topup-orders">
+                            See Topup Orders
+                        </Link>
+                    </li>
                 </ul>
             </div>
         );

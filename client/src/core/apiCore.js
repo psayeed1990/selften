@@ -1,6 +1,25 @@
 import { API } from "../config";
 import queryString from "query-string";
 
+//creating topup order
+export const createTopupOrder = (userId, token, order, id)=>{
+
+    return fetch(`${API}/topup-orders/${userId}/topup/${id}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: order
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
 //get wallet
 export const getWallet = (id) => {
     return fetch(`${API}/wallet/${id}`, {

@@ -1,6 +1,23 @@
 
 import { API } from '../config';
 
+//get all topup orders
+export const getTopupOrdersAdmin = (userId, token) => {
+    return fetch(`${API}/topup-orders/admin/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: {}
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+//create recharge packages
 export const createRechargePackage = (userId, token, rechargePackage)=>{
     return fetch(`${API}/recharge-package/${userId}`, {
         method: 'POST',

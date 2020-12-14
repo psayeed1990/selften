@@ -33,6 +33,7 @@ const AddRechargePackage = () => {
 
  // load Topup Game names and set form data
  const init = () => {
+    setValues({ ...values, loading: true });
     getTopupThumbs().then(data => {
         if (data.error) {
             setValues({ ...values, error: data.error });
@@ -40,7 +41,8 @@ const AddRechargePackage = () => {
             setValues({
                 ...values,
                 topupGameNames: data,
-                formData: new FormData()
+                formData: new FormData(),
+                loading: false,
             });
         }
     });

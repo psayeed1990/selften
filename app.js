@@ -16,6 +16,7 @@ const orderRoutes = require('./routes/order');
 const topupRoutes = require('./routes/topup');
 const rechargePackageRoutes = require('./routes/rechargePackage');
 const wallet = require('./routes/wallet');
+const topupOrder = require('./routes/topupOrder');
 // app
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api', orderRoutes);
 app.use('/api', topupRoutes);
 app.use('/api', rechargePackageRoutes);
 app.use('/api', wallet);
+app.use('/api', topupOrder);
 
 const port = process.env.PORT || 8000;
 

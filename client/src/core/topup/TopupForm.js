@@ -3,6 +3,8 @@ import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
 import { getRechargePackagesByGameName, getWallet } from './../apiCore';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { createTopupOrder } from './../apiCore';
 
 
 
@@ -19,7 +21,6 @@ const TopupForm = () => {
         accountType: '',
         gmailOrFacebook: '',
         password: '',
-        price:'',
         securityCode: '',
         selectRecharge: '',
         selectRecharges:[],
@@ -35,7 +36,6 @@ const TopupForm = () => {
         accountType,
         gmailOrFacebook,
         password,
-        price,
         securityCode,
         selectRecharge,
         selectRecharges,
@@ -48,11 +48,13 @@ const TopupForm = () => {
 
     //setwallet
     useEffect(()=>{
+        setValues({ ...values, loading: true });
         getWallet(user._id).then(data=>{
             if (!data) {
                 //console.log(err)
             } else {
                 setWallet(data);
+                setValues({ ...values, loading: false });
             }
         })
     }, []);
@@ -60,6 +62,7 @@ const TopupForm = () => {
     // load Recharge packages and set form data
 
     const init = () => {
+        setValues({ ...values, loading: true });
         getRechargePackagesByGameName(id).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
@@ -67,7 +70,8 @@ const TopupForm = () => {
                 setValues({
                     ...values,
                     selectRecharges: data,
-                    formData: new FormData()
+                    formData: new FormData(),
+                    loading: false
                 });
             }
         });
@@ -101,22 +105,22 @@ const TopupForm = () => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
 
-        // createProduct(user._id, token, formData).then(data => {
-        //     if (data.error) {
-        //         setValues({ ...values, error: data.error });
-        //     } else {
-        //         setValues({
-        //             ...values,
-        //             accountType: '',
-        //             gmailOrFacebook: '',
-        //             password: '',
-        //             selectRecharge: '',
-        //             securityCode: '',
-        //             loading: false,
-        //             createdTopupOrder: data.name
-        //         });
-        //     }
-        // });
+        createTopupOrder(user._id, token, formData, id).then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error });
+            } else {
+                setValues({
+                    ...values,
+                    accountType: '',
+                    gmailOrFacebook: '',
+                    password: '',
+                    selectRecharge: '',
+                    securityCode: '',
+                    loading: false,
+                    createdTopupOrder: data.name
+                });
+            }
+        });
     };
 
     const newPostForm = () => (
@@ -190,15 +194,19 @@ const TopupForm = () => {
 
             <div className="form-group col-md-4">
                 <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
-                <input hidden onChange={handleChange('price')} type="text" className="form-control" name="price" value={price} />
             </div>
-
-            
 
             <div className="money">
                 <h4>Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
             </div>
 
+                            { wallet && amount ? wallet.amount < amount ? 
+                                <h4>You have less balance than you have to pay. Please <Link to="/"><button className="btn btn-primary">add money</button></Link></h4>
+                                :
+                                <Fragment></Fragment>
+                                :
+                                <Fragment></Fragment>
+                            }
 
             <button className="btn btn-outline-primary">Order Topup</button>
         </form>

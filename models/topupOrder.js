@@ -3,25 +3,47 @@ const { stringify } = require('uuid');
 const schema = mongoose.Schema;
 
 const topupOrderSchema = new schema({
+    accountType: {
+        type: String,
+        enum: ['facebook', 'gmail']
+    },
+    gmailOrFacebook: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+    },
+
+    securityCode: {
+        type: String,
+    },
+    selectRecharge: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'RechargePackage',
+        required: true,
+    },
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true,
     },
-    topup: {
+    topupGameId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Topup',
         required: true,
     },
-    paidAmount: {
-        type: String,
+    price: {
+        type: Number,
         required: true,
     },
-    requestedTopupForGame: {
-        type: String,
-    },
+    // requestedTopupForGame: {
+    //     type: String,
+    // },
     status: {
-        enum: ['cancelled', 'pending', 'completed']
+        type: String,
+        enum: ['cancelled', 'pending', 'completed'],
+        default: 'pending',
     },
     assignedTo:{
         type: mongoose.Schema.ObjectId,
