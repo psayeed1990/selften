@@ -11,6 +11,10 @@ const topupSchema = new schema({
         data: Buffer,
         contentType: String
     },
+    type: {
+        type: String,
+        enum: ['inGame', 'idCode']
+    },
     createdAt: {
         type: Date,
         default: Date.now,

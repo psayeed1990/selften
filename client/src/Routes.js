@@ -30,7 +30,7 @@ const Routes = () => {
                 <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
                 <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
                 <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
-                <PrivateRoute path="/topups/:id" exact component={TopupForm} />
+                <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />

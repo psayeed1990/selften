@@ -12,12 +12,12 @@ const TopupForm = () => {
 
     // Id for the game name to load packages under it
     // id comes from parameter url
-    const { id } = useParams();
+    const { id, type } = useParams();
     const [wallet, setWallet] = useState(null);
     const [amount, setAmount] = useState(null);
 
-
     const [values, setValues] = useState({
+        gameUserId: '',
         accountType: '',
         gmailOrFacebook: '',
         password: '',
@@ -33,6 +33,7 @@ const TopupForm = () => {
 
     const { user, token } = isAuthenticated();
     const {
+        gameUserId,
         accountType,
         gmailOrFacebook,
         password,
@@ -111,6 +112,7 @@ const TopupForm = () => {
             } else {
                 setValues({
                     ...values,
+                    gameUserId: '',
                     accountType: '',
                     gmailOrFacebook: '',
                     password: '',
@@ -126,56 +128,83 @@ const TopupForm = () => {
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
             <h4>Request a Topup</h4>
+            { type === 'inGame' ?
+                
+                <Fragment>
+                    {console.log(type)}
+                    <div className="row">
 
-            <div className="row">
-
-                <div className="form-group col-md-4">
-                    
-                    <label className="text-muted">Account Type</label>
-                    <select name="accountType" onChange={handleChange('accountType')} className="form-control">
-                        <option disabled selected>Please select</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="gmail">Gmail</option>
+                    <div className="form-group col-md-4">
                         
-                    </select>
-                </div>
+                        <label className="text-muted">Account Type</label>
+                        <select name="accountType" onChange={handleChange('accountType')} className="form-control">
+                            <option disabled selected>Please select</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="gmail">Gmail</option>
+                            
+                        </select>
+                    </div>
 
-                <div className="form-group col-md-4">
-                    
-                    {
-                        accountType === 'facebook' ? 
-                            <label className="text-muted">Your Facebook</label>
-                        :
-                        <Fragment>
+                    <div className="form-group col-md-4">
+                        
                         {
-                            accountType === 'gmail' ? 
-                                <label className="text-muted">Your Gmailt</label>
-                            
+                            accountType === 'facebook' ? 
+                                <label className="text-muted">Your Facebook</label>
                             :
-                            <label className="text-muted">Select Account type first</label>
-                            
+                            <Fragment>
+                            {
+                                accountType === 'gmail' ? 
+                                    <label className="text-muted">Your Gmailt</label>
+                                
+                                :
+                                <label className="text-muted">Select Account type first</label>
+                                
+                            }
+                            </Fragment>
                         }
-                        </Fragment>
-                    }
-                    <input onChange={handleChange('gmailOrFacebook')} type="text" className="form-control" value={gmailOrFacebook} />
-                    
-                </div>
+                        <input onChange={handleChange('gmailOrFacebook')} type="text" className="form-control" value={gmailOrFacebook} />
+                        
+                    </div>
 
-                <div className="form-group col-md-4">
-                    <label className="text-muted">Password</label>
-                    <input onChange={handleChange('password')} type="password" className="form-control" name="password" value={password} />
-                </div>
-            </div>
+                    <div className="form-group col-md-4">
+                        <label className="text-muted">Password</label>
+                        <input onChange={handleChange('password')} type="password" className="form-control" name="password" value={password} />
+                    </div>
+                    </div>
+
+                    {
+                    accountType === 'gmail' ? 
+                        <div className="form-group">
+                            <label className="text-muted">Security Code</label>
+                            <input onChange={handleChange('securityCode')} type="text" className="form-control" value={securityCode} />
+                        </div>
+                        :
+                        <Fragment></Fragment>
+                    }
+                </Fragment>:
+
+                <Fragment></Fragment>
+                
+            }
 
             {
-                accountType === 'gmail' ? 
-                    <div className="form-group">
-                        <label className="text-muted">Security Code</label>
-                        <input onChange={handleChange('securityCode')} type="text" className="form-control" value={securityCode} />
+                 type === 'codeId' ?
+                 
+                <div className="row">
+                     <div className="form-group col-md-4">
+                        <label className="text-muted">Game Id</label>
+                        <input onChange={handleChange('gameUserId')} type="text" className="form-control" value={gameUserId} />
                     </div>
-                    :
-                    <Fragment></Fragment>
+                    <div className="form-group col-md-4">
+                        <label className="text-muted">Password</label>
+                        <input onChange={handleChange('password')} type="password" className="form-control" name="password" value={password} />
+                    </div>
+                </div>
+                 
+                 :
+                 <Fragment></Fragment>
             }
+            
 
             <div className="form-group">
                 <label className="text-muted">Recharge Package</label>

@@ -3,13 +3,15 @@ const { stringify } = require('uuid');
 const schema = mongoose.Schema;
 
 const topupOrderSchema = new schema({
+    gameUserId:{
+        type: String,
+    },
     accountType: {
         type: String,
         enum: ['facebook', 'gmail']
     },
     gmailOrFacebook: {
         type: String,
-        required: true,
     },
     password: {
         type: String,

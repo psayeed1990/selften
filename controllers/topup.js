@@ -29,12 +29,18 @@ exports.createTopup = (req, res) => {
                 });
             }
             // check for all fields
-            const { title } = fields;
+            const { title, type } = fields;
             
             if (!title ) {
                 
                 return res.status(400).json({
                     error: 'Title field is required'
+                });
+            }
+            if (!type ) {
+                
+                return res.status(400).json({
+                    error: 'Type field is required'
                 });
             }
             

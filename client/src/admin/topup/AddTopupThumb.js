@@ -8,6 +8,7 @@ import {createTopupThumb} from './../apiAdmin'
 const AddTopupThumb = () => {
     const [values, setValues] = useState({
         title: '',
+        type: '',
         thumb: '',
         loading: false,
         error: '',
@@ -20,6 +21,7 @@ const AddTopupThumb = () => {
     const {
         title,
         loading,
+        type,
         error,
         createdTopup,
         redirectToProfile,
@@ -75,6 +77,16 @@ const AddTopupThumb = () => {
                 <label className="btn btn-secondary">
                     <input onChange={handleChange('thumb')} type="file" name="thumb" accept="image/*" />
                 </label>
+            </div>
+            <div className="form-group col-md-4">
+                    
+                <label className="text-muted">Type</label>
+                <select name="type" onChange={handleChange('type')} className="form-control">
+                    <option disabled selected>Please select type</option>
+                    <option value="inGame">In Game</option>
+                    <option value="idCode">Id Code</option>
+                        
+                </select>
             </div>
 
             <div className="form-group">
