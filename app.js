@@ -53,7 +53,7 @@ app.use('/api', adminBalance);
 // set static folder
 app.use(express.static('client/build'));
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 4999;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
