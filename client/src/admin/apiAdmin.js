@@ -1,6 +1,38 @@
 
 import { API } from '../config';
 
+// show balance
+export const showBalance = ()=> {
+    return fetch(`${API}/admin/balance`, {
+        method: 'GET',
+    })
+    .then(response => {
+        return response.json();
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
+
+//add balance
+export const addBalance = (userId, token, balance) => {
+    return fetch(`${API}/admin/balance/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(balance)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 //get all topup orders
 export const getTopupOrdersAdmin = (userId, token) => {
     return fetch(`${API}/topup-orders/admin/${userId}`, {

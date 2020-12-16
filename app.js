@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -17,6 +18,7 @@ const topupRoutes = require('./routes/topup');
 const rechargePackageRoutes = require('./routes/rechargePackage');
 const wallet = require('./routes/wallet');
 const topupOrder = require('./routes/topupOrder');
+const adminBalance = require('./routes/adminBalance');
 // app
 const app = express();
 
@@ -46,6 +48,10 @@ app.use('/api', topupRoutes);
 app.use('/api', rechargePackageRoutes);
 app.use('/api', wallet);
 app.use('/api', topupOrder);
+app.use('/api', adminBalance);
+
+// set static folder
+app.use(express.static('client/build'));
 
 const port = process.env.PORT || 8000;
 

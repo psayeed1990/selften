@@ -21,6 +21,7 @@ import AddTopupThumb from './admin/topup/AddTopupThumb';
 import TopupForm from './core/topup/TopupForm.js';
 import AddRechargePackage from './admin/rechargePackage/AddRechargePackage';
 import ShowTopupOrders from './admin/topupOrder/ShowTopupOrders';
+import AddBalance from './admin/balance/AddBalance';
 
 const Routes = () => {
     return (
@@ -28,6 +29,7 @@ const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Home} />
                 <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
+                <AdminRoute path="/admin/balance-stock" exact component={ AddBalance } />
                 <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
                 <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
                 <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
