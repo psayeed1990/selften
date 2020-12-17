@@ -3,6 +3,7 @@ import { isAuthenticated } from './../../auth';
 import { getTopupOrdersAdmin } from '../apiAdmin';
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
+import { adminLinks } from '../../user/AdminDashboard';
 
 const ShowTopupOrders = ()=>{
     const [orders, setOrders] = useState();
@@ -26,6 +27,8 @@ const ShowTopupOrders = ()=>{
         ></Layout>
 
         <div className="row">
+        <div className="col-md-3">{adminLinks()}</div>
+            <div className="col-md-6">
             {
                 orders ? 
                 orders.map(order=>{
@@ -52,6 +55,7 @@ const ShowTopupOrders = ()=>{
                 :
                 <Fragment>Loading...</Fragment>
             }
+            </div>
         </div>
         </Fragment>
 

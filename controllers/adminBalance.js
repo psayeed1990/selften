@@ -1,7 +1,7 @@
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const AdminBalance = require('./../models//adminBalance');
 
-//@GET all topup thumbs
+//@GET balance
 exports.showBalance = (req, res, next)=>{
     AdminBalance.find().exec((err, data) => {
         if (err) {
@@ -13,6 +13,7 @@ exports.showBalance = (req, res, next)=>{
     })
     
 }
+
 exports.addUpdateBalance = (req, res, next) => {
         const { userId } = req.params;
 

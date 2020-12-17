@@ -3,6 +3,7 @@ import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { createCategory } from "./apiAdmin";
+import { adminLinks } from "../user/AdminDashboard";
 
 const AddCategory = () => {
     const [name, setName] = useState("");
@@ -75,7 +76,8 @@ const AddCategory = () => {
             description={`G'day ${user.name}, ready to add a new category?`}
         >
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+            <div className="col-md-3">{adminLinks()}</div>
+                <div className="col-md-6 offset-md-2">
                     {showSuccess()}
                     {showError()}
                     {newCategoryFom()}

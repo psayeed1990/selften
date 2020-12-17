@@ -4,6 +4,7 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { listOrders, getStatusValues, updateOrderStatus } from "./apiAdmin";
 import moment from "moment";
+import { adminLinks } from "../user/AdminDashboard";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -100,7 +101,8 @@ const Orders = () => {
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+            <div className="col-md-3">{adminLinks()}</div>
+                <div className="col-md-6 offset-md-2">
                     {showOrdersLength()}
 
                     {orders.map((o, oIndex) => {

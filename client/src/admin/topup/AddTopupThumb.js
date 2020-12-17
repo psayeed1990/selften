@@ -4,6 +4,7 @@ import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
 import { Link } from 'react-router-dom';
 import {createTopupThumb} from './../apiAdmin'
+import { adminLinks } from '../../user/AdminDashboard';
 
 const AddTopupThumb = () => {
     const [values, setValues] = useState({
@@ -120,7 +121,8 @@ const AddTopupThumb = () => {
     return (
         <Layout title="Add a new topup system" description={`G'day ${user.name}, ready to add a new topup?`}>
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+            <div className="col-md-3">{adminLinks()}</div>
+                <div className="col-md-6 offset-md-2">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}
