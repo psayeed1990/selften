@@ -7,7 +7,7 @@ import { addBalance, showBalance } from './../apiAdmin';
 const AddBalance = () => {
     const [values, setValues] = useState({
         balance: '',
-        oldBalance: '',
+        oldBalance: 0,
         loading: false,
         error: '',
         createdBalance: '',
@@ -29,23 +29,21 @@ const AddBalance = () => {
     // load categories and set form data
     const init = () => {
         showBalance().then(data => {
-            if(typeof data === 'undefined'){
-                setValues({
-                    ...values,
-                    oldBalance: 0,
-                    formData: new FormData()
-                });
-            }else{
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    oldBalance: data[0].balance,
-                    formData: new FormData()
-                });
-            }
-            }
+            
+                if (data.error) {
+                    setValues({ ...values, error: data.error });
+                } else {
+                    let stock = 0;
+                    if(data.length === 1){
+                        stock = data[0].balance;
+                    }
+                    setValues({
+                        ...values,
+                        oldBalance: stock,
+                        formData: new FormData()
+                    });
+                }
+            
         });
     };
 
@@ -63,13 +61,17 @@ const AddBalance = () => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
 
-        addBalance(user._id, token, formData).then(data => {
+        addBalance(user._id, token, {balance}).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
+                let newOldBalance = oldBalance + Number(balance);
+                if(newOldBalance < 0){
+                    newOldBalance = 0;
+                }
                 setValues({
                     ...values,
-                    oldBalance: oldBalance + balance,
+                    oldBalance: newOldBalance,
                     balance: '',
                     loading: false,
                     createdBalance: 'Balance'
@@ -84,7 +86,7 @@ const AddBalance = () => {
 
             <div className="form-group">
                 <label className="text-muted">Add more balance or subtract by putting - before</label>
-                <input onChange={handleChange('balance')} type="text" className="form-control" value={balance} />
+                <input onChange={handleChange('balance')} type="number" className="form-control" value={balance} />
             </div>
 
             <button className="btn btn-outline-primary">Add Balance</button>

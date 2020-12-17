@@ -3,19 +3,19 @@ import { API } from '../config';
 
 // show balance
 export const showBalance = ()=> {
+
     return fetch(`${API}/admin/balance`, {
-        method: 'GET',
+        method: 'GET'
     })
-    .then(response => {
-        return response.json();
-    })
-    .catch(err => {
-        console.log(err);
-    });
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
 }
 
 //add balance
 export const addBalance = (userId, token, balance) => {
+    console.log(balance);
     return fetch(`${API}/admin/balance/${userId}`, {
         method: 'POST',
         headers: {
