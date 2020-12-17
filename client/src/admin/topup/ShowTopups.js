@@ -12,7 +12,7 @@ const ShowTopups = ()=>{
             setThumbNails(thumbs);
         })
     
-    },[topupThumbnails])
+    },[])
 
     return(
         <div className="row center-flex">

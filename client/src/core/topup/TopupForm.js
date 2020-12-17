@@ -5,6 +5,7 @@ import { getRechargePackagesByGameName, getWallet } from './../apiCore';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { createTopupOrder } from './../apiCore';
+import { showBalance } from './../../admin/apiAdmin';
 
 
 
@@ -15,6 +16,7 @@ const TopupForm = () => {
     const { id, type } = useParams();
     const [wallet, setWallet] = useState(null);
     const [amount, setAmount] = useState(null);
+    const [adminLimit, setAdminLimit] = useState(0);
 
     const [values, setValues] = useState({
         gameUserId: '',
@@ -47,18 +49,7 @@ const TopupForm = () => {
         formData
     } = values;
 
-    //setwallet
-    useEffect(()=>{
-        setValues({ ...values, loading: true });
-        getWallet(user._id).then(data=>{
-            if (!data) {
-                //console.log(err)
-            } else {
-                setWallet(data);
-                setValues({ ...values, loading: false });
-            }
-        })
-    }, []);
+
 
     // load Recharge packages and set form data
 
@@ -74,12 +65,43 @@ const TopupForm = () => {
                     formData: new FormData(),
                     loading: false
                 });
+
+                
             }
         });
     };
 
     useEffect(() => {
         init();
+    }, []);
+
+        //setwallet
+        useEffect(()=>{
+            setValues({ ...values, loading: true });
+            getWallet(user._id).then(data=>{
+                if (!data) {
+                    //console.log(err)
+                } else {
+                    setWallet(data);
+                    setValues({ ...values, loading: false });
+                }
+            })
+        }, []);
+    
+    
+
+    //set admin limit
+    useEffect(()=>{
+        setValues({ ...values, loading: true });
+        showBalance().then(data=>{
+            if (!data) {
+                 //console.log(err)
+                setAdminLimit(0);
+            } else {
+                setAdminLimit(data[0].balance)
+                setValues({ ...values, loading: false  });
+            }
+        })
     }, []);
 
     useEffect(()=>{
@@ -94,7 +116,8 @@ const TopupForm = () => {
                 setAmount(selectedpack[0].packageAmount);
             }
         }
-    }, [selectRecharge, selectRecharges])
+        
+    }, [selectRecharge])
 
     const handleChange = name => event => {
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
@@ -226,7 +249,7 @@ const TopupForm = () => {
             </div>
 
             <div className="money">
-                <h4>Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
+                <h4>Your Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
             </div>
 
                             { wallet && amount ? wallet.amount < amount ? 
@@ -236,6 +259,14 @@ const TopupForm = () => {
                                 :
                                 <Fragment></Fragment>
                             }
+
+                            { amount > adminLimit ? 
+                                <h4>You are ordering more than admin can handle. Please select less</h4>
+                                :
+                                <Fragment></Fragment>
+                                
+                            }
+            <h4>Admin Balance: { adminLimit }</h4>
 
             <button className="btn btn-outline-primary">Order Topup</button>
         </form>
