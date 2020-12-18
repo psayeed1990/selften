@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from './Layout';
 import { read, listRelated } from './apiCore';
+import SingleProductCard from './SingleProductCard';
 import Card from './Card';
 
 const Product = props => {
@@ -39,7 +40,7 @@ const Product = props => {
         >
             <div className="row">
                 <div className="col-8">
-                    {product && product.description && <Card product={product} showViewProductButton={false} />}
+                    {product && product.description && <SingleProductCard product={product} showViewProductButton={false} />}
                 </div>
 
                 <div className="col-4">

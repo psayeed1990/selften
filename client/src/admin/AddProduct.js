@@ -81,6 +81,7 @@ const AddProduct = () => {
                     loading: false,
                     createdProduct: data.name
                 });
+                console.log('done')
             }
         });
     };
