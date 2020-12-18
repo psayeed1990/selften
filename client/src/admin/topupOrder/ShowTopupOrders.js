@@ -18,6 +18,12 @@ const ShowTopupOrders = ()=>{
     
     },[]);
 
+    //mark cancelled
+    const markTopupOrderStatus = (status, id)=>{
+        
+        return console.log('completed');
+    }
+
     return(
         <Fragment>
             
@@ -46,6 +52,8 @@ const ShowTopupOrders = ()=>{
                                         <h6>Password: { order.password }</h6>
                                         <h6>Paid Amount: { order.price } Tk</h6>
                                         <h6>Status: { order.status } </h6>
+                                        <p className="btn btn-primary" role="button" onClick={markTopupOrderStatus(order._id, 'completed')}>Mark completed</p>
+                                        <p className="btn btn-primary" role="button" onClick={markTopupOrderStatus(order._id), 'cancelled'}>Mark cancelled</p>
 
                                     
                                 </div>          

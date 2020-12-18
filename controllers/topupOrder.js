@@ -6,6 +6,7 @@ const Wallet = require('../models/wallet');
 const RechargePackage = require('../models/rechargePackage');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Topup = require('./../models/topup');
+const topupOrder = require('../models/topupOrder');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
@@ -239,9 +240,18 @@ exports.getTopupOrderById = (req, res, next, id) => {
         });
 };
 
-exports.updateTopupOrderById = async (req, res, next)=>{
-    const topups = await TopupOrder.find();
-    res.json(topups);
+exports.updateTopupOrderById = (req, res, next)=>{
+    const {topupOrderId} = req.body;
+    TopupOrder.findByIdAndUpdate(topupOrderId, {status: 'completed'})
+    .exec((err, topupOrder) => {
+        if (err || !topupOrder) {
+            return res.status(400).json({
+                error: 'Topup Order not updated'
+            });
+        }
+        req.topupOrder = topupOrder;
+        next();
+    });
 }
 exports.deleteTopupOrderById = async (req, res, next)=>{
     const topups = await TopupOrder.find();
