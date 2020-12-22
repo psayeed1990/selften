@@ -22,7 +22,7 @@ import TopupForm from './core/topup/TopupForm.js';
 import AddRechargePackage from './admin/rechargePackage/AddRechargePackage';
 import ShowTopupOrders from './admin/topupOrder/ShowTopupOrders';
 import AddBalance from './admin/balance/AddBalance';
-import ShowMessage from './message/ShowMessage';
+import ShowMessagePair from './message/ShowMessagePair';
 
 const Routes = () => {
     return (
@@ -34,8 +34,8 @@ const Routes = () => {
                 <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
                 <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
                 <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
-                <PrivateRoute path="/user/messages" exact component={ShowMessage} />
-                <AdminRoute path="/admin/messages" exact component={ShowMessage} />
+                <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />
+                <AdminRoute path="/admin/messages" exact component={ShowMessagePair} />
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />
