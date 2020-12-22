@@ -1,17 +1,15 @@
 const mongoose = require('mongoose');
+const { model } = require('./topupOrder');
 const schema = mongoose.Schema;
 
-const walletSchema = new schema({
+const messageSchema = new schema({
     user: {
         type: mongoose.Schema.ObjectId,
-        required: true,
+        ref: 'User',
     },
-    amount: {
-        type: Number,
-        default: 0,
-    },
-    card: {
+    message: {
         type: String,
+        required: true,
     },
     createdAt: {
         type: Date,
@@ -19,4 +17,4 @@ const walletSchema = new schema({
     }
 });
 
-module.exports = mongoose.model('Wallet', walletSchema);
+module.exports = mongoose.model('Message', messageSchema);

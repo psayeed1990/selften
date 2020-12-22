@@ -6,7 +6,7 @@ const Wallet = require('../models/wallet');
 const RechargePackage = require('../models/rechargePackage');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Topup = require('./../models/topup');
-const topupOrder = require('../models/topupOrder');
+const Message = require('../models/message');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
@@ -239,19 +239,26 @@ exports.getTopupOrderById = (req, res, next, id) => {
             next();
         });
 };
+ 
+exports.updateTopupOrderById = (req, res, next) => {
+    const { topupOrderId, status, customerId } = req.params;
+    TopupOrder.findByIdAndUpdate(topupOrderId, { status: status })
+        .then(topupOrder => {
 
-exports.updateTopupOrderById = (req, res, next)=>{
-    const {topupOrderId} = req.body;
-    TopupOrder.findByIdAndUpdate(topupOrderId, {status: 'completed'})
-    .exec((err, topupOrder) => {
-        if (err || !topupOrder) {
-            return res.status(400).json({
-                error: 'Topup Order not updated'
+            //send message
+            let newMessage = new Message({
+                user: customerId,
+                message: `Your topup order no:- ${topupOrderId} has been ${status}`,
             });
-        }
-        req.topupOrder = topupOrder;
-        next();
-    });
+
+            newMessage.save().then(message => {
+                res.json({message: 'updated'})
+            })
+
+            
+        }).catch(err => {
+            res.json(err);
+        })
 }
 exports.deleteTopupOrderById = async (req, res, next)=>{
     const topups = await TopupOrder.find();

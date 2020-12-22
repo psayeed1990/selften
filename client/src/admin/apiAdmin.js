@@ -33,6 +33,25 @@ export const addBalance = (userId, token, balance) => {
         });
 };
 
+
+//update topup orders
+export const updateTopupOrderAdmin = (topupOrderId, userId, token, sentStatus) => {
+    console.log(sentStatus);
+    return fetch(`${API}/topup-orders/update/${topupOrderId}/${userId}/${sentStatus.status}/${sentStatus.customerId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: sentStatus,
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+
 //get all topup orders
 export const getTopupOrdersAdmin = (userId, token) => {
     return fetch(`${API}/topup-orders/admin/${userId}`, {

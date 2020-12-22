@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const { Order } = require('../models/order');
 const { errorHandler } = require('../helpers/dbErrorHandler');
+const Message = require('../models/message');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -115,3 +116,16 @@ exports.purchaseHistory = (req, res) => {
             res.json(orders);
         });
 };
+
+
+exports.getMessagesByUser = (req, res) => {
+    const { userId } = req.params;
+    Message.find({user: userId }).exec((err, messages) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(messages);
+        });
+}

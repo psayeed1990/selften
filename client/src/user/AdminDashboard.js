@@ -48,6 +48,11 @@ export const adminLinks = () => {
                         See Topup Orders
                     </Link>
                 </li>
+                <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/messages">
+                        See messages
+                    </Link>
+                </li>
             </ul>
         </div>
     );

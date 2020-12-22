@@ -1,6 +1,6 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import { isAuthenticated } from './../../auth';
-import { getTopupOrdersAdmin } from '../apiAdmin';
+import { getTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin';
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
 import { adminLinks } from '../../user/AdminDashboard';
@@ -18,10 +18,18 @@ const ShowTopupOrders = ()=>{
     
     },[]);
 
-    //mark cancelled
-    const markTopupOrderStatus = (status, id)=>{
-        
-        return console.log('completed');
+    // update order status
+    const markTopupOrderStatus = (orderId, status, customerId) => {
+            updateTopupOrderAdmin(orderId, user._id, token, {status, customerId})
+                .then(data => {
+                    if (data.error) {
+                        console.log("couldn't happen");
+                    } else {
+                        
+                        console.log('updated');
+                    }
+        })
+
     }
 
     return(
@@ -42,9 +50,10 @@ const ShowTopupOrders = ()=>{
                         
                                 <div className="col-md-6 p-5" key={order._id}>
                                     <Link exact to={`/topup-orders/${order._id}`}>
-                                    
+                                        
                                         <h6>Requested by: { order.user.name }</h6>
-                                        </Link>
+                                    </Link>
+                                        <h6 className="hidden">{ order._id }</h6>
                                         <h6>Game: {order.topupGameId.title}</h6>
                                         <h6>Pecharge Package: {order.selectRecharge.packageName}</h6>
                                         <h6>Account type: { order.accountType }</h6>
@@ -52,9 +61,16 @@ const ShowTopupOrders = ()=>{
                                         <h6>Password: { order.password }</h6>
                                         <h6>Paid Amount: { order.price } Tk</h6>
                                         <h6>Status: { order.status } </h6>
-                                        <p className="btn btn-primary" role="button" onClick={markTopupOrderStatus(order._id, 'completed')}>Mark completed</p>
-                                        <p className="btn btn-primary" role="button" onClick={markTopupOrderStatus(order._id), 'cancelled'}>Mark cancelled</p>
-
+                                        { order.status === 'completed' || order.status === 'cancelled' ?
+                                            <Fragment></Fragment>
+                                            :
+                                
+                                        <Fragment>
+                                            <p className="btn btn-primary" role="button" onClick={() => { markTopupOrderStatus(order._id, 'completed', order.user._id) }}>Mark completed</p>
+                                            <p className="btn btn-primary" role="button" onClick={() => { markTopupOrderStatus(order._id, 'cancelled', order.user._id) }}>Mark cancelled</p>
+                                        </Fragment>
+                                        }
+                                        
                                     
                                 </div>          
                        

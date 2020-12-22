@@ -1,6 +1,20 @@
 import { API } from "../config";
 import queryString from "query-string";
 
+//show message to user
+export const getMessage = (userId, token) => {
+        return fetch(`${API}/user/messages/${userId}`, {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
+
 //creating topup order
 export const createTopupOrder = (userId, token, order, id)=>{
 

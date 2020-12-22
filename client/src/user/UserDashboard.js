@@ -42,6 +42,11 @@ const Dashboard = () => {
                             Update Profile
                         </Link>
                     </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/messages">
+                            See messages
+                        </Link>
+                    </li>
                 </ul>
             </div>
         );
