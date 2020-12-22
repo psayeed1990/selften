@@ -32,7 +32,15 @@ const userSchema = new mongoose.Schema(
         history: {
             type: Array,
             default: []
-        }
+        },
+        pair: [{
+            type: mongoose.Schema.ObjectId,
+            ref: 'MessagePair',
+        },],
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
     },
     { timestamps: true }
 );

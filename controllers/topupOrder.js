@@ -7,6 +7,8 @@ const RechargePackage = require('../models/rechargePackage');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Topup = require('./../models/topup');
 const Message = require('../models/message');
+const MessagePair = require('../models/messagePair');
+const User = require('../models/user');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
@@ -241,18 +243,50 @@ exports.getTopupOrderById = (req, res, next, id) => {
 };
  
 exports.updateTopupOrderById = (req, res, next) => {
-    const { topupOrderId, status, customerId } = req.params;
+    const { userId, topupOrderId, status, customerId } = req.params;
     TopupOrder.findByIdAndUpdate(topupOrderId, { status: status })
         .then(topupOrder => {
 
             //send message
             let newMessage = new Message({
-                user: customerId,
+                user: userId,
+                receiver: customerId,
                 message: `Your topup order no:- ${topupOrderId} has been ${status}`,
             });
 
             newMessage.save().then(message => {
-                res.json({message: 'updated'})
+                
+                MessagePair.findOne({ $or: [{ $and: [{ user: userId }, { receiver: customerId }] }, { $and: [{ user: customerId }, { receiver: userId }] }] })
+                    .then(pair => {
+                        
+                        if (pair) {
+                            
+                            const msgId = message._id;
+                            pair.message.push(message);
+                            pair.save()
+                            
+                            res.json({message: 'updated'})
+                            
+                        }
+                        if (!pair) {
+                            const msgId = message._id;
+
+
+
+                            const newPair = new MessagePair({
+                                user: userId,
+                                receiver: customerId,
+                                message: [msgId],
+                            });
+
+                            newPair.save().then(newpair => {
+                                res.json({message: 'updated'})
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        }
+                })
+                
             })
 
             

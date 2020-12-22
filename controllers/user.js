@@ -2,6 +2,7 @@ const User = require('../models/user');
 const { Order } = require('../models/order');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Message = require('../models/message');
+const MessagePair = require('../models/messagePair');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -119,8 +120,38 @@ exports.purchaseHistory = (req, res) => {
 
 
 exports.getMessagesByUser = (req, res) => {
-    const { userId } = req.params;
-    Message.find({user: userId }).exec((err, messages) => {
+    const { userId } = req.params; 
+    MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').limit(1).populate('message').exec((err, messages) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(messages);
+        });
+}
+
+exports.getChat = (req, res) => {
+    const { userId, receiverId } = req.params;
+    Message.find({user: userId, receiver: receiverId }).exec((err, messages) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(messages);
+        });
+}
+
+exports.addChat = (req, res) => {
+    const { userId, receiverId } = req.params;
+    const newMessage = new Message({
+        user: userId,
+        receiver: receiverId,
+        message: req.body.message
+    })
+
+    Message.save().exec((err, messages) => {
             if (err) {
                 return res.status(400).json({
                     error: errorHandler(err)
