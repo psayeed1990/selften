@@ -4,6 +4,7 @@ import { isAuthenticated } from '../auth';
 import { useParams } from 'react-router-dom';
 import { messageByPairId, sendMessage } from '../core/apiCore';
 import { adminLinks } from '../user/AdminDashboard';
+import { userLinks } from '../user/UserDashboard';
 
 const ShowChat = () => {
     const { pairId } = useParams();
@@ -126,7 +127,12 @@ const ShowChat = () => {
     return (
         <Layout title="messages">
             <div className="row">
-            <div className="col-md-3">{adminLinks()}</div>
+                {user.role === 1 ?
+                    <div className="col-md-3">{adminLinks()}</div>
+                    :
+                    <div className="col-md-3">{userLinks()}</div>
+                }
+            
                 <div className="col-md-6 offset-md-2">
                     {showLoading()}
                     {showSuccess()}

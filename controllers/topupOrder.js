@@ -23,6 +23,7 @@ exports.getAllTopupOrders = (req, res, next)=>{
     
 }
 exports.createTopupOrder = (req, res, next) => {
+        const adminId = '5fdadfe6cc7fc11b2772b5e0';
         const { userId, topupGameId } = req.params;
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
@@ -37,7 +38,7 @@ exports.createTopupOrder = (req, res, next) => {
         }
             
         Topup.findById(topupGameId).then(topup => {
-
+            
             if (!topup) {
                 return res.status(400).json({
                     error: 'Game invalid'
@@ -113,7 +114,7 @@ exports.createTopupOrder = (req, res, next) => {
 
                                         //send message
                                         let newMessage = new Message({
-                                            user: userId,
+                                            user: adminId,
                                             receiver: userId,
                                             message: `Your topup order no:- ${result._id} has been created. Someone will start working on it in a moment`,
                                         });
@@ -141,7 +142,7 @@ exports.createTopupOrder = (req, res, next) => {
 
 
                                                         const newPair = new MessagePair({
-                                                            user: userId,
+                                                            user: adminId,
                                                             receiver: userId,
                                                             message: [msgId],
                                                         });
@@ -229,7 +230,7 @@ exports.createTopupOrder = (req, res, next) => {
                                         }
                                         //send message
                                         let newMessage = new Message({
-                                            user: userId,
+                                            user: adminId,
                                             receiver: userId,
                                             message: `Your topup order no:- ${result._id} has been created. Someone will start working on it in a moment`,
                                         });
@@ -256,7 +257,7 @@ exports.createTopupOrder = (req, res, next) => {
 
 
                                                         const newPair = new MessagePair({
-                                                            user: userId,
+                                                            user: adminId,
                                                             receiver: userId,
                                                             message: [msgId],
                                                         });

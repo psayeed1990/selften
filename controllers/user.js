@@ -152,7 +152,7 @@ exports.sendMessagesByPair = (req, res) => {
 
 exports.getMessagesByUser = (req, res) => {
     const { userId } = req.params; 
-    MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').limit(1).populate('message').exec((err, messages) => {
+    MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').populate('message').exec((err, messages) => {
             if (err) {
                 return res.status(400).json({
                     error: errorHandler(err)
