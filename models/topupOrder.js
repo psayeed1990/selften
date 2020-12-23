@@ -20,6 +20,10 @@ const topupOrderSchema = new schema({
     securityCode: {
         type: String,
     },
+    pair: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'MessagePair',
+    },
     selectRecharge: {
         type: mongoose.Schema.ObjectId,
         ref: 'RechargePackage',

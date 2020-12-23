@@ -4,6 +4,7 @@ import { getTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin';
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
 import { adminLinks } from '../../user/AdminDashboard';
+import { sendMessage } from '../../core/apiCore';
 
 const ShowTopupOrders = ()=>{
     const [orders, setOrders] = useState();
@@ -61,6 +62,11 @@ const ShowTopupOrders = ()=>{
                                         <h6>Password: { order.password }</h6>
                                         <h6>Paid Amount: { order.price } Tk</h6>
                                         <h6>Status: { order.status } </h6>
+
+                                        <Link exact to={`/messages/pair/${order.pair._id}`} >
+                                            <h5 className="border"><b>Send message</b></h5>
+                                        </Link>
+
                                         { order.status === 'completed' || order.status === 'cancelled' ?
                                             <Fragment></Fragment>
                                             :

@@ -12,7 +12,7 @@ const User = require('../models/user');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
-    TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').exec((err, topuporder) => {
+    TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').exec((err, topuporder) => {
         if (err) {
             return res.status(400).json({
                 error: 'topupOrder thumbs not found'
@@ -27,67 +27,67 @@ exports.createTopupOrder = (req, res, next) => {
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         
-        form.parse(req, (err, fields, files) => {
+    form.parse(req, (err, fields, files) => {
             
-            if (err) {
+        if (err) {
                 
+            return res.status(400).json({
+                error: 'Image could not be uploaded'
+            });
+        }
+            
+        Topup.findById(topupGameId).then(topup => {
+
+            if (!topup) {
                 return res.status(400).json({
-                    error: 'Image could not be uploaded'
+                    error: 'Game invalid'
                 });
             }
-            
-            Topup.findById(topupGameId).then(topup=>{
-
-                if(!topup){
+                
+            if (topup && topup.type === 'inGame') {
+                const { accountType, gmailOrFacebook, password, securityCode, selectRecharge } = fields;
+                
+                if (!accountType) {
+                        
                     return res.status(400).json({
-                        error: 'Game invalid'
+                        error: 'Account Type field is required'
+                    });
+                }
+                if (!gmailOrFacebook) {
+                        
+                    return res.status(400).json({
+                        error: 'Gmail or Facebook number field is required'
+                    });
+                }
+                if (!password) {
+                        
+                    return res.status(400).json({
+                        error: 'Password Type field is required'
+                    });
+                }
+                if (accountType === 'gmail' && !securityCode) {
+                        
+                    return res.status(400).json({
+                        error: 'Security Code Type field is required for gmail'
+                    });
+                }
+                if (!selectRecharge) {
+                        
+                    return res.status(400).json({
+                        error: 'Recharge Package field is required'
+                    });
+                }
+                if (!topupGameId) {
+                        
+                    return res.status(400).json({
+                        error: 'You are in a wrong url'
                     });
                 }
                 
-                if(topup && topup.type === 'inGame'){
-                    const { accountType, gmailOrFacebook, password, securityCode, selectRecharge } = fields;
-                
-                    if (!accountType ) {
-                        
-                        return res.status(400).json({
-                            error: 'Account Type field is required'
-                        });
-                    }
-                    if (!gmailOrFacebook ) {
-                        
-                        return res.status(400).json({
-                            error: 'Gmail or Facebook number field is required'
-                        });
-                    }
-                    if (!password ) {
-                        
-                        return res.status(400).json({
-                            error: 'Password Type field is required'
-                        });
-                    }
-                    if (accountType === 'gmail' && !securityCode ) {
-                        
-                        return res.status(400).json({
-                            error: 'Security Code Type field is required for gmail'
-                        });
-                    }
-                    if (!selectRecharge ) {
-                        
-                        return res.status(400).json({
-                            error: 'Recharge Package field is required'
-                        });
-                    }
-                    if (!topupGameId ) {
-                        
-                        return res.status(400).json({
-                            error: 'You are in a wrong url'
-                        });
-                    }
-                
     
-                    //get price
-                    RechargePackage.findById(selectRecharge)
-                    .then(package=>{
+                //get price
+                RechargePackage.findById(selectRecharge)
+                    .then(package => {
                         let topuporder = new TopupOrder(fields);
                         topuporder.topupGameId = topupGameId;
                         topuporder.user = userId;
@@ -95,14 +95,14 @@ exports.createTopupOrder = (req, res, next) => {
                         topuporder.price = price;
     
                         // check user wallet and deduct price
-                        Wallet.findOne({user: userId}).then(userWallet=>{
-                            if(price > Number(userWallet.amount)){
+                        Wallet.findOne({ user: userId }).then(userWallet => {
+                            if (price > Number(userWallet.amount)) {
                                 return res.status(400).json({
                                     error: "User wallet is insufficient",
                                 });
-                            }else{
+                            } else {
                                 const leftAmount = Number(userWallet.amount) - Number(price);
-                                Wallet.findByIdAndUpdate(userWallet.id, {amount: leftAmount}).then(wallet=>{
+                                Wallet.findByIdAndUpdate(userWallet.id, { amount: leftAmount }).then(wallet => {
                                     topuporder.save((err, result) => {
                                         if (err) {
                                             console.log('Topup Order CREATE ERROR ', err);
@@ -110,28 +110,67 @@ exports.createTopupOrder = (req, res, next) => {
                                                 error: errorHandler(err)
                                             });
                                         }
-                                        console.log(result);
-                                        res.json(result);
-                                    }).catch(err=>{
-                                        return res.status(400).json({
-                                            error: errorHandler(err)
+
+                                        //send message
+                                        let newMessage = new Message({
+                                            user: userId,
+                                            receiver: userId,
+                                            message: `Your topup order no:- ${result._id} has been created. Someone will start working on it in a moment`,
                                         });
+
+                                        newMessage.save().then(message => {
+                                            
+                                            MessagePair.findOne({ $or: [{ $and: [{ user: userId }, { receiver: userId }] }, { $and: [{ user: userId }, { receiver: userId }] }] })
+                                                .then(pair => {
+                                                    
+                                                    if (pair) {
+                                                        
+                                                        
+                                                        pair.message.push(message);
+                                                        pair.save()
+                                                            //save pair id to topup order
+                                                            result.pair = pair;
+                                                            result.save();
+                                                            res.json({ message: 'updated' })
+                                                        
+                                                        
+                                                    }
+                                                    if (!pair) {
+                                                        const msgId = message._id;
+
+
+
+                                                        const newPair = new MessagePair({
+                                                            user: userId,
+                                                            receiver: userId,
+                                                            message: [msgId],
+                                                        });
+
+                                                        newPair.save().then(newpair => {
+                                                            //save pair id to topup order
+                                                            result.pair = newpair;
+                                                            result.save();
+                                                            res.json(result);
+                                                        }).catch(err => {
+                                                            console.log(err);
+                                                        })
+                                                    }
+                                                })
+                                        })
+                                            
                                     })
                                 })
+                            }
     
                                 
     
-                            }
-                            
-                            
                         })
-                    }).catch(err=>{
-                        return res.status(400).json({
-                            error: errorHandler(err)
-                        });
+                            
+                            
+                        
                     })
-    
-                }
+            }
+                
 
                 if(topup && topup.type === 'codeId'){
                     
@@ -188,8 +227,51 @@ exports.createTopupOrder = (req, res, next) => {
                                                 error: errorHandler(err)
                                             });
                                         }
-                                        console.log(result);
-                                        res.json(result);
+                                        //send message
+                                        let newMessage = new Message({
+                                            user: userId,
+                                            receiver: userId,
+                                            message: `Your topup order no:- ${result._id} has been created. Someone will start working on it in a moment`,
+                                        });
+
+                                        newMessage.save().then(message => {
+                                            
+                                            MessagePair.findOne({ $or: [{ $and: [{ user: userId }, { receiver: userId }] }, { $and: [{ user: userId }, { receiver: userId }] }] })
+                                                .then(pair => {
+                                                    
+                                                    if (pair) {
+                                                        
+                                                        
+                                                        pair.message.push(message);
+                                                        pair.save()
+                                                         //save pair id to topup order
+                                                            result.pair = pair;
+                                                            result.save();
+                                                        res.json({ message: 'updated' })
+                                                        
+                                                    }
+                                                    if (!pair) {
+                                                        const msgId = message._id;
+
+
+
+                                                        const newPair = new MessagePair({
+                                                            user: userId,
+                                                            receiver: userId,
+                                                            message: [msgId],
+                                                        });
+
+                                                        newPair.save().then(newpair => {
+                                                             //save pair id to topup order
+                                                            result.pair = newpair;
+                                                            result.save();
+                                                            res.json(result);
+                                                        }).catch(err => {
+                                                            console.log(err);
+                                                        })
+                                                    }
+                                                })
+                                        })
                                     }).catch(err=>{
                                         return res.status(400).json({
                                             error: errorHandler(err)
