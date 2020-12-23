@@ -23,6 +23,7 @@ import AddRechargePackage from './admin/rechargePackage/AddRechargePackage';
 import ShowTopupOrders from './admin/topupOrder/ShowTopupOrders';
 import AddBalance from './admin/balance/AddBalance';
 import ShowMessagePair from './message/ShowMessagePair';
+import ShowChat from './message/ShowChat';
 
 const Routes = () => {
     return (
@@ -36,6 +37,7 @@ const Routes = () => {
                 <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
                 <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />
                 <AdminRoute path="/admin/messages" exact component={ShowMessagePair} />
+                <PrivateRoute path="/messages/pair/:pairId" exact component={ShowChat} />
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />

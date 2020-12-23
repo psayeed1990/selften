@@ -3,6 +3,7 @@ const { Order } = require('../models/order');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Message = require('../models/message');
 const MessagePair = require('../models/messagePair');
+const formidable = require('formidable');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -118,10 +119,52 @@ exports.purchaseHistory = (req, res) => {
         });
 };
 
+exports.sendMessagesByPair = (req, res) => {
+    const { userId, receiverId, pairId } = req.params;
+    let form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+        
+    form.parse(req, (err, fields, files) => {
+            const { message } = fields;
+
+            const newMessage = new Message({
+            user: userId,
+            receiver: receiverId,
+            message,
+        });
+
+        newMessage.save().then(msg => {
+            MessagePair.findById(pairId).then(pair => {
+                
+                pair.message.push(msg);
+                pair.save()
+                                
+                res.json({message: 'message sent'})
+            })
+        })
+     })
+
+    
+  
+
+    
+}
 
 exports.getMessagesByUser = (req, res) => {
     const { userId } = req.params; 
     MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').limit(1).populate('message').exec((err, messages) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(messages);
+        });
+}
+
+exports.getMessagesByPair = (req, res) => {
+        const { pairId } = req.params; 
+    MessagePair.findById(pairId).populate('user').populate('receiver').populate('message').exec((err, messages) => {
             if (err) {
                 return res.status(400).json({
                     error: errorHandler(err)

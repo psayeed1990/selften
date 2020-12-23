@@ -38,7 +38,7 @@ const ShowMessagePair = () => {
                             messagesPair.map(messages=>{
                                 return (
                                     <div className="col-md-6 offset-md-2 m-b-250 mb-5">
-                                    <Link className="border" exact to={`/messages/${messages.user._id}/${messages.receiver._id}`}>
+                                    <Link className="border" exact to={`/messages/pair/${messages._id}/`}>
                                         <p>By: {messages.user.name}</p>
                                         <p>Message: {messages.message[0].message}</p>
                                         <p>To: {messages.receiver.name}</p>

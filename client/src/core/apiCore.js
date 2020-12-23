@@ -1,7 +1,40 @@
 import { API } from "../config";
 import queryString from "query-string";
 
-//show message to user
+
+//send messages
+export const sendMessage = (token, userId, receiverId, pairId, message) => {
+        return fetch(`${API}/user/${userId}/message/${receiverId}/pair/${pairId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: message
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+// read chats for eavh pair
+export const messageByPairId = (userId, token, pairId) => {
+        return fetch(`${API}/user/${userId}/message-pair/${pairId}`, {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
+
+//show messages list of pair to user
 export const getMessage = (userId, token) => {
         return fetch(`${API}/user/messages/${userId}`, {
         headers: {
