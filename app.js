@@ -86,10 +86,15 @@ io.on('connection', socket => {
             MessagePair.findById(pairId).then(pair => {
                     
                 pair.message.push(msg);
-                pair.save();
+                pair.save().then(savedPair => {
+                    socket.emit('newMessage', msg);
+                    socket.broadcast.emit('newMessageForAll', msg);
+                    }  
+                ).catch(err => {
+                    console.log(err)
+                })
 
-                socket.emit('newMessage', msg);
-                socket.broadcast.emit('newMessageForAll', msg);
+
                 
                                     
             })
