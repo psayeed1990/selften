@@ -1,14 +1,17 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react';
+import React, { useState, useEffect, Fragment, useRef, useContext } from 'react';
 import Layout from '../core/Layout';
 import io from "socket.io-client";
 import { isAuthenticated } from '../auth';
 import { useParams } from 'react-router-dom';
 import { messageByPairId, sendMessage } from '../core/apiCore';
-import { adminLinks } from '../user/AdminDashboard';
-import { userLinks } from '../user/UserDashboard';
+import { AdminLinks } from '../user/AdminDashboard';
+import { UserLinks } from '../user/UserDashboard';
+import { NotificationsContext } from '../context/notificationsContext';
+
 
 const ShowChat = () => {
     const socketRef = useRef();
+    const [ notifications, setNotifications ] = useContext(NotificationsContext);
     const { pairId } = useParams();
     const [values, setValues] = useState({
         receiverId: '',
@@ -54,6 +57,7 @@ const ShowChat = () => {
                     messages: data.message,
                     formData: new FormData()
                 });
+                setNotifications(0)
             }
         });
     };
@@ -119,9 +123,11 @@ const ShowChat = () => {
                 message: '',
                 createdMessage: 'Message loaded'
             });
+            //savedReceivedMessageAsSeenByMsgId(user, token, msgId)
             
         });
     }, [])
+
 
     const newPostForm = () => (
         <Fragment>
@@ -170,9 +176,9 @@ const ShowChat = () => {
         <Layout title="messages">
             <div className="row">
                 {user.role === 1 ?
-                    <div className="col-md-3">{adminLinks()}</div>
+                    <div className="col-md-3"><AdminLinks /></div>
                     :
-                    <div className="col-md-3">{userLinks()}</div>
+                    <div className="col-md-3"><UserLinks /></div>
                 }
             
                 <div className="col-md-6 offset-md-2">

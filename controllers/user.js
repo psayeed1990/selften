@@ -150,6 +150,18 @@ exports.sendMessagesByPair = (req, res) => {
     
 }
 
+exports.getUnseenMessagesByReceiver = (req, res) => {
+        const { userId } = req.params; 
+        Message.find({receiver: userId, seen: false}).exec((err, messages) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(messages);
+        });
+}
+
 exports.getMessagesByUser = (req, res) => {
     const { userId } = req.params; 
     MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').populate('message').exec((err, messages) => {
@@ -163,15 +175,31 @@ exports.getMessagesByUser = (req, res) => {
 }
 
 exports.getMessagesByPair = (req, res) => {
-        const { pairId } = req.params; 
-    MessagePair.findById(pairId).populate('user').populate('receiver').populate('message').exec((err, messages) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
+    const { pairId, userId } = req.params;
+
+    MessagePair.findById(pairId).populate('user').populate('receiver').populate(
+        {
+            path:'message',
+            options: {
+                limit: 1000
+
             }
-            res.json(messages);
-        });
+        })
+        .exec((err, messages) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+            
+        messages.message.filter(message => {
+            return message.receiver === userId && message.seen === false
+        }).forEach(message => {
+            message.seen = true;
+            message.save();
+        })
+        res.json(messages);
+    });
 }
 
 exports.getChat = (req, res) => {

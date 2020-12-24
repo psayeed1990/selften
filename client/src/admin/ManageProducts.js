@@ -3,7 +3,7 @@ import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { getProducts, deleteProduct } from "./apiAdmin";
-import { adminLinks } from "../user/AdminDashboard";
+import { AdminLinks } from "../user/AdminDashboard";
 
 const ManageProducts = () => {
     const [products, setProducts] = useState([]);
@@ -41,7 +41,7 @@ const ManageProducts = () => {
             className="container-fluid"
         >
             <div className="row">
-            <div className="col-md-3">{adminLinks()}</div>
+            <div className="col-md-3"><AdminLinks /></div>
                 <div className="col-7">
                     <h2 className="text-center">
                         Total {products.length} products

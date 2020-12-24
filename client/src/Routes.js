@@ -24,34 +24,40 @@ import ShowTopupOrders from './admin/topupOrder/ShowTopupOrders';
 import AddBalance from './admin/balance/AddBalance';
 import ShowMessagePair from './message/ShowMessagePair';
 import ShowChat from './message/ShowChat';
+import { UserProvider } from './context/notificationsContext';
 
 const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component={Home} />
-                <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
-                <AdminRoute path="/admin/balance-stock" exact component={ AddBalance } />
-                <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
-                <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
-                <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
-                <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />
-                <AdminRoute path="/admin/messages" exact component={ShowMessagePair} />
-                <PrivateRoute path="/messages/pair/:pairId" exact component={ShowChat} />
+                
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />
-                <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
-                <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
-                <AdminRoute path="/create/category" exact component={AddCategory} />
-                <AdminRoute path="/create/product" exact component={AddProduct} />
+                <Route path="/" exact component={Home} />
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/cart" exact component={Cart} />
-                <AdminRoute path="/admin/orders" exact component={Orders} />
-                <PrivateRoute path="/profile/:userId" exact component={Profile} />
-                <PrivateRoute path="/admin/products" exact component={ManageProducts} />
-                <AdminRoute path="/admin/product/update/:productId" exact component={UpdateProduct} />
-                <AdminRoute path="/admin/category/update/:categoryId" exact component={UpdateCategory} />
+                <UserProvider>
+                    <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
+                    <AdminRoute path="/admin/balance-stock" exact component={ AddBalance } />
+                    <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
+                    <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
+                    <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
+                    <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />
+                    <AdminRoute path="/admin/messages" exact component={ShowMessagePair} />
+                    <PrivateRoute path="/messages/pair/:pairId" exact component={ShowChat} />
+                    
+                    <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
+                    <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
+                    <AdminRoute path="/create/category" exact component={AddCategory} />
+                    <AdminRoute path="/create/product" exact component={AddProduct} />
+                    
+                    <AdminRoute path="/admin/orders" exact component={Orders} />
+                    <PrivateRoute path="/profile/:userId" exact component={Profile} />
+                    <PrivateRoute path="/admin/products" exact component={ManageProducts} />
+                    <AdminRoute path="/admin/product/update/:productId" exact component={UpdateProduct} />
+                    <AdminRoute path="/admin/category/update/:categoryId" exact component={UpdateCategory} />
+                </UserProvider>
             </Switch>
         </BrowserRouter>
     );

@@ -4,8 +4,9 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { getPurchaseHistory } from "./apiUser";
 import moment from "moment";
+import './adminDashboard.css'
 
-export const userLinks = () => {
+export const UserLinks = () => {
     const {
         user: { _id, name, email, role }
     } = isAuthenticated();
@@ -13,6 +14,11 @@ export const userLinks = () => {
             <div className="card">
                 <h4 className="card-header">User Links</h4>
                 <ul className="list-group">
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/user/messages">
+                            See messages  <sup className="notifications">0</sup>
+                        </Link>
+                    </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/cart">
                             My Cart
@@ -23,11 +29,7 @@ export const userLinks = () => {
                             Update Profile
                         </Link>
                     </li>
-                    <li className="list-group-item">
-                        <Link className="nav-link" to="/user/messages">
-                            See messages
-                        </Link>
-                    </li>
+                    
                 </ul>
             </div>
         );
@@ -114,7 +116,7 @@ const Dashboard = () => {
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-3">{userLinks()}</div>
+                <div className="col-3"><UserLinks /></div>
                 <div className="col-9">
                     {userInfo()}
                     {purchaseHistory(history)}

@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../core/Layout';
-import { adminLinks } from '../user/AdminDashboard';
-import { userLinks } from './../user/UserDashboard';
+import { AdminLinks } from '../user/AdminDashboard';
+import { UserLinks } from './../user/UserDashboard';
 import { isAuthenticated } from '../auth';
 import { getMessage } from '../core/apiCore';
 
@@ -15,7 +15,7 @@ const ShowMessagePair = () => {
             if (!data) {
                 console.log('no message')
             } else {
-                console.log(data)
+                
                 setMessagesPair(data);
                 
             }
@@ -34,9 +34,9 @@ const ShowMessagePair = () => {
             <div className="row">
                 {
                     user.role === 1 ?
-                        <div className="col-md-3">{adminLinks()}</div>
+                        <div className="col-md-3"><AdminLinks /></div>
                         :
-                        <div className="col-md-3">{userLinks()}</div>
+                        <div className="col-md-3"><UserLinks /></div>
                 }
             
                 <div className="col-md-6 offset-md-2 m-b-250 mb-5">
@@ -48,7 +48,16 @@ const ShowMessagePair = () => {
                                     <div className="border p-1 m-3" key={messages._id}>
                                         <Link exact to={`/messages/pair/${messages._id}/`}>
                                             <p>By: {messages.user.name}</p>
-                                            <p>Message: {messages.message[0].message}</p>
+                                            {
+                                                messages.message.filter(receivedMsg => {
+                                                    return (receivedMsg.user === user._id && receivedMsg.seen === false)
+                                                }).length > 0 ?
+                                                    <p>Unread messages</p>
+                                                    :
+                                                    <Fragment></Fragment>
+                                                
+                                            }
+                                            <p>Message: {messages.message[messages.message.length - 1].message}</p>
                                             <p>To: {messages.receiver.name}</p>
                                             
                                         </Link>

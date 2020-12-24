@@ -3,7 +3,7 @@ import { isAuthenticated } from './../../auth';
 import { getTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin';
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
-import { adminLinks } from '../../user/AdminDashboard';
+import { AdminLinks } from '../../user/AdminDashboard';
 import { sendMessage } from '../../core/apiCore';
 
 const ShowTopupOrders = ()=>{
@@ -42,7 +42,7 @@ const ShowTopupOrders = ()=>{
         ></Layout>
 
         <div className="row">
-        <div className="col-md-3">{adminLinks()}</div>
+        <div className="col-md-3"><AdminLinks /></div>
             <div className="col-md-6">
             {
                 orders ? 

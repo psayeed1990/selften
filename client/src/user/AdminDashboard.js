@@ -1,17 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { API } from './../config';
+import './adminDashboard.css';
+import { NotificationsContext } from "../context/notificationsContext";
 
 
-export const adminLinks = () => {
-
-    return (
+export const AdminLinks = () => {
+    const [notifications, setNotifications] = useContext(NotificationsContext);
+    return ( 
         <div className="card">
             <h4 className="card-header">Admin Links</h4>
            
             <ul className="list-group">
+            <li className="list-group-item">
+                <Link className="nav-link" to="/admin/messages">
+                        See messages <sup className="notifications">{ notifications }</sup>
+                 </Link>
+            </li>
 
             <li className="list-group-item">
                     <Link className="nav-link" to="/admin/balance-stock">
@@ -53,11 +60,7 @@ export const adminLinks = () => {
                         See Topup Orders
                     </Link>
                 </li>
-                <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/messages">
-                        See messages
-                    </Link>
-                </li>
+                
             </ul>
         </div>
     );
@@ -93,7 +96,7 @@ const AdminDashboard = () => {
         >
             <div className="row">
                  
-                <div className="col-md-3">{adminLinks()}</div>
+                <div className="col-md-3"><AdminLinks /></div>
               
                 <div className="col-md-9">{adminInfo()}</div>
             </div>

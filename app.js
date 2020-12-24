@@ -10,6 +10,7 @@ const cors = require('cors');
 const expressValidator = require('express-validator');
 const Message = require('./models/message');
 const MessagePair = require('./models/messagePair')
+const { payBySSLCommerce } = require('./controllers/sslCommerce');
 require('dotenv').config();
 // import routes
 const authRoutes = require('./routes/auth');
@@ -59,6 +60,7 @@ app.use('/api', rechargePackageRoutes);
 app.use('/api', wallet);
 app.use('/api', topupOrder);
 app.use('/api', adminBalance);
+//app.use('/pay', payBySSLCommerce);
 
 // set static folder
 app.use(express.static('client/build'));

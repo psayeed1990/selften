@@ -3,7 +3,7 @@ import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
 import { Link } from 'react-router-dom';
 import { addBalance, showBalance } from './../apiAdmin';
-import { adminLinks } from '../../user/AdminDashboard';
+import { AdminLinks } from '../../user/AdminDashboard';
 
 const AddBalance = () => {
     const [values, setValues] = useState({
@@ -116,7 +116,7 @@ const AddBalance = () => {
     return (
         <Layout title="Add balance" description={`for stock of topup ?`}>
             <div className="row">
-                <div className="col-md-3">{adminLinks()}</div>
+                <div className="col-md-3"><AdminLinks /></div>
                 <div className="col-md-6 offset-md-2">
                     {showLoading()}
                     {showSuccess()}

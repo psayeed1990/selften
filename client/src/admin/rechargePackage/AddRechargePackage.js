@@ -4,7 +4,7 @@ import { isAuthenticated } from './../../auth';
 import { Link } from 'react-router-dom';
 import {getTopupThumbs} from './../../core/apiCore'
 import { createRechargePackage } from './../apiAdmin';
-import { adminLinks } from '../../user/AdminDashboard';
+import { AdminLinks } from '../../user/AdminDashboard';
 
 const AddRechargePackage = () => {
     const [values, setValues] = useState({
@@ -134,7 +134,7 @@ const showLoading = () =>
 return (
     <Layout title="Add a new recharge package" description={`G'day ${user.name}, ready to add a new recharge package?`}>
         <div className="row">
-        <div className="col-md-3">{adminLinks()}</div>
+        <div className="col-md-3"><AdminLinks /></div>
             <div className="col-md-6 offset-md-2">
                 {showLoading()}
                 {showSuccess()}

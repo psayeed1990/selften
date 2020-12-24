@@ -1,5 +1,20 @@
 import { API } from "../config";
 
+export const getUnseenMessagesByReceiver = (user, token) => {
+    return fetch(`${API}/user/get-unseen-messages/receiver/${user._id}`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: {}
+            })
+            .then(response => {
+                return response.json();
+            })
+            .catch(err => console.log(err));
+}
+
 export const read = (userId, token) => {
     return fetch(`${API}/user/${userId}`, {
         method: "GET",

@@ -3,7 +3,7 @@ import Layout from '../core/Layout';
 import { isAuthenticated } from '../auth';
 import { Link } from 'react-router-dom';
 import { createProduct, getCategories } from './apiAdmin';
-import { adminLinks } from '../user/AdminDashboard';
+import { AdminLinks } from '../user/AdminDashboard';
 
 const AddProduct = () => {
     const [values, setValues] = useState({
@@ -163,7 +163,7 @@ const AddProduct = () => {
     return (
         <Layout title="Add a new product" description={`G'day ${user.name}, ready to add a new product?`}>
             <div className="row">
-            <div className="col-md-3">{adminLinks()}</div>
+            <div className="col-md-3"><AdminLinks /></div>
                 <div className="col-md-6 offset-md-2">
                     {showLoading()}
                     {showSuccess()}
