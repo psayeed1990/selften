@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 import Layout from '../core/Layout';
+import io from "socket.io-client";
 import { isAuthenticated } from '../auth';
 import { useParams } from 'react-router-dom';
 import { messageByPairId, sendMessage } from '../core/apiCore';
@@ -7,6 +8,7 @@ import { adminLinks } from '../user/AdminDashboard';
 import { userLinks } from '../user/UserDashboard';
 
 const ShowChat = () => {
+    const socketRef = useRef();
     const { pairId } = useParams();
     const [values, setValues] = useState({
         receiverId: '',
@@ -18,6 +20,9 @@ const ShowChat = () => {
         redirectToProfile: false,
         formData: ''
     });
+
+    //connect socket
+    socketRef.current = io.connect('/');
 
     const { user, token } = isAuthenticated();
     const {
@@ -66,29 +71,65 @@ const ShowChat = () => {
     const clickSubmit = event => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
+        const newMsgDetails = {};
+        newMsgDetails.userId = user;
+        newMsgDetails.receiverId = receiverId;
+        newMsgDetails.pairId = pairId;
+        newMsgDetails.message = message;
+        
+        
+        socketRef.current.emit('sendMessage', newMsgDetails);
 
-        sendMessage(token, user._id, receiverId, pairId, formData).then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    message: '',
-                    loading: false,
-                    createdMessage: data.message
-                });
-                console.log('message sent')
-            }
+        socketRef.current.on('newMessage', msg => {
+            
+            setValues({
+                ...values,
+                messages: [...messages, msg],
+                message: '',
+                loading: false,
+                createdMessage: 'Message sent'
+            });
+            
         });
+
+        
+
+        // sendMessage(token, user._id, receiverId, pairId, formData).then(data => {
+        //     if (data.error) {
+        //         setValues({ ...values, error: data.error });
+        //     } else {
+        //         setValues({
+        //             ...values,
+        //             message: '',
+        //             loading: false,
+        //             createdMessage: data.message
+        //         });
+        //         console.log('message sent')
+        //     }
+        // });
     };
+
+    //get messages
+    useEffect(() => {
+        socketRef.current.on('newMessageForAll', msg => {
+            
+            setValues({
+                ...values,
+                messages: [...messages, msg],
+                message: '',
+                createdMessage: 'Message received'
+            });
+            
+        });
+    }, [])
 
     const newPostForm = () => (
         <Fragment>
-            <div>
+            <div className="messages">
                 {
                     messages.map(msg => {
                         return (
-                            <p className="border">{msg.message}</p>
+                            <p className="border message">{msg.message}</p>
                         )
                         
                     })
@@ -113,7 +154,7 @@ const ShowChat = () => {
 
     const showSuccess = () => (
         <div className="alert alert-info" style={{ display: createdMessage ? '' : 'none' }}>
-            <h2>{`${createdMessage}`} is created!</h2>
+            <h2>{`${createdMessage}`}!</h2>
         </div>
     );
 
@@ -123,7 +164,8 @@ const ShowChat = () => {
                 <h2>Loading...</h2>
             </div>
         );
-
+    
+    
     return (
         <Layout title="messages">
             <div className="row">

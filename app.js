@@ -1,11 +1,15 @@
 const path = require('path');
+const http = require('http');
 const express = require('express');
+const socketio = require('socket.io');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const expressValidator = require('express-validator');
+const Message = require('./models/message');
+const MessagePair = require('./models/messagePair')
 require('dotenv').config();
 // import routes
 const authRoutes = require('./routes/auth');
@@ -21,6 +25,12 @@ const topupOrder = require('./routes/topupOrder');
 const adminBalance = require('./routes/adminBalance');
 // app
 const app = express();
+
+//socket setup
+const server = http.createServer(app);
+const io = socketio(server);
+
+
 
 // db
 mongoose
@@ -55,10 +65,47 @@ app.use(express.static('client/build'));
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
+});
+  
+
+//starts socket coding
+io.on('connection', socket => {
+    
+    
+    //get newMessage and save
+    socket.on('sendMessage', (newMsgDetails) => {
+        const { userId, receiverId, pairId, message } = newMsgDetails;
+
+        const newMessage = new Message({
+            user: userId,
+            receiver: receiverId,
+            message,
+        });
+
+        newMessage.save().then(msg => {
+            MessagePair.findById(pairId).then(pair => {
+                    
+                pair.message.push(msg);
+                pair.save();
+
+                socket.emit('newMessage', msg);
+                socket.broadcast.emit('newMessageForAll', msg);
+                
+                                    
+            })
+        })
+    });
+
+    socket.on('disconnect', socket => {
+        console.log('Client disconnected.');
+    });
+})
+
+
+// end socket coding
 
 const port = process.env.PORT || 4999;
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
