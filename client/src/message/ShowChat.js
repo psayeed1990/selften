@@ -87,7 +87,7 @@ const ShowChat = () => {
                 messages: [...messages, msg],
                 message: '',
                 loading: false,
-                createdMessage: 'Message sent'
+                createdMessage: 'Message loaded'
             });
             
         });
@@ -111,13 +111,13 @@ const ShowChat = () => {
 
     //get messages
     useEffect(() => {
-        socketRef.current.on('newMessageForAll', msg => {
+        socketRef.current.on('newMessage', msg => {
             
             setValues({
                 ...values,
                 messages: [...messages, msg],
                 message: '',
-                createdMessage: 'Message received'
+                createdMessage: 'Message loaded'
             });
             
         });

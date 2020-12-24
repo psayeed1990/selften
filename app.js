@@ -87,8 +87,8 @@ io.on('connection', socket => {
                     
                 pair.message.push(msg);
                 pair.save().then(savedPair => {
-                    socket.emit('newMessage', msg);
-                    socket.broadcast.emit('newMessageForAll', msg);
+                    io.emit('newMessage', msg);
+                    
                     }  
                 ).catch(err => {
                     console.log(err)
