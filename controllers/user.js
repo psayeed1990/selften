@@ -231,3 +231,10 @@ exports.addChat = (req, res) => {
             res.json(messages);
         });
 }
+
+//get all admins
+exports.gerAllAdmins = (req, res)=>{
+    User.find({role: 1}).then(admins=>{
+        res.json(admins);
+    })
+}

@@ -13,7 +13,7 @@ const User = require('../models/user');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
-    TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').exec((err, topuporder) => {
+    TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo').exec((err, topuporder) => {
         if (err) {
             return res.status(400).json({
                 error: 'topupOrder thumbs not found'
@@ -23,6 +23,33 @@ exports.getAllTopupOrders = (req, res, next)=>{
     });
     
 }
+
+exports.assignTopupOrder = (req, res)=>{
+    console.log('hi')
+    const {adminId, topupOrderId} = req.params;
+    console.log(req.params)
+    TopupOrder.findByIdAndUpdate(topupOrderId, {assignedTo: adminId}).then(data=>{
+        if(data){
+            res.json(data);
+        }
+    })
+}
+
+//get all assigned topup orders
+exports.getAllAssignedTopupOrders = (req, res, next) => {
+    const { userId } = req.params;
+    TopupOrder.find({assignedTo: userId }).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').exec((err, topuporder) => {
+        if (err) {
+            return res.status(400).json({
+                error: 'topup Orders not found'
+            });
+        }
+        res.json(topuporder);
+    });
+    
+}
+
+
 exports.createTopupOrder = (req, res, next) => {
         const adminId = '5fdadfe6cc7fc11b2772b5e0';
         const { userId, topupGameId } = req.params;

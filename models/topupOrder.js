@@ -53,6 +53,7 @@ const topupOrderSchema = new schema({
     },
     assignedTo:{
         type: mongoose.Schema.ObjectId,
+        ref: 'User',
         
     },
     createdAt: {
