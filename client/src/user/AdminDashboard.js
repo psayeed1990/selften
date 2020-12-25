@@ -15,6 +15,16 @@ export const AdminLinks = () => {
            
             <ul className="list-group">
             <li className="list-group-item">
+                <Link className="nav-link" to="/admin/assigned-topup-orders">
+                        Assigned topup orders
+                 </Link>
+            </li>
+             <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/topup-orders">
+                        See New Topup Orders
+                    </Link>
+                </li>
+            <li className="list-group-item">
                 <Link className="nav-link" to="/admin/messages">
                         See messages <sup className="notifications">{ notifications }</sup>
                  </Link>
@@ -55,11 +65,7 @@ export const AdminLinks = () => {
                         Create Game for Topup
                     </Link>
                 </li>
-                <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/topup-orders">
-                        See Topup Orders
-                    </Link>
-                </li>
+               
                 
             </ul>
         </div>

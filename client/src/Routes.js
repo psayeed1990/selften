@@ -25,6 +25,8 @@ import AddBalance from './admin/balance/AddBalance';
 import ShowMessagePair from './message/ShowMessagePair';
 import ShowChat from './message/ShowChat';
 import { UserProvider } from './context/notificationsContext';
+import AssignedTopupOrders from './admin/topupOrder/AssignedTopupOrders';
+import ShowAdmins from './admin/topupOrder/ShowAdmins';
 
 const Routes = () => {
     return (
@@ -39,8 +41,10 @@ const Routes = () => {
                 <Route path="/cart" exact component={Cart} />
                 <UserProvider>
                     <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
+                    <AdminRoute path="/admin/assign-topup-order/:topupOrderId" exact component={ShowAdmins} />
                     <AdminRoute path="/admin/balance-stock" exact component={ AddBalance } />
                     <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
+                    <AdminRoute path="/admin/assigned-topup-orders" exact component={AssignedTopupOrders} />
                     <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
                     <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
                     <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />

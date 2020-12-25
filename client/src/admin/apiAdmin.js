@@ -1,6 +1,45 @@
 
 import { API } from '../config';
 
+//assign topup order to admin
+export const assignTopupOrder = (user, token, adminId, topupOrderId)=>{
+        return fetch(`${API}/topup-orders/assigning/${adminId}/${user._id}/${topupOrderId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            
+        })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
+//get all admins to assign order
+export const getAllAdmins = (user, token) => {
+    return fetch(`${API}/user/admins/${user._id}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+
 // show balance
 export const showBalance = ()=> {
 
@@ -55,6 +94,22 @@ export const updateTopupOrderAdmin = (topupOrderId, userId, token, sentStatus) =
 //get all topup orders
 export const getTopupOrdersAdmin = (userId, token) => {
     return fetch(`${API}/topup-orders/admin/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: {}
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+};
+
+//get assigned topup orders for admin
+export const getAssignedTopupOrdersAdmin = (userId, token) => {
+    return fetch(`${API}/topup-orders/assigned/admin/${userId}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',

@@ -1,18 +1,17 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import { isAuthenticated } from './../../auth';
-import { getTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin';
+import { getAssignedTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin';
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
 import { AdminLinks } from '../../user/AdminDashboard';
 import { sendMessage } from '../../core/apiCore';
 
-const ShowTopupOrders = ()=>{
+const AssignedTopupOrders = ()=>{
     const [orders, setOrders] = useState();
-
     const {user, token} = isAuthenticated();
 
     useEffect(()=>{
-        getTopupOrdersAdmin(user._id, token).then(order=>{
+        getAssignedTopupOrdersAdmin(user._id, token).then(order=>{
             
             setOrders(order);
         })
@@ -44,6 +43,7 @@ const ShowTopupOrders = ()=>{
         <div className="row">
         <div className="col-md-3"><AdminLinks /></div>
             <div className="col-md-6">
+                <p>Assigned to you to complete</p>
             {
                 orders ? 
                 orders.map(order=>{
@@ -61,9 +61,8 @@ const ShowTopupOrders = ()=>{
                                         <h6>Number: { order.gmailOrFacebook }</h6>
                                         <h6>Password: { order.password }</h6>
                                         <h6>Paid Amount: { order.price } Tk</h6>
-                                        <h6>Status: {order.status} </h6>
-                                        
-                                        
+                                        <h6>Status: { order.status } </h6>
+
                                         <Link exact to={`/messages/pair/${order.pair._id}`} >
                                             <h5 className="border"><b>Send message</b></h5>
                                         </Link>
@@ -73,15 +72,6 @@ const ShowTopupOrders = ()=>{
                                             :
                                 
                                         <Fragment>
-                                            <b>Assigned to:</b> {
-                                                order.assignedTo ?
-                                                <p>{order.assignedTo.name}</p>
-                                                :
-                                                <Fragment>
-                                                <p>none</p>
-                                                    <Link exact to={`/admin/assign-topup-order/${order._id}`} className="border btn btn-secondary"><b>Assign it to a admin</b></Link>
-                                                </Fragment>
-                                            }
                                             <p className="btn btn-primary" role="button" onClick={() => { markTopupOrderStatus(order._id, 'completed', order.user._id) }}>Mark completed</p>
                                             <p className="btn btn-primary" role="button" onClick={() => { markTopupOrderStatus(order._id, 'cancelled', order.user._id) }}>Mark cancelled</p>
                                         </Fragment>
@@ -102,4 +92,4 @@ const ShowTopupOrders = ()=>{
     )
 }
 
-export default ShowTopupOrders;
+export default AssignedTopupOrders;
