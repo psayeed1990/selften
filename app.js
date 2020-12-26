@@ -24,6 +24,8 @@ const rechargePackageRoutes = require('./routes/rechargePackage');
 const wallet = require('./routes/wallet');
 const topupOrder = require('./routes/topupOrder');
 const adminBalance = require('./routes/adminBalance');
+const couponRoutes = require('./routes/couponRoutes');
+const diamondRoutes = require('./routes/diamondRoutes');
 // app
 const app = express();
 
@@ -60,6 +62,8 @@ app.use('/api', rechargePackageRoutes);
 app.use('/api', wallet);
 app.use('/api', topupOrder);
 app.use('/api', adminBalance);
+app.use('/api', couponRoutes);
+app.use('/api', diamondRoutes);
 //app.use('/pay', payBySSLCommerce);
 
 // set static folder

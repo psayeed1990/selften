@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: 'MessagePair',
         },],
+        coupon: {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Coupon',
+        },
         createdAt: {
             type: Date,
             default: Date.now,

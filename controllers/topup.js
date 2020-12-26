@@ -68,7 +68,7 @@ exports.createTopup = (req, res) => {
                         error: errorHandler(err)
                     });
                 }
-                console.log(result);
+      
                 res.json(result);
             });
         });
