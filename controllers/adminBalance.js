@@ -64,3 +64,55 @@ exports.addUpdateBalance = (req, res, next) => {
         })
 }
 
+exports.addUpdateDiamondValue = (req, res)=>{
+
+        const { userId } = req.params;
+
+        let { diamondValue } = req.body;
+        if(!diamondValue){
+            return res.status(400).json({
+                error: 'Value field is required'
+            });
+        }
+
+        if(isNaN(diamondValue)){
+            return res.status(400).json({
+                error: 'Please write digits only'
+            });
+        }
+
+        AdminBalance.find().then(prevbalance=>{
+            
+            if(!prevbalance){
+                const newBalance = new AdminBalance({
+                    balance: 0,
+                    updatedBy: userId,
+                    takaPerDiamond: diamondValue,
+                })
+                newBalance.save().exec((err, data)=>{
+                    if (err) {
+                        return res.status(400).json({
+                            error: 'Diamonds could not add',
+                        });
+                    }
+                    res.json(data);
+                })
+                
+            }
+
+            if(prevbalance){
+                
+                
+                prevbalance[0].takaPerDiamond = Number(diamondValue);
+                prevbalance[0].save()
+                .then(b=>{
+                    res.json(b);
+                }).catch(err=>{
+                    console.log(err)
+                })
+            }
+
+            
+        })
+}
+

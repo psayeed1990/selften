@@ -170,7 +170,7 @@ exports.getMessagesByUser = (req, res) => {
                     error: errorHandler(err)
                 });
             }
-            res.json(messages);
+            res.json(messages); 
         });
 }
 
@@ -181,7 +181,7 @@ exports.getMessagesByPair = (req, res) => {
         {
             path:'message',
             options: {
-                limit: 1000
+                limit: 20
 
             }
         })
@@ -191,13 +191,24 @@ exports.getMessagesByPair = (req, res) => {
                 error: errorHandler(err)
             });
         }
+        
+        
+        const unSeenMsg = messages.message.filter((mail) => {
             
-        messages.message.filter(message => {
-            return message.receiver === userId && message.seen === false
-        }).forEach(message => {
-            message.seen = true;
-            message.save();
-        })
+            return mail.seen === false
+        });
+        for (msg in unSeenMsg){
+            if(unSeenMsg[msg].receiver = userId){
+                
+                unSeenMsg[msg].seen = true;
+                unSeenMsg[msg].save()
+                .then(m=>{
+                    //
+                })
+
+            }
+        }
+        
         res.json(messages);
     });
 }

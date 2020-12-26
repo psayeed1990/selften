@@ -12,7 +12,7 @@ export const UserProvider = (props)=> {
 
         getUnseenMessagesByReceiver(user, token)
             .then(messages => {
-                console.log('mm', messages);
+                
                 setNotifications(messages.length);
             });
         

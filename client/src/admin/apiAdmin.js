@@ -54,7 +54,6 @@ export const showBalance = ()=> {
 
 //add balance
 export const addBalance = (userId, token, balance) => {
-    console.log(balance);
     return fetch(`${API}/admin/balance/${userId}`, {
         method: 'POST',
         headers: {
@@ -70,8 +69,24 @@ export const addBalance = (userId, token, balance) => {
         .catch(err => {
             console.log(err);
         });
-};
-
+}; 
+export const addDiamondValue = (userId, token, diamondValue) => {
+    return fetch(`${API}/admin/add-diamonds/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(diamondValue)
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}; 
 
 //update topup orders
 export const updateTopupOrderAdmin = (topupOrderId, userId, token, sentStatus) => {

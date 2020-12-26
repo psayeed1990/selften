@@ -57,7 +57,8 @@ const ShowChat = () => {
                     messages: data.message,
                     formData: new FormData()
                 });
-                setNotifications(0)
+                
+                
             }
         });
     };

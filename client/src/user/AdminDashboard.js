@@ -36,6 +36,11 @@ export const AdminLinks = () => {
                     </Link>
                 </li>
                 <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/diamond-value">
+                        Diamond or Purchase Point
+                    </Link>
+                </li>
+                <li className="list-group-item">
                     <Link className="nav-link" to="/create/category">
                         Create Category
                     </Link>

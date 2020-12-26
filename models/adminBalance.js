@@ -11,6 +11,10 @@ const adminBalanceSchema = new schema({
         ref: 'User',
         required: true,
     },
+    takaPerDiamond: {
+        type: Number,
+        default: 1,
+    },
     createdAt:{
         type: Date,
         default: Date.now

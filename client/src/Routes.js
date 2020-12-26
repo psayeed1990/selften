@@ -27,6 +27,7 @@ import ShowChat from './message/ShowChat';
 import { UserProvider } from './context/notificationsContext';
 import AssignedTopupOrders from './admin/topupOrder/AssignedTopupOrders';
 import ShowAdmins from './admin/topupOrder/ShowAdmins';
+import ModifyDiamondsValue from './admin/diamonds/ModifyDiamondsValue';
 
 const Routes = () => {
     return (
@@ -40,6 +41,7 @@ const Routes = () => {
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/cart" exact component={Cart} />
                 <UserProvider>
+                    <AdminRoute path="/admin/diamond-value" exact component={ ModifyDiamondsValue } />
                     <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
                     <AdminRoute path="/admin/assign-topup-order/:topupOrderId" exact component={ShowAdmins} />
                     <AdminRoute path="/admin/balance-stock" exact component={ AddBalance } />

@@ -17,6 +17,7 @@ const TopupForm = () => {
     const [wallet, setWallet] = useState(null);
     const [amount, setAmount] = useState(null);
     const [adminLimit, setAdminLimit] = useState(0);
+    const [diamondValue, setDiamondValue] = useState(null);
 
     const [values, setValues] = useState({
         gameUserId: '',
@@ -98,6 +99,7 @@ const TopupForm = () => {
                  //console.log(err)
                 setAdminLimit(0);
             } else {
+                setDiamondValue(data[0].takaPerDiamond);
                 setAdminLimit(data[0].balance)
                 setValues({ ...values, loading: false  });
             }
@@ -267,6 +269,12 @@ const TopupForm = () => {
                                 
                             }
             <h4>Admin Balance: { adminLimit }</h4>
+
+            { diamondValue && amount ?
+                <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
+                :
+                <Fragment></Fragment>
+            }
 
             <button className="btn btn-outline-primary">Order Topup</button>
         </form>

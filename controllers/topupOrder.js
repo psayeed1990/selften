@@ -9,7 +9,8 @@ const Topup = require('./../models/topup');
 const Message = require('../models/message');
 const MessagePair = require('../models/messagePair');
 const User = require('../models/user');
-
+const AdminBalance = require('./../models/adminBalance');
+const Diamonds = require('./../models/diamonds');
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = (req, res, next)=>{
@@ -130,8 +131,13 @@ exports.createTopupOrder = (req, res, next) => {
                                     error: "User wallet is insufficient",
                                 });
                             } else {
+                                
+
                                 const leftAmount = Number(userWallet.amount) - Number(price);
                                 Wallet.findByIdAndUpdate(userWallet.id, { amount: leftAmount }).then(wallet => {
+                                    
+                                    
+                                    
                                     topuporder.save((err, result) => {
                                         if (err) {
                                             console.log('Topup Order CREATE ERROR ', err);
@@ -139,6 +145,34 @@ exports.createTopupOrder = (req, res, next) => {
                                                 error: errorHandler(err)
                                             });
                                         }
+
+                                        //deduct admin balance
+                                        AdminBalance.find().then(bl=>{
+                                            if(bl){
+                                                if(Number(bl[0].balance) > Number(price)){
+                                                    bl[0].balance = Number(bl[0].balance) - Number(price);
+                                                    bl[0].save();
+                                                }
+
+                                                //create diamonds
+                                                const diamondAmount = parseInt(Number(price) / Number(bl[0].takaPerDiamond));
+                                                Diamonds.findOne({user: userId})
+                                                .then(diamond=>{
+                                                    if(!diamond){
+                                                        const newDiamond = new Diamonds({
+                                                            user: userId,
+                                                            amount: diamondAmount,
+                                                        });
+                                                        newDiamond.save();
+                                                    }
+                                                    if(diamond){
+                                                        diamond.amount = Number(diamond.amount) + diamondAmount;
+                                                        diamond.save();
+                                                    }
+                                                })
+                                            }
+                                        })
+                                        
 
                                         //send message
                                         let newMessage = new Message({
@@ -247,6 +281,8 @@ exports.createTopupOrder = (req, res, next) => {
                                     error: "User wallet is insufficient",
                                 });
                             }else{
+                                
+
                                 const leftAmount = Number(userWallet.amount) - Number(price);
                                 Wallet.findByIdAndUpdate(userWallet.id, {amount: leftAmount}).then(wallet=>{
                                     topuporder.save((err, result) => {
@@ -256,6 +292,35 @@ exports.createTopupOrder = (req, res, next) => {
                                                 error: errorHandler(err)
                                             });
                                         }
+
+                                        //deduct admin balance
+                                        AdminBalance.find().then(bl=>{
+                                            if(bl){
+                                                if(Number(bl[0].balance) > Number(price)){
+                                                    bl[0].balance = Number(bl[0].balance) - Number(price);
+                                                    bl[0].save();
+                                                }
+
+                                                //create diamonds
+                                                const diamondAmount = parseInt(Number(price) / Number(bl[0].takaPerDiamond));
+                                                Diamonds.findOne({user: userId})
+                                                .then(diamond=>{
+                                                    if(!diamond){
+                                                        const newDiamond = new Diamonds({
+                                                            user: userId,
+                                                            amount: diamondAmount,
+                                                        });
+                                                        newDiamond.save();
+                                                    }
+
+                                                    if(diamond){
+                                                        diamond.amount = Number(diamond.amount) + diamondAmount;
+                                                        diamond.save();
+                                                    }
+                                                })
+                                            }
+                                        })
+
                                         //send message
                                         let newMessage = new Message({
                                             user: adminId,
