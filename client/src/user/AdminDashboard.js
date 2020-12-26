@@ -41,6 +41,22 @@ export const AdminLinks = () => {
                     </Link>
                 </li>
                 <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/add-coupons">
+                        Add coupons
+                    </Link>
+                </li>
+                 <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/recharge-package">
+                        Create Recharge Package
+                    </Link>
+                </li>
+                <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/topup">
+                        Create Game for Topup
+                    </Link>
+                </li>
+
+                <li className="list-group-item">
                     <Link className="nav-link" to="/create/category">
                         Create Category
                     </Link>
@@ -60,16 +76,7 @@ export const AdminLinks = () => {
                         Manage Products
                     </Link>
                 </li>
-                <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/recharge-package">
-                        Create Recharge Package
-                    </Link>
-                </li>
-                <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/topup">
-                        Create Game for Topup
-                    </Link>
-                </li>
+               
                
                 
             </ul>

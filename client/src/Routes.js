@@ -28,6 +28,8 @@ import { UserProvider } from './context/notificationsContext';
 import AssignedTopupOrders from './admin/topupOrder/AssignedTopupOrders';
 import ShowAdmins from './admin/topupOrder/ShowAdmins';
 import ModifyDiamondsValue from './admin/diamonds/ModifyDiamondsValue';
+import AddCoupon from './admin/coupon/AddCoupon';
+import ShowCoupon from './admin/coupon/ShowCoupon';
 
 const Routes = () => {
     return (
@@ -41,6 +43,8 @@ const Routes = () => {
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/cart" exact component={Cart} />
                 <UserProvider>
+                    <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
+                    <AdminRoute path="/admin/add-coupons" exact component={ AddCoupon } />
                     <AdminRoute path="/admin/diamond-value" exact component={ ModifyDiamondsValue } />
                     <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
                     <AdminRoute path="/admin/assign-topup-order/:topupOrderId" exact component={ShowAdmins} />

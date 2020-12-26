@@ -1,6 +1,37 @@
 
 import { API } from '../config';
 
+// add coupons
+export const addCoupon = (userId, token, coupon) => {
+    return fetch(`${API}/coupon/create/${userId}`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: coupon
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+// show coupons
+export const showCoupon = (userId, token, coupon) => {
+    return fetch(`${API}/coupon/`, {
+        method: 'GET',
+        })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 //assign topup order to admin
 export const assignTopupOrder = (user, token, adminId, topupOrderId)=>{
         return fetch(`${API}/topup-orders/assigning/${adminId}/${user._id}/${topupOrderId}`, {

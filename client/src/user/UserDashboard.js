@@ -29,6 +29,12 @@ export const UserLinks = () => {
                             Update Profile
                         </Link>
                     </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to={`/user/coupons`}>
+                            Diamonds Coupons
+                        </Link>
+                    </li>
+                    
                     
                 </ul>
             </div>
