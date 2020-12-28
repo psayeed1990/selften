@@ -49,9 +49,9 @@ export const getMessage = (userId, token) => {
 }
 
 //creating topup order
-export const createTopupOrder = (userId, token, order, id)=>{
+export const createTopupOrder = (userId, token, order, id, withSSLCommerz)=>{
 
-    return fetch(`${API}/topup-orders/${userId}/topup/${id}`, {
+    return fetch(`${API}/topup-orders/${userId}/topup/${id}/${withSSLCommerz}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',

@@ -56,6 +56,14 @@ const topupOrderSchema = new schema({
         ref: 'User',
         
     },
+    paid:{
+        type: Boolean,
+        default: false,
+    },
+    sslComSessionKey:{
+        type: String,
+    },
+    
     createdAt: {
         type: Date,
         default: Date.now,

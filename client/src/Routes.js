@@ -30,6 +30,8 @@ import ShowAdmins from './admin/topupOrder/ShowAdmins';
 import ModifyDiamondsValue from './admin/diamonds/ModifyDiamondsValue';
 import AddCoupon from './admin/coupon/AddCoupon';
 import ShowCoupon from './admin/coupon/ShowCoupon';
+import TopupOrderSuccess from './core/topup/TopupOrderSuccess';
+import TopupOrderFail from './core/topup/TopupOrderFail';
 
 const Routes = () => {
     return (
@@ -42,6 +44,9 @@ const Routes = () => {
                 <Route path="/" exact component={Home} />
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/cart" exact component={Cart} />
+                <Route path="/topup-order/success/:transactionId" exact component={TopupOrderSuccess} />
+                <Route path="/topup-order/fail/:transactionId" exact component={TopupOrderFail} />
+                
                 <UserProvider>
                     <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
                     <AdminRoute path="/admin/add-coupons" exact component={ AddCoupon } />

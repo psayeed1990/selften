@@ -16,6 +16,21 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true
         },
+        city: {
+            type: String,
+
+        },
+        phone: {
+            type: String,
+
+        },
+        address: {
+            type: String,
+
+        },
+        postCode: {
+            type: String,
+        },
         hashed_password: {
             type: String,
             required: true

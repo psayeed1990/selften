@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
 import { getRechargePackagesByGameName, getWallet } from './../apiCore';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { createTopupOrder } from './../apiCore';
 import { showBalance } from './../../admin/apiAdmin';
@@ -20,6 +20,7 @@ const TopupForm = () => {
     const [diamondValue, setDiamondValue] = useState(null);
 
     const [values, setValues] = useState({
+        withSSLCommerz: 'n',
         gameUserId: '',
         accountType: '',
         gmailOrFacebook: '',
@@ -36,6 +37,7 @@ const TopupForm = () => {
 
     const { user, token } = isAuthenticated();
     const {
+        withSSLCommerz,
         gameUserId,
         accountType,
         gmailOrFacebook,
@@ -131,7 +133,7 @@ const TopupForm = () => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
 
-        createTopupOrder(user._id, token, formData, id).then(data => {
+        createTopupOrder(user._id, token, formData, id, withSSLCommerz).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
@@ -149,6 +151,48 @@ const TopupForm = () => {
             }
         });
     };
+
+    //order wit ssl commerze
+    const orderWithSSLCommerz = ()=>{
+        setValues({ ...values, error: '', loading: true, withSSLCommerz: 'y' });
+
+        createTopupOrder(user._id, token, formData, id, 'y').then(data => {
+            if (data.error) {
+                setValues({ ...values, error: data.error });
+            } else {
+                                setValues({
+                    ...values,
+                    
+                    gameUserId: '',
+                    accountType: '',
+                    gmailOrFacebook: '',
+                    password: '',
+                    selectRecharge: '',
+                    securityCode: '',
+                    loading: false,
+                    withSSLCommerz: 'n',
+                    createdTopupOrder: data.name
+                });
+                //console.log(data);
+                //redirect to payment page
+               window.location.replace(data.GatewayPageURL);
+                
+                setValues({
+                    ...values,
+                    
+                    gameUserId: '',
+                    accountType: '',
+                    gmailOrFacebook: '',
+                    password: '',
+                    selectRecharge: '',
+                    securityCode: '',
+                    loading: false,
+                    withSSLCommerz: 'n',
+                    createdTopupOrder: data.name
+                });
+            }
+        });
+    }
 
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
@@ -276,7 +320,10 @@ const TopupForm = () => {
                 <Fragment></Fragment>
             }
 
-            <button className="btn btn-outline-primary">Order Topup</button>
+            <button className="btn btn-outline-primary">Order With Balance</button>
+            <br />
+            <br />
+            <p onClick={()=>{orderWithSSLCommerz()}} className="btn btn-outline-primary">Order With Card, Bkash and more</p>
         </form>
     );
 

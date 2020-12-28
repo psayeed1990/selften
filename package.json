@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "braintree": "^2.16.0",
     "cookie-parser": "^1.4.4",
@@ -27,7 +28,7 @@
     "mongoose": "^5.5.5",
     "morgan": "^1.9.1",
     "socket.io": "^3.0.4",
-    "sslcommerz": "^1.0.4",
+    "sslcommerz-nodejs": "^1.0.8",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
