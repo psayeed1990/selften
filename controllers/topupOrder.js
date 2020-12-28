@@ -57,7 +57,7 @@ exports.getAllAssignedTopupOrders = (req, res, next) => {
 
 exports.SSLComSuccess = (req, res)=>{
     const {transactionId} = req.params;
-
+    console.log('ok')
     
         //validate transaction id
     sslcommerz.transaction_status_id(transactionId)
