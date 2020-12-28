@@ -307,7 +307,7 @@ exports.createTopupOrder = (req, res, next) => {
                                         total_amount: price,
                                         tran_id: result._id,
                                         product_category: "Topup",
-                                        success_url: `${req.protocol}://${req.get('host')}/api/topup-order/success/${result._id}`,
+                                        success_url: `${process.env.SITE_URL}/api/topup-order/success/${result._id}`,
                                         fail_url: `${req.protocol}://${req.get('host')}/api/topup-order/fail/${result._id}`,
                                         cancel_url: `${req.protocol}://${req.get('host')}/api/topup-order/cancell/${result._id}`,
                                         cus_name: user.name,
