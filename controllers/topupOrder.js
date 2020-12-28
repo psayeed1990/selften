@@ -68,6 +68,7 @@ exports.SSLComSuccess = (req, res)=>{
                 
                 //save order as paid
                 data.paid = true;
+                data.sslComSessionKey = response.element[0].sessionkey;
                 data.save();
 
                 //deduct admin balance
