@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Layout from './Layout';
 import { getProducts } from './apiCore';
 import Card from './Card';
-
+import Search from './Search';
 import ShowTopups from '../admin/topup/ShowTopups';
+import HomeSLider from './slider/HomeSlider';
 
 const Home = () => {
     const [productsBySell, setProductsBySell] = useState([]);
@@ -42,10 +43,12 @@ const Home = () => {
             description="Buy gaming products"
             className="container-fluid"
         >
+
+        <HomeSLider />
            
             <ShowTopups />
             
-            
+             <Search />
             <h2 className="mb-4">New Arrivals</h2>
             <div className="row">
                 {productsByArrival.map((product, i) => (

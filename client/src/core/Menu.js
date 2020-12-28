@@ -4,7 +4,7 @@ import { signout, isAuthenticated } from "../auth";
 import { itemTotal } from "./cartHelpers";
 import Logo from './../images/logo/Logo.png';
 import './menu.css';
-import Search from './Search';
+
 
 const isActive = (history, path) => {
     if (history.location.pathname === path) {
@@ -25,9 +25,9 @@ const Menu = ({ history }) => (
                         <img className="logo" src={Logo} />
                     </Link>
                 </div>
-                <div className="col-md-8">
+                {/* <div className="col-md-8">
                     <Search />
-                </div>
+                </div> */}
             </div>
         </div>
         <div className="col-md-5">
