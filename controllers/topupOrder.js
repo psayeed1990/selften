@@ -318,10 +318,10 @@ exports.createTopupOrder = (req, res, next) => {
                                         cus_country: "Bangladesh",
                                         cus_phone: user.phone,
                                         shipping_method: 'NO',
-                                        ipn_url: "http://localhost:3000/pay",
+                                        ipn_url: "",
                                         num_of_item: 1,
                                         value_a: result._id,
-                                        GatewayPageURL: "http://localhost:3000/pay",
+                                        GatewayPageURL: "",
                                         emi_option: 0,
                                         product_profile: "non-physical-goods",
                                     }
