@@ -65,10 +65,10 @@ exports.SSLComSuccess = (req, res)=>{
         if(response.element[0].status === 'VALID' || response.element[0].status === 'VALIDATED'){
             TopupOrder.findById(transactionId)
             .then(data=>{
-                
+                console.log()
                 //save order as paid
                 data.paid = true;
-                data.sslComSessionKey = response.element[0].sessionkey;
+                
                 data.save();
 
                 //deduct admin balance
@@ -291,7 +291,7 @@ exports.createTopupOrder = (req, res, next) => {
                         
                         // if ssl commerce pays
                         if(withSSLCommerz === 'y'){
-                             console.log('hi')
+                             
                             topuporder.save((err, result) => {
                                 if (err) {
                                             console.log('Topup Order CREATE ERROR ', err);
@@ -328,7 +328,8 @@ exports.createTopupOrder = (req, res, next) => {
                                     }
                                    
                                     sslcommerz.init_transaction(data).then(response => {
-                                        if(response.status === 'success'){
+                                        
+                                        if(response.status === 'SUCCESS'){
                                             result.sslComSessionKey = response.sessionkey;
                                             result.save();
                                         }
