@@ -52,6 +52,7 @@ const Menu = ({ history }) => (
                     {/* user menu */}
                     <div className="user-menu">
                     {isAuthenticated() ?
+                    <Fragment>
                         <li className="nav-item">
                             <Link
                                 className="nav-link"
@@ -61,6 +62,22 @@ const Menu = ({ history }) => (
                                 <img src="/images/icons/user-logged-in.svg" width="18" /> Dashboard
                             </Link>
                         </li>
+                        
+                        <li className="nav-item">
+                            <span
+                                className="nav-link"
+                                style={{ cursor: "pointer", color: "#ffffff" }}
+                                onClick={() =>
+                                    signout(() => {
+                                        history.push("/");
+                                    })
+                                }
+                            >
+                                Signout
+                            </span>
+                        </li>
+                    </Fragment>
+                    
 
                         :
                         <Fragment>
