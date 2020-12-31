@@ -121,6 +121,18 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
                         />
                     </div>
 
+                    <div className="gorm-group mb-3">
+                        <input
+                            type="checkbox"
+                            required
+                        />
+                        <label className="text-muted">I agree with <Link exact to="/terms-condition">Terms & Conditions</Link>, <Link exact to="/privacy-policy">Privacy Policy</Link> and <Link exact to="/refund-return-policy">Return Refund Policy</Link></label>
+
+                    </div>
+
+
+                    
+
                     <button className="btn btn-success btn-block">
                         Pay
                     </button>
