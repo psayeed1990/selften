@@ -32,12 +32,25 @@ import AddCoupon from './admin/coupon/AddCoupon';
 import ShowCoupon from './admin/coupon/ShowCoupon';
 import TopupOrderSuccess from './core/topup/TopupOrderSuccess';
 import TopupOrderFail from './core/topup/TopupOrderFail';
+import TermsCondition from './core/TermsCondition';
+import Shipment from './core/Shipment';
+import AboutUs from './core/AboutUs';
+import ReturnPolicy from './core/ReturnPolicy';
+import PrivacyPolicy from './core/PrivacyPolicy';
+
+
 
 const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                
+                <Route path="/terms-condition" exact component={TermsCondition} />
+                <Route path="/privacy-policy" exact component={PrivacyPolicy} />
+                <Route path="/refund-return-policy" exact component={ReturnPolicy} />
+                <Route path="/about-us" exact component={AboutUs} />
+                <Route path="/shipment-info" exact component={Shipment} />
+
+
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />

@@ -7,12 +7,16 @@ const Signup = () => {
     const [values, setValues] = useState({
         name: '',
         email: '',
+        phone: '',
         password: '',
+        address: '',
+        postCode: '',
+        city: '',
         error: '',
         success: false
     });
 
-    const { name, email, password, success, error } = values;
+    const { name, email, phone, password, address, postCode, city, success, error } = values;
 
     const handleChange = name => event => {
         setValues({ ...values, error: false, [name]: event.target.value });
@@ -21,7 +25,7 @@ const Signup = () => {
     const clickSubmit = event => {
         event.preventDefault();
         setValues({ ...values, error: false });
-        signup({ name, email, password }).then(data => {
+        signup({ name, email, phone, address, postCode, city, password }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, success: false });
             } else {
@@ -29,6 +33,10 @@ const Signup = () => {
                     ...values,
                     name: '',
                     email: '',
+                    phone: '',
+                    address: '',
+                    postCode: '',
+                    city:'',
                     password: '',
                     error: '',
                     success: true
@@ -38,7 +46,7 @@ const Signup = () => {
     };
 
     const signUpForm = () => (
-        <form>
+        <form id="sign-up-form" className="all-form">
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input onChange={handleChange('name')} type="text" className="form-control" value={name} />
@@ -48,10 +56,26 @@ const Signup = () => {
                 <label className="text-muted">Email</label>
                 <input onChange={handleChange('email')} type="email" className="form-control" value={email} />
             </div>
+            <div className="form-group">
+                <label className="text-muted">Phone</label>
+                <input onChange={handleChange('phone')} type="text" className="form-control" value={phone} />
+            </div>
 
             <div className="form-group">
                 <label className="text-muted">Password</label>
-                <input onChange={handleChange('password')} type="password" className="form-control" value={password} />
+                <input placeholder="At least 6 charcters and must contain number and letter" onChange={handleChange('password')} type="password" className="form-control" value={password} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Address [Optional]</label>
+                <input onChange={handleChange('address')} type="address" className="form-control" value={address} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Post Code [Optional]</label>
+                <input onChange={handleChange('postCode')} type="postCode" className="form-control" value={postCode} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">City [Optional]</label>
+                <input onChange={handleChange('city')} type="city" className="form-control" value={city} />
             </div>
             <button onClick={clickSubmit} className="btn btn-primary">
                 Submit

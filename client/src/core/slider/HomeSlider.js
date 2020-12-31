@@ -1,32 +1,54 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './homeSlider.css';
 
 const HomeSLider = ()=>{
     const [slides, setSlides] = useState([])
-    const [slider, setSlider] = useState({
-        sliderMiddle: '',
-        sliderLeft: '',
-        sliderRight: '',
-    });
+    const [count, setCount] = useState(0);
 
-    const {sliderMiddle, sliderLeft, sliderRight} = slider;
+    useEffect(()=>{
+        const slideArray = ['hi', 'hello', 'good', 'ruby', 'pearls', 'dino'];
+
+        setSlides(slideArray);
+            
+    },[]);
+
+    useEffect(()=>{
+        const slider = ()=>{
+            if(count < slides.length - 1){
+                setCount(count + 1);  
+            }else{
+                setCount(0)
+            }
+            
+        }
+        const slideShow = setInterval(slider, 3000);
+
+        return()=>{
+            clearInterval(slideShow);
+        }
+   
+    },[])
+
+
+
+ 
+
+
+    
+
+
+
+    
 
 
 
     return(
 
-        <div id="slider" class="slider">
-            <div class="wrapper">
-                <div id="slides" class="slides">
-                <span class="slide">Slide 1</span>
-                <span class="slide">Slide 2</span>
-                <span class="slide">Slide 3</span>
-                <span class="slide">Slide 4</span>
-                <span class="slide">Slide 5</span>
-                </div>
-            </div>
-            <a id="prev" class="control prev"></a>
-            <a id="next" class="control next"></a>
+        <div className="slides">
+            <p>{slides[(slides.length-1-count)]}</p>
+            <p>{slides[count]}</p>
+            <p>{slides[count+1]}</p>
+
         </div>
         
     )
