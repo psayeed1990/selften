@@ -33,12 +33,12 @@ const AssignedTopupOrders = ()=>{
     }
 
     return(
-        <Fragment>
             
         <Layout
             title="All topup orders"
             description="See new orders"
-        ></Layout>
+        >
+
 
         <div className="row">
         <div className="col-md-3"><AdminLinks /></div>
@@ -87,7 +87,9 @@ const AssignedTopupOrders = ()=>{
             }
             </div>
         </div>
-        </Fragment>
+
+        </Layout>
+
 
     )
 }

@@ -34,14 +34,12 @@ const ShowAdmins = ()=>{
     }
 
     return(
-        <Fragment>
+    
             <Layout
                 title="Assign this order"
                 description="To a admin agent"
             >
-
-            </Layout>
-            <div className="row">
+                <div className="row">
                 <div className="col-md-3"><AdminLinks /></div>
                 <div className="col-md-7">
                     { admins ?
@@ -57,7 +55,10 @@ const ShowAdmins = ()=>{
                     }
                 </div>
             </div>
-        </Fragment>
+
+            </Layout>
+            
+        
     )
 }
 

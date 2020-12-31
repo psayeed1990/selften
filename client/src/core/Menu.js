@@ -39,7 +39,13 @@ const Menu = ({ history }) => (
                 <div className="top-menu">
                     {/* Logo */}
                     <div className="logo">
-                        <img src="/images/Logo.png" width="160" />
+                        <Link
+                                className="nav-link"
+                                style={isActive(history, "/")}
+                                to="/"
+                        >
+                            <img src="/images/Logo.png" width="160" />
+                        </Link>
                     </div>
 
                     {/* Search box top */}
@@ -51,6 +57,28 @@ const Menu = ({ history }) => (
 
                     {/* user menu */}
                     <div className="user-menu">
+                         <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/shop")}
+                            to="/shop"
+                        >
+                            Shop
+                        </Link>
+                    </li>
+
+                    <li className="nav-item">
+                        <Link
+                            className="nav-link"
+                            style={isActive(history, "/cart")}
+                            to="/cart"
+                        >
+                            Cart{" "}
+                            <sup>
+                                <small className="cart-badge">{itemTotal()}</small>
+                            </sup>
+                        </Link>
+                    </li>
                     {isAuthenticated() ?
                     <Fragment>
                         <li className="nav-item">

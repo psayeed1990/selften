@@ -3,12 +3,8 @@ import Layout from './Layout';
 
 const ReturnPolicy = ()=>{
     return (
-        <div>
         <Layout>
-            
-        </Layout>
-
-        <div className="content">
+            <div className="content">
             <h3>Returns</h3>
 Our policy lasts 7 days. If 7 days have gone by since your purchase, unfortunately, we can’t offer you a refund or exchange.
 
@@ -59,8 +55,8 @@ You will be responsible for paying for your own shipping costs for returning you
 Depending on where you live, the time it may take for your exchanged product to reach you may vary.
         </div>
 
-        </div>
-
+            
+        </Layout>
         
     )
 }

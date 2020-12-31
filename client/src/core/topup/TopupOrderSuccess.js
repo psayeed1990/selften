@@ -7,12 +7,13 @@ const TopupOrderSuccess = ()=>{
 
 
     return(
-        <Fragment>
-            <Layout />
-            <h4>Order Successfull</h4>
+            <Layout>
+               <h4>Order Successfull</h4>
 
-            <p>Please keep this {transactionId} - transaction id to contact us if your paid but order isn't saved</p>
-        </Fragment>
+                <p>Please keep this {transactionId} - transaction id to contact us if your paid but order isn't saved</p>
+        
+            </Layout>
+            
     )
 }
 

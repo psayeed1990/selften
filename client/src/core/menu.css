@@ -23,7 +23,7 @@
 }
 .user-menu {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto auto auto auto;
 }
 /* ends custom css */
 

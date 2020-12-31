@@ -3,12 +3,8 @@ import Layout from './Layout';
 
 const PrivacyPolicy = ()=>{
     return (
-        <div>
         <Layout>
-            
-        </Layout>
-
-        <div className="content">
+            <div className="content">
            This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from www.selften.com (the “Site”).
 
 PERSONAL INFORMATION WE COLLECT
@@ -66,8 +62,10 @@ For more information about our privacy practices, if you have questions, or if y
 Selften
 
        </div>
+            
+        </Layout>
 
-        </div>
+        
 
         
     )
