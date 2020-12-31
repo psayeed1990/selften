@@ -12,16 +12,21 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
         success: false,
         error: '',
         instance: {},
-        address: ''
+        name: '',
+        email: '',
+        phone:'',
+        address: '',
+        city: '',
+        zipCode: '', 
+        country: '',
     });
 
     const userId = isAuthenticated() && isAuthenticated().user._id;
     const token = isAuthenticated() && isAuthenticated().token;
 
 
-
-    const handleAddress = event => {
-        setData({ ...data, address: event.target.value });
+    const handleChange = name => event => {
+        setData({ ...data, error: false, [name]: event.target.value });
     };
 
     const getTotal = () => {
@@ -47,12 +52,72 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
             {data.clientToken !== null && products.length > 0 ? (
                 <div>
                     <div className="gorm-group mb-3">
+                        <label className="text-muted">Full name:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('name')}
+                            className="form-control"
+                            value={data.name}
+                            placeholder="Type your name..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Email:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('email')}
+                            className="form-control"
+                            value={data.email}
+                            placeholder="Email..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Phone:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('phone')}
+                            className="form-control"
+                            value={data.phone}
+                            placeholder="Phone..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
                         <label className="text-muted">Delivery address:</label>
                         <textarea
-                            onChange={handleAddress}
+                            onChange={handleChange('address')}
                             className="form-control"
                             value={data.address}
                             placeholder="Type your delivery address here..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">City:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('city')}
+                            className="form-control"
+                            value={data.city}
+                            placeholder="City..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Zipcode:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('zipCode')}
+                            className="form-control"
+                            value={data.zipCode}
+                            placeholder="Zipcode..."
+                        />
+                    </div>
+                    <div className="gorm-group mb-3">
+                        <label className="text-muted">Country:</label>
+                        <input
+                            type="text"
+                            onChange={handleChange('country')}
+                            className="form-control"
+                            value={data.country}
+                            placeholder="Country..."
                         />
                     </div>
 
@@ -60,7 +125,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
                         Pay
                     </button>
                 </div>
-            ) : null}
+            ) : null} 
         </div>
     );
 
@@ -81,10 +146,12 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     return (
         <div>
             <h2>Total: ${getTotal()}</h2>
+
             {showLoading(data.loading)}
             {showSuccess(data.success)}
             {showError(data.error)}
             {showCheckout()}
+  
         </div>
     );
 };

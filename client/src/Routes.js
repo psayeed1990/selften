@@ -37,6 +37,7 @@ import Shipment from './core/Shipment';
 import AboutUs from './core/AboutUs';
 import ReturnPolicy from './core/ReturnPolicy';
 import PrivacyPolicy from './core/PrivacyPolicy';
+import CheckCart from './core/CheckCart';
 
 
 
@@ -79,6 +80,8 @@ const Routes = () => {
                     <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
                     <AdminRoute path="/create/category" exact component={AddCategory} />
                     <AdminRoute path="/create/product" exact component={AddProduct} />
+                    <PrivateRoute path="/checkout" exact component={CheckCart} />
+
                     
                     <AdminRoute path="/admin/orders" exact component={Orders} />
                     <PrivateRoute path="/profile/:userId" exact component={Profile} />

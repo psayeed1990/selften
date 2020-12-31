@@ -4,8 +4,9 @@ import Layout from './Layout';
 import { getCart } from './cartHelpers';
 import Card from './Card';
 import Checkout from './Checkout';
+import './checkCart.css';
 
-const Cart = () => {
+const CheckCart = () => {
     const [items, setItems] = useState([]);
     const [run, setRun] = useState(false);
 
@@ -45,21 +46,17 @@ const Cart = () => {
             description="Manage your cart items. Add remove checkout or continue shopping."
             className="container-fluid"
         >
-            <div className="row">
+            <div className="row checkcart" >
                 <div className="col-6">{items.length > 0 ? showItems(items) : noItemsMessage()}</div>
 
                 <div className="col-6">
                     <h2 className="mb-4">Your cart summary</h2>
                     <hr />
-                    <Link exact to="/checkout">
-                        <button className="btn btn-success btn-block">
-                            Checkout
-                        </button>
-                    </Link>
+                    <Checkout products={items} setRun={setRun} run={run} />
                 </div>
             </div>
         </Layout>
     );
 };
 
-export default Cart;
+export default CheckCart;
