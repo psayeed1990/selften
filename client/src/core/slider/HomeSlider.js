@@ -27,7 +27,7 @@ const HomeSLider = ()=>{
             clearInterval(slideShow);
         }
    
-    },[])
+    })
 
 
 
