@@ -25,6 +25,7 @@ const topupOrder = require('./routes/topupOrder');
 const adminBalance = require('./routes/adminBalance');
 const couponRoutes = require('./routes/couponRoutes');
 const diamondRoutes = require('./routes/diamondRoutes');
+const searchRoutes = require('./routes/search');
 // app
 const app = express();
 
@@ -63,6 +64,7 @@ app.use('/api', topupOrder);
 app.use('/api', adminBalance);
 app.use('/api', couponRoutes);
 app.use('/api', diamondRoutes);
+app.use('/api', searchRoutes);
 
 // set static folder
 app.use(express.static('client/build'));

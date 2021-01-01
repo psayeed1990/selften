@@ -231,3 +231,21 @@ export const createOrder = (userId, token, createOrderData) => {
         })
         .catch(err => console.log(err));
 };
+
+//search by item for both product and topup
+export const getItemsBySearch= async(searchText)=>{
+    try{
+        const response = await fetch(`${API}/search/${searchText}/`, {
+            
+            method: 'GET',
+            
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err)
+    }
+
+    
+
+}

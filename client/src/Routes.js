@@ -38,6 +38,7 @@ import AboutUs from './core/AboutUs';
 import ReturnPolicy from './core/ReturnPolicy';
 import PrivacyPolicy from './core/PrivacyPolicy';
 import CheckCart from './core/CheckCart';
+import SearchPage from './core/SearchPage';
 
 
 
@@ -53,6 +54,8 @@ const Routes = () => {
 
 
                 <Route path="/shop" exact component={Shop} />
+                <Route path="/search/:searchText" exact component={SearchPage} />
+
                 <Route path="/user/login" exact component={Signin} />
                 <Route path="/user/sign-up" exact component={Signup} />
                 <Route path="/" exact component={Home} />

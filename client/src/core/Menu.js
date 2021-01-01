@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth";
 import { itemTotal } from "./cartHelpers";
 import Logo from './../images/logo/Logo.png';
-import Search from './Search';
+import TopSearch from './TopSearch';
 import './menu.css';
 
 
@@ -49,11 +49,7 @@ const Menu = ({ history }) => (
                     </div>
 
                     {/* Search box top */}
-                    <div className="top-search">
-                        <form>
-                            <input type="text" placeholder="search for game and item" /><img className="search-icon" src="/images/icons/search-icon.svg" width="18" />
-                        </form>
-                    </div>
+                    <TopSearch />
 
                     {/* user menu */}
                     <div className="user-menu">

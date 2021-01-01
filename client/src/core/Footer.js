@@ -6,7 +6,7 @@ const Footer = ()=>{
         <div id="footer">
             <div>
                 <p>Selften 2020 All right reserved</p>
-                <img src="./images/ssl-payment-banner.webp" width="300" />
+                <img src="/images/ssl-payment-banner.webp" width="300" />
                 <p>Payment Verified by SSL commerce</p>
             </div>
 

@@ -1,7 +1,12 @@
 /*starts custom css */
-
+body {
+	font-family: 'lato';
+}
 .content {
 	padding: 50px;
+}
+.cursor-pointer {
+	cursor: pointer;
 }
 
 /*ends custom css */
@@ -9,10 +14,6 @@
 /**
  * border radius
  */
-
-body {
-	font-family: 'lato';
-}
 
 .card {
 	width: 80%;
