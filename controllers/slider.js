@@ -1,4 +1,6 @@
+const formidable = require('formidable');
 const Slider = require("../models/Slider")
+const fs = require('fs');
 
 
 exports.createSlider = (req, res) => {
@@ -71,4 +73,17 @@ exports.photo = (req, res, next) => {
         return res.send(req.slider.photo.data);
     }
     next();
+};
+
+exports.getSliderById = (req, res, next, id) => {
+    Slider.findById(id)
+        .exec((err, slider) => {
+            if (err || !slider) {
+                return res.status(400).json({
+                    error: 'Slider not found'
+                });
+            }
+            req.slider = slider;
+            next();
+        });
 };

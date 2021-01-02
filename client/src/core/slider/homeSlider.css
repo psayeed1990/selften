@@ -1,11 +1,22 @@
 .slides {
 	display: grid;
 	grid-template-columns: auto auto auto;
+	overflow: hidden;
 }
 
-.slides p:nth-child(2) {
-	scale: 1.52;
+.left-slide,
+.right-slide {
+	position: relative;
+	scale: 0.72;
+	z-index: 0;
 }
+
+.middle-slide {
+	position: relative;
+	scale: 1.5;
+	z-index: 1;
+}
+
 .slides p {
 	border: 2px solid;
 	background-color: white;

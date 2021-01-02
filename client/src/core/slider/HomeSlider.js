@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './homeSlider.css';
 import {sliderImages} from './../apiCore';
+import ShowSlider from './../ShowSlider';
 
 const HomeSLider = ()=>{
     const [slides, setSlides] = useState([])
@@ -8,8 +9,9 @@ const HomeSLider = ()=>{
 
     const init = async ()=>{
         const slideArray = await sliderImages();
-
+        
         setSlides(slideArray);
+        
     }
 
     useEffect(()=>{
@@ -17,6 +19,7 @@ const HomeSLider = ()=>{
     },[]);
 
     useEffect(()=>{
+        
         const slider = ()=>{
             if(count < slides.length - 1){
                 setCount(count + 1);  
@@ -37,17 +40,29 @@ const HomeSLider = ()=>{
 
         <div className="slides">
            
-           
-            <p>{count === 0 ?
-                slides[(slides.length-1)-count]
-                :
-                slides[count-1]
-            }</p>
-            <p>{slides[count]}</p>
-            <p>{ count === (slides.length - 1) ?
-                slides[0]
-                :
-                slides[count+1]}</p>
+           {slides.length > 0? 
+           <Fragment>
+               
+                {count === 0 ?
+                    <ShowSlider item={slides[(slides.length-1)-count]._id} url="slider" idenClass="left-slide" />
+                    :
+                    <ShowSlider item={slides[count-1]._id} url="slider" idenClass="left-slide" />
+                  
+                }
+                
+                <ShowSlider item={slides[count]._id} url="slider" idenClass="middle-slide" />
+                
+
+                { count === (slides.length - 1) ?
+                    <ShowSlider item={slides[0]._id} url="slider" idenClass="right-slide" />
+                    :
+                    <ShowSlider item={slides[count+1]._id} url="slider" idenClass="right-slide" />
+
+                }
+            </Fragment>
+            :
+            <Fragment></Fragment>
+            }
 
         </div>
         
