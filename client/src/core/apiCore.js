@@ -249,3 +249,19 @@ export const getItemsBySearch= async(searchText)=>{
     
 
 }
+
+//slider images
+export const sliderImages = async()=>{
+    try{
+        const response = await fetch(`${API}/slider/`, {
+            
+            method: 'GET',
+            
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err)
+    }
+
+}

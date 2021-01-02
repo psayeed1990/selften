@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import Layout from './../../core/Layout';
-import { isAuthenticated } from './../../auth';
-import {createTopupThumb} from './../apiAdmin'
-import { AdminLinks } from '../../user/AdminDashboard';
+import Layout from './../core/Layout';
+import { isAuthenticated } from './../auth';
+import {createSlider} from './apiAdmin'
+import { AdminLinks } from '../user/AdminDashboard';
 
-const AddTopupThumb = () => {
+const AddSlider = () => {
     const [values, setValues] = useState({
         title: '',
-        type: '',
-        thumb: '',
+        photo: '',
         loading: false,
         error: '',
-        createdTopup: '',
+        createdSlider: '',
         redirectToProfile: false,
         formData: ''
     });
@@ -20,9 +19,8 @@ const AddTopupThumb = () => {
     const {
         title,
         loading,
-        type,
         error,
-        createdTopup,
+        createdSlider,
         redirectToProfile,
         formData
     } = values;
@@ -45,7 +43,7 @@ const AddTopupThumb = () => {
 
 
     const handleChange = name => event => {
-        const value = name === 'thumb' ? event.target.files[0] : event.target.value;
+        const value = name === 'photo' ? event.target.files[0] : event.target.value;
         formData.set(name, value);
         setValues({ ...values, [name]: value });
     };
@@ -54,14 +52,14 @@ const AddTopupThumb = () => {
         event.preventDefault();
         setValues({ ...values, error: '', loading: true });
 
-        createTopupThumb(user._id, token, formData).then(data => {
+        createSlider(user._id, token, formData).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error });
             } else {
                 setValues({
                     ...values,
                     title: '',
-                    thumb: '',
+                    photo: '',
                     loading: false,
                     createdProduct: data.title
                 });
@@ -71,25 +69,16 @@ const AddTopupThumb = () => {
 
     const newPostForm = () => (
         <form className="mb-3" onSubmit={clickSubmit}>
-            <h4>Game Thumbnail Photo</h4>
+            <h4>Slider Photo</h4>
             <div className="form-group">
                 <label className="btn btn-secondary">
-                    <input onChange={handleChange('thumb')} type="file" name="thumb" accept="image/*" />
+                    <input onChange={handleChange('photo')} type="file" name="photo" accept="image/*" />
                 </label>
             </div>
-            <div className="form-group col-md-4">
-                    
-                <label className="text-muted">Type</label>
-                <select name="type" onChange={handleChange('type')} className="form-control">
-                    <option disabled selected>Please select type</option>
-                    <option value="inGame">In Game</option>
-                    <option value="idCode">Id Code</option>
-                        
-                </select>
-            </div>
+            
 
             <div className="form-group">
-                <label className="text-muted">Title of the Game</label>
+                <label className="text-muted">Title of the Slider</label>
                 <input onChange={handleChange('title')} type="text" className="form-control" value={title} />
             </div>
 
@@ -104,8 +93,8 @@ const AddTopupThumb = () => {
     );
 
     const showSuccess = () => (
-        <div className="alert alert-info" style={{ display: createdTopup ? '' : 'none' }}>
-            <h2>{`${createdTopup}`} is created!</h2>
+        <div className="alert alert-info" style={{ display: createdSlider ? '' : 'none' }}>
+            <h2>{`${createdSlider}`} is created!</h2>
         </div>
     );
 
@@ -131,4 +120,4 @@ const AddTopupThumb = () => {
     );
 };
 
-export default AddTopupThumb;
+export default AddSlider;

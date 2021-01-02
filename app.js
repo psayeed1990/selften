@@ -26,6 +26,7 @@ const adminBalance = require('./routes/adminBalance');
 const couponRoutes = require('./routes/couponRoutes');
 const diamondRoutes = require('./routes/diamondRoutes');
 const searchRoutes = require('./routes/search');
+const sliderRoutes = require('./routes/slider')
 // app
 const app = express();
 
@@ -65,6 +66,7 @@ app.use('/api', adminBalance);
 app.use('/api', couponRoutes);
 app.use('/api', diamondRoutes);
 app.use('/api', searchRoutes);
+app.use('/api', sliderRoutes);
 
 // set static folder
 app.use(express.static('client/build'));

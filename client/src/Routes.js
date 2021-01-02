@@ -39,6 +39,7 @@ import ReturnPolicy from './core/ReturnPolicy';
 import PrivacyPolicy from './core/PrivacyPolicy';
 import CheckCart from './core/CheckCart';
 import SearchPage from './core/SearchPage';
+import AddSlider from './admin/AddSlider';
 
 
 
@@ -67,6 +68,7 @@ const Routes = () => {
                 <UserProvider>
                     <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
                     <AdminRoute path="/admin/add-coupons" exact component={ AddCoupon } />
+                    <AdminRoute path="/admin/add-slider" exact component={ AddSlider } />
                     <AdminRoute path="/admin/diamond-value" exact component={ ModifyDiamondsValue } />
                     <AdminRoute path="/admin/topup" exact component={AddTopupThumb} />
                     <AdminRoute path="/admin/assign-topup-order/:topupOrderId" exact component={ShowAdmins} />

@@ -1,6 +1,24 @@
 
 import { API } from '../config';
 
+//create slider 
+export const createSlider = async (userId, token, slider) => {
+    try{
+        const response =  await fetch(`${API}/slider/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: slider
+        })
+    
+        return response.json();
+    }catch(err) {
+        console.log(err);
+    };
+};
+
 // add coupons
 export const addCoupon = (userId, token, coupon) => {
     return fetch(`${API}/coupon/create/${userId}`, {

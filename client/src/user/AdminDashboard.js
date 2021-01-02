@@ -55,6 +55,11 @@ export const AdminLinks = () => {
                         Create Game for Topup
                     </Link>
                 </li>
+                <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/add-slider">
+                        Create Slider
+                    </Link>
+                </li>
 
                 <li className="list-group-item">
                     <Link className="nav-link" to="/create/category">
