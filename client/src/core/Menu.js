@@ -40,11 +40,11 @@ const Menu = ({ history }) => (
                     {/* Logo */}
                     <div className="logo">
                         <Link
-                                className="nav-link"
+                                className=""
                                 style={isActive(history, "/")}
                                 to="/"
                         >
-                            <img src="/images/Logo.png" width="160" />
+                            <img src="/images/Logo.png" width="170" />
                         </Link>
                     </div>
 

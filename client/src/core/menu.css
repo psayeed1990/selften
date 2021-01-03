@@ -20,10 +20,19 @@
 .top-menu {
 	display: grid;
 	grid-template-columns: auto auto auto;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 5px #a4a2a2;
+}
+.top-menu li {
+	list-style: none;
 }
 .user-menu {
 	display: grid;
 	grid-template-columns: auto auto auto auto;
+}
+.logo {
+	width: 170px;
+	padding: 5px 5px 5px 5px;
 }
 /* ends custom css */
 
@@ -45,10 +54,7 @@
 	background-color: white;
 	color: red;
 }
-.logo {
-	width: 170px;
-	padding: 5px 5px 5px 0px;
-}
+
 .jumbotron {
 	background-image: url('/api/topup-thumbs/photo/5fdb3456c486e119f49f8b6a') !important;
 	background-size: 60% 135% !important;

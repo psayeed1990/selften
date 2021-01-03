@@ -1,24 +1,30 @@
 .slides {
+	background-color: #010326;
 	display: grid;
 	grid-template-columns: auto auto auto;
 	overflow: hidden;
+	margin-bottom: 50px;
+	height: 450px;
+	text-align: center;
+	border: 2px solid #8e8e8e;
 }
 
 .left-slide,
 .right-slide {
 	position: relative;
-	scale: 0.72;
+	scale: 0.82;
 	z-index: 0;
+	outline: 2px solid #aaa;
+	filter: blur(6px) brightness(90%);
 }
 
 .middle-slide {
 	position: relative;
-	scale: 1.5;
+	scale: 1.8;
 	z-index: 1;
+	box-shadow: -1px 0px 37px 8px #530404;
+	border: 2px #0e0835 dashed;
 }
 
-.slides p {
-	border: 2px solid;
-	background-color: white;
-	text-align: center;
+.slides img {
 }
