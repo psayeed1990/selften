@@ -36,35 +36,60 @@ const HomeSLider = ()=>{
    
     })
 
+
     return(
 
-        <div className="slides">
-           
-           {slides.length > 0? 
-           <Fragment>
-               
-                {count === 0 ?
-                    <ShowSlider item={slides[(slides.length-1)-count]._id} url="slider" idenClass="left-slide" />
-                    :
-                    <ShowSlider item={slides[count-1]._id} url="slider" idenClass="left-slide" />
-                  
-                }
+        <Fragment>
+            <div className="slides">
+            
+            {slides.length > 0? 
+            <Fragment>
                 
-                <ShowSlider item={slides[count]._id} url="slider" idenClass="middle-slide" />
+                    {count === 0 ?
+                        <ShowSlider item={slides[(slides.length-1)-count]._id} url="slider" idenClass="left-slide" />
+                        :
+                        <ShowSlider item={slides[count-1]._id} url="slider" idenClass="left-slide" />
+                    
+                    }
+                    
+                    <ShowSlider item={slides[count]._id} url="slider" idenClass="middle-slide" />
+                    
+
+                    { count === (slides.length - 1) ?
+                        <ShowSlider item={slides[0]._id} url="slider" idenClass="right-slide" />
+                        :
+                        <ShowSlider item={slides[count+1]._id} url="slider" idenClass="right-slide" />
+
+                    }
+
+                    
+
+                </Fragment>
+                :
+                <Fragment></Fragment>
+                }
+
                 
 
-                { count === (slides.length - 1) ?
-                    <ShowSlider item={slides[0]._id} url="slider" idenClass="right-slide" />
-                    :
-                    <ShowSlider item={slides[count+1]._id} url="slider" idenClass="right-slide" />
-
+            </div>
+            <div className="slide-icons">
+                {slides.map((s, index)=>{
+                    return(
+                        <div>
+                            { count === index  ?
+                                <p className="slide-btn-selected"></p>
+                                :
+                                <p className="slide-btn cursor-pointer" onClick={()=>{setCount(index)}}></p>
+                                
+                            }
+                         </div>
+                                
+                    )
+                })
+                    
                 }
-            </Fragment>
-            :
-            <Fragment></Fragment>
-            }
-
-        </div>
+            </div>
+        </Fragment>
         
     )
 }

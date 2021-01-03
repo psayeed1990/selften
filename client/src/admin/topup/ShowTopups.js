@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTopupThumbs } from '../../core/apiCore';
 import ShowThumb from '../../core/ShowThumb';
+import './showTopup.css';
  
 
 const ShowTopups = ()=>{
@@ -15,7 +16,10 @@ const ShowTopups = ()=>{
     },[])
 
     return(
+        <Fragment>
+        <h5 className="heading">Topup Your Game Account</h5>
         <div className="row center-flex">
+            
             {
                 topupThumbnails ? 
                 topupThumbnails.map(thumb=>{
@@ -36,6 +40,7 @@ const ShowTopups = ()=>{
                 <Fragment>Loading...</Fragment>
             }
         </div>
+        </Fragment>
     )
 }
 

@@ -1,6 +1,9 @@
 /*starts custom css */
 body {
 	font-family: 'lato';
+	width: 100%;
+	max-width: 1920px;
+	margin: 0 auto;
 }
 .content {
 	padding: 50px;

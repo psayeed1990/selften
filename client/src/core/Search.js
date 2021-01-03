@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getCategories, list } from "./apiCore";
 import Card from "./Card";
+import './search.css';
 
 const Search = () => {
     const [data, setData] = useState({
@@ -79,7 +80,7 @@ const Search = () => {
     };
 
     const searchForm = () => (
-        <form onSubmit={searchSubmit}>
+        <form className="product-search" onSubmit={searchSubmit}>
             <span className="input-group-text">
                 <div className="input-group input-group-lg">
                     <div className="input-group-prepend">

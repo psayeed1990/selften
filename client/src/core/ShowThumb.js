@@ -6,7 +6,7 @@ const ShowThumb = ({ item, url }) => (
         <img
             src={`${API}/${url}/photo/${item._id}`}
             alt={item.name}
-            className="mb-3"
+            className=""
             style={{ maxHeight: "100%", maxWidth: "100%" }}
         />
     </div>
