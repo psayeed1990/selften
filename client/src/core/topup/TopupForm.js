@@ -6,6 +6,7 @@ import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { createTopupOrder } from './../apiCore';
 import { showBalance } from './../../admin/apiAdmin';
+import './topupForm.css';
 
 
 
@@ -195,7 +196,7 @@ const TopupForm = () => {
     }
 
     const newPostForm = () => (
-        <form className="mb-3" onSubmit={clickSubmit}>
+        <form className="mb-3 topup-form" onSubmit={clickSubmit}>
             <h4>Request a Topup</h4>
             { type === 'inGame' ?
                 
@@ -312,7 +313,7 @@ const TopupForm = () => {
                                 <Fragment></Fragment>
                                 
                             }
-            <h4>Admin Balance: { adminLimit }</h4>
+            {/* <h4>Admin Balance: { adminLimit }</h4> */}
 
             { diamondValue && amount ?
                 <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
@@ -320,10 +321,10 @@ const TopupForm = () => {
                 <Fragment></Fragment>
             }
 
-            <button className="btn btn-outline-primary">Order With Balance</button>
+            <button className="btn btn-outline-primary submit-btn">Order With Balance</button>
             <br />
             <br />
-            <p onClick={()=>{orderWithSSLCommerz()}} className="btn btn-outline-primary">Order With Card, Bkash and more</p>
+            <p onClick={()=>{orderWithSSLCommerz()}} className="submit-btn btn btn-outline-primary">Order With Card, Bkash and more</p>
         </form>
     );
 

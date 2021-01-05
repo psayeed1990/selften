@@ -11,7 +11,7 @@ const AdminRoute = ({ component: Component, ...rest }) => (
             ) : (
                 <Redirect
                     to={{
-                        pathname: "/signin",
+                        pathname: "/user/login",
                         state: { from: props.location }
                     }}
                 />

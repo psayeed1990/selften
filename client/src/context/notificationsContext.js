@@ -9,12 +9,17 @@ export const UserProvider = (props)=> {
     const { user, token } = isAuthenticated();
     
     useEffect(() => {
-
-        getUnseenMessagesByReceiver(user, token)
+        if(user){
+                    getUnseenMessagesByReceiver(user, token)
             .then(messages => {
                 
                 setNotifications(messages.length);
             });
+        }else{
+            return;
+        }
+
+
         
         
     }, []);
