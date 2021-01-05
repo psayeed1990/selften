@@ -5,16 +5,20 @@ const Message = require('../models/message');
 const MessagePair = require('../models/messagePair');
 const formidable = require('formidable');
 
-exports.userById = (req, res, next, id) => {
-    User.findById(id).exec((err, user) => {
-        if (err || !user) {
+exports.userById = async (req, res, next, id) => {
+    try{
+        const user = await User.findById(id);
+            
+        
+        req.profile = user;
+        next();
+    }
+        catch(err){
             return res.status(400).json({
                 error: 'User not found'
             });
         }
-        req.profile = user;
-        next();
-    });
+    
 };
 
 exports.read = (req, res) => {
@@ -162,22 +166,25 @@ exports.getUnseenMessagesByReceiver = (req, res) => {
         });
 }
 
-exports.getMessagesByUser = (req, res) => {
-    const { userId } = req.params; 
-    MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').populate('message').exec((err, messages) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(messages); 
+exports.getMessagesByUser = async (req, res) => {
+    try{
+        const { userId } = req.params; 
+        const messages = await MessagePair.find({ $or:[ {'user':userId}, {'receiver':userId}]}).populate('user').populate('receiver').populate('message')
+        res.json(messages); 
+            
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
         });
+    }
+
 }
 
-exports.getMessagesByPair = (req, res) => {
-    const { pairId, userId } = req.params;
+exports.getMessagesByPair = async (req, res) => {
+    try{
+        const { pairId, userId } = req.params;
 
-    MessagePair.findById(pairId).populate('user').populate('receiver').populate(
+        const messages = await MessagePair.findById(pairId).populate('user').populate('receiver').populate(
         {
             path:'message',
             options: {
@@ -185,15 +192,9 @@ exports.getMessagesByPair = (req, res) => {
 
             }
         })
-        .exec((err, messages) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
         
         
-        const unSeenMsg = messages.message.filter((mail) => {
+        const unSeenMsg = await messages.message.filter((mail) => {
             
             return mail.seen === false
         });
@@ -210,42 +211,60 @@ exports.getMessagesByPair = (req, res) => {
         }
         
         res.json(messages);
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
+
 }
 
-exports.getChat = (req, res) => {
-    const { userId, receiverId } = req.params;
-    Message.find({user: userId, receiver: receiverId }).exec((err, messages) => {
-            if (err) {
-                return res.status(400).json({
+exports.getChat = async (req, res) => {
+    try{
+        const { userId, receiverId } = req.params;
+        const messages = await Message.find({user: userId, receiver: receiverId })
+        res.json(messages);
+    }
+    
+
+    catch(err){
+        return res.status(400).json({
                     error: errorHandler(err)
                 });
-            }
-            res.json(messages);
-        });
+    }
+        
 }
 
-exports.addChat = (req, res) => {
-    const { userId, receiverId } = req.params;
-    const newMessage = new Message({
-        user: userId,
-        receiver: receiverId,
-        message: req.body.message
-    })
+exports.addChat = async (req, res) => {
+    try{
+        const { userId, receiverId } = req.params;
+        const newMessage = new Message({
+            user: userId,
+            receiver: receiverId,
+            message: req.body.message
+        })
 
-    Message.save().exec((err, messages) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(messages);
+        const messages = await newMessage.save()
+        res.json(messages);
+    }
+    catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
         });
+    }
+        
 }
 
 //get all admins
-exports.gerAllAdmins = (req, res)=>{
-    User.find({role: 1}).then(admins=>{
+exports.gerAllAdmins = async (req, res)=>{
+    try{
+        const admins = await User.find({role: 1})
         res.json(admins);
-    })
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
+    
+    
 }

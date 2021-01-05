@@ -4,18 +4,19 @@ const fs = require('fs');
 const Product = require('../models/product');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
-exports.productById = (req, res, next, id) => {
-    Product.findById(id)
+exports.productById = async (req, res, next, id) => {
+    try{
+        const product = await Product.findById(id)
         .populate('category')
-        .exec((err, product) => {
-            if (err || !product) {
-                return res.status(400).json({
-                    error: 'Product not found'
-                });
-            }
-            req.product = product;
-            next();
+        req.product = product;
+        next();
+    }catch(err){
+        return res.status(400).json({
+            error: 'Product not found'
         });
+    }
+
+        
 };
 
 exports.read = (req, res) => {
@@ -128,24 +129,25 @@ exports.update = (req, res) => {
  * if no params are sent, then all products are returned
  */
 
-exports.list = (req, res) => {
-    let order = req.query.order ? req.query.order : 'asc';
-    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+exports.list = async (req, res) => {
+    try{
+        let order = req.query.order ? req.query.order : 'asc';
+        let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+        let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
-    Product.find()
-        .select('-photo')
-        .populate('category')
-        .sort([[sortBy, order]])
-        .limit(limit)
-        .exec((err, products) => {
-            if (err) {
-                return res.status(400).json({
-                    error: 'Products not found'
-                });
-            }
-            res.json(products);
+        const products = await Product.find()
+            .select('-photo')
+            .populate('category')
+            .sort([[sortBy, order]])
+            .limit(limit)
+        res.json(products);
+    }catch(err){
+        return res.status(400).json({
+            error: 'Products not found'
         });
+    }
+
+        
 };
 
 /**
@@ -153,31 +155,34 @@ exports.list = (req, res) => {
  * other products that has the same category, will be returned
  */
 
-exports.listRelated = (req, res) => {
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+exports.listRelated = async (req, res) => {
+    try{
+        let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
-    Product.find({ _id: { $ne: req.product }, category: req.product.category })
-        .limit(limit)
-        .populate('category', '_id name')
-        .exec((err, products) => {
-            if (err) {
-                return res.status(400).json({
-                    error: 'Products not found'
-                });
-            }
-            res.json(products);
+        const products = await Product.find({ _id: { $ne: req.product }, category: req.product.category })
+            .limit(limit)
+            .populate('category', '_id name')
+        res.json(products);
+        
+    }catch(err){
+        return res.status(400).json({
+            error: 'Products not found'
         });
+    }
+
 };
 
-exports.listCategories = (req, res) => {
-    Product.distinct('category', {}, (err, categories) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'Categories not found'
-            });
-        }
+exports.listCategories = async (req, res) => {
+    try{
+        const categories = await Product.distinct('category', {});
         res.json(categories);
-    });
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Categories not found'
+        });
+    }
+    
 };
 
 /**

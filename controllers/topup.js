@@ -4,15 +4,16 @@ const fs = require('fs');
 const Topup = require('../models/topup');
 
 //@GET all topup thumbs
-exports.getAllTopups = (req, res, next)=>{
-    Topup.find().exec((err, topup) => {
-        if (err) {
+exports.getAllTopups = async (req, res, next)=>{
+    try{
+        const topup = await Topup.find()
+        res.json(topup);
+    }catch(err){
             return res.status(400).json({
                 error: 'Topup thumbs not found'
             });
-        }
-        res.json(topup);
-    });
+    }
+    
     
 }
 exports.createTopup = (req, res) => {
@@ -76,25 +77,27 @@ exports.createTopup = (req, res) => {
 
 
 //photo
-exports.thumb = (req, res, next) => {
+exports.thumb = async (req, res, next) => {
     if (req.topup.thumb.data) {
-        res.set('Content-Type', req.topup.thumb.contentType);
+        await res.set('Content-Type', req.topup.thumb.contentType);
         return res.send(req.topup.thumb.data);
     }
     next();
 };
 
-exports.getTopupById = (req, res, next, id) => {
-    Topup.findById(id)
-        .exec((err, topup) => {
-            if (err || !topup) {
-                return res.status(400).json({
-                    error: 'topup not found'
-                });
-            }
-            req.topup = topup;
-            next();
+exports.getTopupById = async (req, res, next, id) => {
+    try{
+        const topup = await Topup.findById(id);
+        req.topup = topup;
+        next();
+    }
+    
+    catch(err){
+        return res.status(400).json({
+            error: 'topup not found'
         });
+    }
+        
 };
 
 exports.updateTopupById = async (req, res, next)=>{

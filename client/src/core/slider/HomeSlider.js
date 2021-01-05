@@ -8,9 +8,14 @@ const HomeSLider = ()=>{
     const [count, setCount] = useState(0);
 
     const init = async ()=>{
-        const slideArray = await sliderImages();
+        try{
+            const slideArray = await sliderImages();
         
-        setSlides(slideArray);
+            setSlides(slideArray);
+        }catch(err){
+            
+        }
+
         
     }
 
@@ -23,9 +28,9 @@ const HomeSLider = ()=>{
         let leftSlide = document.getElementById("left-slide");
         let rightSlide = document.getElementById("right-slide");
         if(document.getElementById("middle-slide")){
-                    middleSlide.style.animation = "slide 0.5s";   
-                    rightSlide.style.animation = "right-slide 0.5s"; 
-                    leftSlide.style.animation = "left-slide 0.5s";
+                    middleSlide.style.animation = "slide 0.3s";   
+                    rightSlide.style.animation = "right-slide 0.3s"; 
+                    leftSlide.style.animation = "left-slide 0.3s";
                     setTimeout(() => {  
 
                                 middleSlide.style.removeProperty('animation') 

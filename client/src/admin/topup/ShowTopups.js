@@ -8,12 +8,22 @@ import './showTopup.css';
 const ShowTopups = ()=>{
     const [topupThumbnails, setThumbNails] =useState(null);
 
-    useEffect(()=>{
-        getTopupThumbs().then(thumbs=>{
-            setThumbNails(thumbs);
-        })
+    const init = async ()=>{
+        try{
+            const topupThumbs = await getTopupThumbs();
+
+            setThumbNails(topupThumbs);
+        }catch(err){
+            
+        }
+        
+        
     
-    },[])
+    }
+
+    useEffect(()=>{
+        init();          
+    },[]);
 
     return(
         <Fragment>

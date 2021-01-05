@@ -67,23 +67,25 @@ exports.slider = async (req, res,next)=> {
     }
 }
 
-exports.photo = (req, res, next) => {
+exports.photo = async (req, res, next) => {
     if (req.slider.photo.data) {
-        res.set('Content-Type', req.slider.photo.contentType);
+        await res.set('Content-Type', req.slider.photo.contentType);
         return res.send(req.slider.photo.data);
     }
     next();
 };
 
-exports.getSliderById = (req, res, next, id) => {
-    Slider.findById(id)
-        .exec((err, slider) => {
-            if (err || !slider) {
-                return res.status(400).json({
-                    error: 'Slider not found'
-                });
-            }
-            req.slider = slider;
-            next();
+exports.getSliderById = async (req, res, next, id) => {
+    try{
+        const slider = await Slider.findById(id)
+            
+        req.slider = slider;
+        next();
+    }
+    catch(err){
+        return res.status(400).json({
+             error: 'Slider not found'
         });
+    }
+        
 };

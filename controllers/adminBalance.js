@@ -2,19 +2,20 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 const AdminBalance = require('./../models//adminBalance');
 
 //@GET balance
-exports.showBalance = (req, res, next)=>{
-    AdminBalance.find().exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
+exports.showBalance = async (req, res, next)=>{
+    try{
+        const data = await AdminBalance.find()
         res.json(data);
-    })
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    } 
     
 }
 
-exports.addUpdateBalance = (req, res, next) => {
+exports.addUpdateBalance = async (req, res, next) => {
+    try{
         const { userId } = req.params;
 
         let { balance } = req.body;
@@ -30,38 +31,40 @@ exports.addUpdateBalance = (req, res, next) => {
             });
         }
 
-        AdminBalance.find().then(prevbalance=>{
-            
-            if(!prevbalance){
-                const newBalance = new AdminBalance({
-                    balance,
-                    updatedBy: userId,
-                })
-                console.log(newBalance)
-                newBalance.save().exec((err, data)=>{
-                    if (err) {
-                        return res.status(400).json({
-                            error: 'Balance could not add',
-                        });
-                    }
-                    res.json(data);
-                })
+        const prevbalance = await AdminBalance.find();
+
+        if(!prevbalance){
+            const newBalance = new AdminBalance({
+                balance,
+                updatedBy: userId,
+            })
                 
-            }
+            const data = await newBalance.save();
+            return res.json(data);
+                
+        }
 
-            if(prevbalance){
-                let addBalance = Number(prevbalance[0].balance) + Number(balance);
-                if (addBalance < 0){
-                    addBalance = 0;
-                }
-                AdminBalance.findByIdAndUpdate(prevbalance[0].id, {balance: addBalance})
-                .then(b=>{
-                    res.json(b);
-                })
+        if(prevbalance){
+            let addBalance = Number(prevbalance[0].balance) + Number(balance);
+            if (addBalance < 0){
+                 addBalance = 0;
             }
+            const b = await AdminBalance.findByIdAndUpdate(prevbalance[0].id, {balance: addBalance});
+            
+            return res.json(b);
+            
+        }
 
             
-        })
+        
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not perform'
+        });
+    }
+
+
+       
 }
 
 exports.addUpdateDiamondValue = (req, res)=>{

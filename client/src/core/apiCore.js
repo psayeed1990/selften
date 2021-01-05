@@ -79,14 +79,15 @@ export const getWallet = (id) => {
 };
 
 //get topup thumbs
-export const getTopupThumbs = () => {
-    return fetch(`${API}/topup-thumbs`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getTopupThumbs = async () => {
+    try{
+        const response = await fetch(`${API}/topup-thumbs`, {
+            method: "GET"
+        });
+            
+        return response.json();
+    }
+    catch(err){console.log(err)};
 };
 
 //get Recharge Packages for admin
@@ -111,24 +112,22 @@ export const getRechargePackagesByGameName = (game) => {
         .catch(err => console.log(err));
 };
 
-export const getProducts = sortBy => {
-    return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getProducts = async (sortBy) => {
+    try{
+        const response = await fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=6`, {
+            method: "GET"
+        });
+        return response.json();
+    }catch(err ) {console.log(err)};
 };
 
-export const getCategories = () => {
-    return fetch(`${API}/categories`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getCategories = async () => {
+    try{
+        const response = await fetch(`${API}/categories`, {
+                method: "GET"
+            })
+        return response.json();
+    }catch(err){ console.log(err)};
 };
 
 export const getFilteredProducts = (skip, limit, filters = {}) => {

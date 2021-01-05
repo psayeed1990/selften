@@ -2,16 +2,18 @@ const Category = require('../models/category');
 const Product = require('../models/product');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
-exports.categoryById = (req, res, next, id) => {
-    Category.findById(id).exec((err, category) => {
-        if (err || !category) {
-            return res.status(400).json({
-                error: 'Category does not exist'
-            });
-        }
+exports.categoryById = async (req, res, next, id) => {
+    try{
+        const category = await Category.findById(id);
+    
         req.category = category;
         next();
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: 'Category does not exist'
+        });
+    }
+    
 };
 
 exports.create = (req, res) => {
@@ -26,7 +28,7 @@ exports.create = (req, res) => {
     });
 };
 
-exports.read = (req, res) => {
+exports.read = async (req, res) => {
     return res.json(req.category);
 };
 
@@ -68,13 +70,16 @@ exports.remove = (req, res) => {
     });
 };
 
-exports.list = (req, res) => {
-    Category.find().exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
+exports.list = async (req, res) => {
+    try{
+        const data = await Category.find()
         res.json(data);
-    });
+    }
+
+    catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
+    
 };

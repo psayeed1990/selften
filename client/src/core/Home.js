@@ -11,25 +11,37 @@ const Home = () => {
     const [productsByArrival, setProductsByArrival] = useState([]);
     const [error, setError] = useState(false);
 
-    const loadProductsBySell = () => {
-        getProducts('sold').then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setProductsBySell(data);
+    const loadProductsBySell = async () => {
+        try{
+            const data = await getProducts('sold');
+            if(data.error){
+                return setError(data.error);
             }
-        });
+        
+            setProductsBySell(data);
+        }
+        
+        catch(err){
+            
+        }
+            
+        
     };
 
-    const loadProductsByArrival = () => {
-        getProducts('createdAt').then(data => {
-            console.log(data);
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setProductsByArrival(data);
+    const loadProductsByArrival = async () => {
+
+        try{
+            const data = await getProducts('createdAt');
+            if(data.error){
+                return setError(data.error);
             }
-        });
+        
+            setProductsByArrival(data);
+        }
+        
+        catch(err){
+            
+        }
     };
 
     useEffect(() => {

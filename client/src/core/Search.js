@@ -14,14 +14,14 @@ const Search = () => {
 
     const { categories, category, search, results, searched } = data;
 
-    const loadCategories = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                console.log(data.error);
-            } else {
-                setData({ ...data, categories: data });
-            }
-        });
+    const loadCategories = async () => {
+        try{
+            const categories = await getCategories();
+            setData({ ...data, categories: categories });
+        }catch{
+            
+        }
+        
     };
 
     useEffect(() => {
