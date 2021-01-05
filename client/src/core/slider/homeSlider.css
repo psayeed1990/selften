@@ -37,17 +37,17 @@
 }
 
 .slide-btn {
-	width: 30px;
-	height: 7px;
-	background-color: rgb(90, 86, 86);
+	width: 20px;
+	height: 4px;
+	background-color: rgb(122, 120, 120);
 	margin: 5px;
 	border-radius: 5px;
 	transition: width 0.5s ease-in-out;
 }
 .slide-btn-selected {
-	width: 50px;
-	height: 7px;
-	background-color: rgb(207, 169, 169);
+	width: 35px;
+	height: 4px;
+	background-color: rgb(212, 193, 193);
 	margin: 5px;
 	border-radius: 5px;
 }

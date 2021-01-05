@@ -27,22 +27,28 @@ const ShowTopups = ()=>{
 
     return(
         <Fragment>
-        <h5 className="heading">Topup Your Game Account</h5>
+        <h6 className="heading">Topup Your Game Account</h6>
         <div className="row center-flex">
+            <div className="col-md-2 thumb-show">
+                <h6 className="heading">Popular Mobile Games to topup</h6>
+            </div>  
             
             {
                 topupThumbnails ? 
                 topupThumbnails.map(thumb=>{
                     return(
-                        
-                                <div className="col-md-2 thumb-show" key={thumb._id}>
-                                    <Link exact to={`/topups/${thumb._id}/type/${thumb.type}`}>
-                                    
-                                        <ShowThumb item={thumb} url="topup-thumbs" />
-                                        <h6>{ thumb.title }</h6>
 
-                                    </Link>
-                                </div>          
+                                <Fragment>
+                                    
+                                    <div className="col-md-2 thumb-show" key={thumb._id}>
+                                        <Link exact to={`/topups/${thumb._id}/type/${thumb.type}`}>
+                                        
+                                            <ShowThumb item={thumb} url="topup-thumbs" />
+                                            <h6>{ thumb.title }</h6>
+
+                                        </Link>
+                                    </div>    
+                                </Fragment>      
                        
                     )
                 })
