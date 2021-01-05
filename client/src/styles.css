@@ -6,6 +6,23 @@ body {
 	margin: 0 auto;
 	font-family: 'Roboto';
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	transition: color 0.3s linear;
+}
+h1:hover,
+h2:hover,
+h3:hover,
+h4:hover,
+h5:hover,
+h6:hover {
+	color: rgb(230, 117, 62) !important;
+}
+
 .content {
 	padding: 50px;
 }
@@ -33,6 +50,10 @@ body {
 }
 .home-categories h6 {
 	color: rgb(65, 64, 63);
+}
+
+.form-control {
+	transition: border 2s linear;
 }
 /*ends custom css */
 

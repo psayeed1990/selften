@@ -195,6 +195,32 @@ const TopupForm = () => {
         });
     }
 
+    const selectARecharge = (id)=>{
+        setValues({
+            ...values,
+            selectRecharge: id,
+        });
+        
+        formData.set('selectRecharge', id);
+        if(document.getElementsByClassName('select-recharge')){
+            
+            const classes = document.getElementsByClassName('select-recharge');
+            for(let i = 0; i < classes.length; i++){
+                document.getElementsByClassName('check-mark')[i].style.visibility = "hidden";
+                document.getElementsByClassName('check-mark')[i].style.opacity = 0;
+                document.getElementsByClassName('select-recharge')[i].style.border = "2px solid rgb(194, 191, 191)";
+            }
+            
+            document.getElementById(id).style.border = "2px solid #E6753E";
+            document.getElementById(`${id}-check-mark`).style.visibility = "visible";
+            document.getElementById(`${id}-check-mark`).style.opacity = 1;
+
+        }
+
+        
+
+    }
+
     const newPostForm = () => (
         <form className="mb-3 topup-form" onSubmit={clickSubmit}>
             <h4>Request a Topup</h4>
@@ -278,19 +304,24 @@ const TopupForm = () => {
 
             <div className="form-group">
                 <label className="text-muted">Recharge Package</label>
-                <select name="selectRecharge" onChange={handleChange('selectRecharge')} className="form-control">
-                    <option disabled selected>Please select</option>
+               
+
+                    <div className="row">
+                    
                     {selectRecharges &&
                         selectRecharges.map((c, i) => (
                             
+                             <p id={c._id} className="cursor-pointer select-recharge col-md-3" onClick={()=>{
+                                selectARecharge(c._id);
+
+                             }}><img className="check-mark" id={`${c._id}-check-mark`} src="/images/icons/check-mark.svg" width="20" /> {c.packageName} </p>
                             
-                            <option key={i} value={c._id}>
-                                {c.packageName}
-                            </option>
                             
-                        ))}
-                </select>
+                    ))}
+                    </div>
+                
             </div>
+
 
             <div className="form-group col-md-4">
                 <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
@@ -301,7 +332,7 @@ const TopupForm = () => {
             </div>
 
                             { wallet && amount ? wallet.amount < amount ? 
-                                <h4>You have less balance than you have to pay. Please <Link to="/"><button className="btn btn-primary">add money</button></Link></h4>
+                                <p>You have less balance than you have to pay. Please <Link to="/"><button className="btn btn-primary">add money</button></Link></p>
                                 :
                                 <Fragment></Fragment>
                                 :
@@ -309,7 +340,7 @@ const TopupForm = () => {
                             }
 
                             { amount > adminLimit ? 
-                                <h4>You are ordering more than admin can handle. Please select less</h4>
+                                <p>You are ordering more than admin can handle. Please select less</p>
                                 :
                                 <Fragment></Fragment>
                                 

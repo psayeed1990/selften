@@ -20,6 +20,10 @@
 	padding: 5px 40px;
 	border: 1px solid #9d9595;
 	border-radius: 7px;
+	transition: 0.3s border linear;
+}
+.top-search input:focus {
+	border: 1px solid rgb(207, 170, 179);
 }
 .search-icon {
 	margin-left: -30px;
