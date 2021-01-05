@@ -18,13 +18,36 @@ const HomeSLider = ()=>{
         init();          
     },[]);
 
+    const slideAnim = ()=>{
+        let middleSlide = document.getElementById("middle-slide");
+        let leftSlide = document.getElementById("left-slide");
+        let rightSlide = document.getElementById("right-slide");
+        if(document.getElementById("middle-slide")){
+                    middleSlide.style.animation = "slide 0.5s";   
+                    rightSlide.style.animation = "right-slide 0.5s"; 
+                    leftSlide.style.animation = "left-slide 0.5s";
+                    setTimeout(() => {  
+
+                                middleSlide.style.removeProperty('animation') 
+                                leftSlide.style.removeProperty('animation') 
+                                rightSlide.style.removeProperty('animation') 
+
+
+                    }, 1000);   
+        }
+    }
+
     useEffect(()=>{
         
         const slider = ()=>{
+            
+
             if(count < slides.length - 1){
-                setCount(count + 1);  
+                setCount(count + 1);
+                slideAnim();
             }else{
                 setCount(0)
+                slideAnim();
             }
             
         }
@@ -36,42 +59,7 @@ const HomeSLider = ()=>{
    
     })
 
-    useEffect(()=>{
-        if(document.getElementById("middle-slide")){
-            let middleSlide = document.getElementById("middle-slide");
-            let leftSlide = document.getElementById("left-slide");
-            let rightSlide = document.getElementById("right-slide");
 
-            const slideEventHandler = ()=>{
-
-    
-                    middleSlide.style.animation = "slide 0.5s"; 
-                    leftSlide.style.animation = "left-slide 0.5s";
-                    rightSlide.style.animation = "right-slide 0.5s";;
-
-                    
-                    
-                    setTimeout(() => {  
-                        middleSlide.style.removeProperty('animation') 
-                        leftSlide.style.removeProperty('animation') 
-                        rightSlide.style.removeProperty('animation') 
-
-
-                    }, 1000);
-            }
-
-            middleSlide.addEventListener('DOMAttrModified', slideEventHandler);
-
-            
-            return(()=>{
-                 
-                 middleSlide.removeEventListener('DOMAttrModified', slideEventHandler);
-            })
-            
-            
-        
-        }
-    }, [count, setCount, slides])
 
 
     return(
@@ -82,7 +70,9 @@ const HomeSLider = ()=>{
             {slides.length > 0? 
             <Fragment>
                 
+                
                     {count === 0 ?
+                    
                         <ShowSlider item={slides[(slides.length-1)-count]._id} url="slider" idenClass="left-slide" idenId="left-slide" />
                         :
                         <ShowSlider item={slides[count-1]._id} url="slider" idenClass="left-slide" idenId="left-slide" />
@@ -116,7 +106,7 @@ const HomeSLider = ()=>{
                             { count === index  ?
                                 <p className="slide-btn-selected"></p>
                                 :
-                                <p className="slide-btn cursor-pointer" onClick={()=>{setCount(index)}}></p>
+                                <p className="slide-btn cursor-pointer" onClick={()=>{setCount(index); slideAnim();}}></p>
                                 
                             }
                          </div>
