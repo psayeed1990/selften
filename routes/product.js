@@ -30,7 +30,7 @@ router.put(
     "/product/:productId/:userId",
     requireSignin,
     isAuth,
-    isAdmin,
+    isAdmin, 
     update
 );
 

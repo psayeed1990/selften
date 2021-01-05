@@ -1,3 +1,5 @@
+const formidable = require('formidable');
+const fs = require('fs');
 const Category = require('../models/category');
 const Product = require('../models/product');
 const { errorHandler } = require('../helpers/dbErrorHandler');
@@ -16,17 +18,60 @@ exports.categoryById = async (req, res, next, id) => {
     
 };
 
-exports.create = (req, res) => {
-    const category = new Category(req.body);
-    category.save((err, data) => {
+exports.create = (req, res) => { 
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, (err, fields, files) => {
         if (err) {
             return res.status(400).json({
-                error: errorHandler(err)
+                error: 'Image could not be uploaded'
             });
         }
-        res.json({ data });
+        // check for all fields
+        const { name } = fields;
+
+        if (!name) {
+            return res.status(400).json({
+                error: 'Name field is required'
+            });
+        }
+
+        let category = new Category(fields);
+
+        // 1kb = 1000
+        // 1mb = 1000000
+
+        if (files.photo) {
+            // console.log("FILES PHOTO: ", files.photo);
+            if (files.photo.size > 1000000) {
+                return res.status(400).json({
+                    error: 'Image should be less than 1mb in size'
+                });
+            }
+            category.photo.data = fs.readFileSync(files.photo.path);
+            category.photo.contentType = files.photo.type;
+        }
+
+        category.save((err, result) => {
+            if (err) {
+                console.log('Category CREATE ERROR ', err);
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(result);
+        });
     });
 };
+
+exports.photo = (req, res, next) => {
+    if (req.category.photo.data) {
+        res.set('Content-Type', req.category.photo.contentType);
+        return res.send(req.category.photo.data);
+    }
+    next();
+};
+
 
 exports.read = async (req, res) => {
     return res.json(req.category);

@@ -22,6 +22,18 @@ body {
 .form-control {
 	border: 2px solid #ced4da;
 }
+.showCategories .home-categories {
+	text-align: center;
+}
+.showCategories {
+	justify-content: center;
+}
+.showCategories img {
+	width: 60px;
+}
+.home-categories h6 {
+	color: rgb(65, 64, 63);
+}
 /*ends custom css */
 
 /**

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -6,42 +6,77 @@ import { createCategory } from "./apiAdmin";
 import { AdminLinks } from "../user/AdminDashboard";
 
 const AddCategory = () => {
-    const [name, setName] = useState("");
+    const [values, setValues] = useState({
+        name: '',
+        photo: '',
+        formData: '',
+    });
+
+    const {name, photo, formData} = values;
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
 
     // destructure user and token from localstorage
     const { user, token } = isAuthenticated();
 
-    const handleChange = e => {
+    const handleChange = name => event => {
         setError("");
-        setName(e.target.value);
+        const value = name === 'photo' ? event.target.files[0] : event.target.value;
+        formData.set(name, value);
+        setValues({ ...values, [name]: value });
     };
+
+    const init = () => {
+
+         setValues({
+            ...values,
+            formData: new FormData()
+        });
+
+    };
+
+    useEffect(() => {
+        init();
+    }, []);
+ 
 
     const clickSubmit = e => {
         e.preventDefault();
         setError("");
         setSuccess(false);
         // make request to api to create category
-        createCategory(user._id, token, { name }).then(data => {
+        createCategory(user._id, token, formData).then(data => {
             if (data.error) {
                 setError(data.error);
             } else {
                 setError("");
                 setSuccess(true);
+                setValues({
+                    ...values,
+                    name: '',
+                    photo: ''
+                    
+                });
             }
         });
     };
 
     const newCategoryFom = () => (
         <form onSubmit={clickSubmit}>
+            <h4>Create Category with a photo</h4>
+            <div className="form-group">
+                <label className="btn btn-secondary">
+                    <input onChange={handleChange('photo')} type="file" name="photo" accept="image/*" />
+                </label>
+            </div>
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input
                     type="text"
                     className="form-control"
-                    onChange={handleChange}
+                    onChange={handleChange('name')}
                     value={name}
+                    name="name"
                     autoFocus
                     required
                 />
