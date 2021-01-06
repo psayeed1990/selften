@@ -11,6 +11,6 @@ router.patch('/topup-thumbs/:userId', updateTopupById)
 router.delete('/topup-thumbs/:userId', deleteTopupById);
 router.get("/topup-thumbs/photo/:topupId", thumb);
 
-router.param("userId", userById);
+router.param("userId", userById); 
 router.param("topupId", getTopupById);
 module.exports = router; 

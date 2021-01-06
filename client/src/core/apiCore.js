@@ -68,14 +68,18 @@ export const createTopupOrder = (userId, token, order, id, withSSLCommerz)=>{
 }
 
 //get wallet
-export const getWallet = (id) => {
-    return fetch(`${API}/wallet/${id}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
+export const getWallet = async (id, token) => {
+    try{
+        const response = await fetch(`${API}/wallet/${id}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
         })
-        .catch(err => console.log(err));
+        return response.json();
+    }catch(err){console.log(err)};
 };
 
 //get topup thumbs

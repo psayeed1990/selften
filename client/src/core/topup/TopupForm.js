@@ -82,7 +82,7 @@ const TopupForm = () => {
         //setwallet
         useEffect(()=>{
             setValues({ ...values, loading: true });
-            getWallet(user._id).then(data=>{
+            getWallet(user._id, token).then(data=>{
                 if (!data) {
                     //console.log(err)
                 } else {
@@ -332,7 +332,14 @@ const TopupForm = () => {
             </div>
 
                             { wallet && amount ? wallet.amount < amount ? 
-                                <p>You have less balance than you have to pay. Please <Link to="/"><button className="btn btn-primary">add money</button></Link></p>
+                                <p>You have less balance than you have to pay. Please <Link to={()=>{
+                                    if(user.role === 1){
+                                        return '/admin/refill-wallet';
+                                    }else{
+                                        return '/user/refill-wallet';
+                                    }
+                                    
+                                }}><button className="btn btn-primary">add money</button></Link></p>
                                 :
                                 <Fragment></Fragment>
                                 :

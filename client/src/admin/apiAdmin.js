@@ -1,6 +1,23 @@
 
 import { API } from '../config';
 
+//add to wallet
+export const addToWallet = async (user, token, wallet)=>{
+    try{
+        const response = await fetch(`${API}/wallet/add/${user._id}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: wallet
+        })
+    }catch(err){
+        console.log(err)
+    }
+    
+}
+
 //create slider 
 export const createSlider = async (userId, token, slider) => {
     try{

@@ -29,6 +29,11 @@ export const AdminLinks = () => {
                         See messages <sup className="notifications">{ notifications }</sup>
                  </Link>
             </li>
+            <li className="list-group-item">
+                    <Link className="nav-link" to="/admin/refill-wallet">
+                        Wallet
+                    </Link>
+                </li>
 
             <li className="list-group-item">
                     <Link className="nav-link" to="/admin/balance-stock">

@@ -14,10 +14,16 @@ export const UserLinks = () => {
             <div className="card">
                 <h4 className="card-header">User Links</h4>
                 <ul className="list-group">
+
                     <li className="list-group-item">
                         <Link className="nav-link" to="/user/messages">
                             See messages  <sup className="notifications">0</sup>
                         </Link>
+                    </li>
+                    <li className="list-group-item">
+                    <Link className="nav-link" to="/user/refill-wallet">
+                        Wallet
+                    </Link>
                     </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/cart">

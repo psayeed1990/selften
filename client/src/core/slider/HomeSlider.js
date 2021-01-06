@@ -48,11 +48,13 @@ const HomeSLider = ()=>{
             
 
             if(count < slides.length - 1){
+                slideAnim();
                 setCount(count + 1);
-                slideAnim();
+                
             }else{
-                setCount(0)
                 slideAnim();
+                setCount(0)
+                
             }
             
         }
@@ -63,6 +65,10 @@ const HomeSLider = ()=>{
         }
    
     })
+
+    // useEffect(()=>{
+    //     slideAnim();
+    // },[count, slides])
 
 
 
@@ -111,7 +117,7 @@ const HomeSLider = ()=>{
                             { count === index  ?
                                 <p className="slide-btn-selected"></p>
                                 :
-                                <p className="slide-btn cursor-pointer" onClick={()=>{setCount(index); slideAnim();}}></p>
+                                <p className="slide-btn cursor-pointer" onClick={()=>{ slideAnim();setCount(index);}}></p>
                                 
                             }
                          </div>

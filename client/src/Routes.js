@@ -40,6 +40,7 @@ import PrivacyPolicy from './core/PrivacyPolicy';
 import CheckCart from './core/CheckCart';
 import SearchPage from './core/SearchPage';
 import AddSlider from './admin/AddSlider';
+import RefillWallet from './admin/RefillWallet';
 
 
 
@@ -66,6 +67,8 @@ const Routes = () => {
                 <Route path="/topup-order/fail/:transactionId" exact component={TopupOrderFail} />
                 
                 <UserProvider>
+                    <AdminRoute path="/admin/refill-wallet" exact component={ RefillWallet } />
+                    <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
                     <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
                     <AdminRoute path="/admin/add-coupons" exact component={ AddCoupon } />
                     <AdminRoute path="/admin/add-slider" exact component={ AddSlider } />
