@@ -12,6 +12,8 @@ export const addToWallet = async (user, token, wallet)=>{
             },
             body: wallet
         })
+
+        return response.json();
     }catch(err){
         console.log(err)
     }

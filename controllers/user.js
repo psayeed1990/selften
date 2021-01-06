@@ -5,6 +5,75 @@ const Message = require('../models/message');
 const MessagePair = require('../models/messagePair');
 const formidable = require('formidable');
 
+exports.getUserById = async (req, res, next)=>{
+    const {userId} = req.params;
+
+    try{
+        const user = await User.findById(userId);
+        return res.json(user);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+exports.profileUpdate = async (req, res, next)=>{
+    
+    try{
+        const {userId} = req.params;
+        let form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+        
+        form.parse(req, async (err, fields) => {
+            
+            const {name, email, phone, address, postCode, city, about } = fields;
+            
+            // if(!name || !email || !phone || !address || !postCode || !city || !about ){
+            //     return res.status(400).json({
+            //         error: 'All field required',
+            //     });
+            // }
+
+            
+            const user = await User.findById(userId);
+            console.log(user);
+            if(name){
+                user.name = name;
+            }
+            if(email){
+                user.email = email
+            }
+
+            if(phone){
+                user.phone = phone
+            }
+
+            if(address){
+                user.address = address
+            }
+             if(postCode){
+                 user.postCode = postCode
+             }
+             if(city){
+                 user.city = city
+             }
+             if(about){
+                 user.about = about
+             }
+              
+
+            const updatedUser = await user.save();
+            console.log(updatedUser);
+            return res.json(updatedUser);
+        
+        })
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Profile could not update'
+        });
+    }
+}
+
 exports.userById = async (req, res, next, id) => {
     try{
         const user = await User.findById(id);

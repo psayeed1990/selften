@@ -5,6 +5,7 @@ const PaymentHistory = require('./../models/paymentHistory');
 const User = require('./../models/user');
 const adminId = '5fdadfe6cc7fc11b2772b5e0';
 const MessagePair = require('./../models/messagePair');
+const Message = require('./../models/message')
 
 exports.getWallet = async (req, res, next)=>{
     try{
@@ -23,6 +24,7 @@ exports.getWallet = async (req, res, next)=>{
 
 exports.addWallet = async (req, res, next) =>{
     try{
+        
         const {userId} = req.params;
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
@@ -52,6 +54,23 @@ exports.addWallet = async (req, res, next) =>{
 
             const user = await User.findById(userId);
 
+            const {address, city, postCode} = user;
+            if(!address){
+                return res.status(400).json({
+                    error: 'Your profile is missing address. Pease fill address first'
+                });
+            }
+            if(!city){
+                return res.status(400).json({
+                    error: 'Your profile is missing city. Pease fill city first'
+                });
+            }
+            if(!postCode){
+                return res.status(400).json({
+                    error: 'Your profile is missing postal code. Pease fill postal code first'
+                });
+            }
+
             // ask for payment
             const data = {
                 currency: "BDT",
@@ -59,9 +78,9 @@ exports.addWallet = async (req, res, next) =>{
                 total_amount: amount,
                 tran_id: tempHistory._id,
                 product_category: "Topup",
-                success_url: `${process.env.SITE_URL}/api/wallet/success/${result._id}`,
-                fail_url: `${process.env.SITE_URL}/api/wallet/fail/${result._id}`,
-                cancel_url: `${process.env.SITE_URL}/api/wallet/cancell/${result._id}`,
+                success_url: `${process.env.SITE_URL}/api/wallet/success/${tempHistory._id}`,
+                fail_url: `${process.env.SITE_URL}/api/wallet/fail/${tempHistory._id}`,
+                cancel_url: `${process.env.SITE_URL}/api/wallet/cancell/${tempHistory._id}`,
                 cus_name: user.name,
                 cus_email: user.email,
                 cus_add1: user.address,
