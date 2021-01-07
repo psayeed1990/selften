@@ -57,57 +57,39 @@ const TopupForm = () => {
 
     // load Recharge packages and set form data
 
-    const init = () => {
+    const init = async () => {
         setValues({ ...values, loading: true });
-        getRechargePackagesByGameName(id).then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    selectRecharges: data,
-                    formData: new FormData(),
-                    loading: false
-                });
+        const data = await getRechargePackagesByGameName(id);
+        const wData = await getWallet(user._id, token);
+        const bl = await showBalance();
 
-                
-            }
-        });
+        if (!bl) {
+            setAdminLimit(0);
+        } 
+        if(bl) {
+            setDiamondValue(data[0].takaPerDiamond);
+            setAdminLimit(data[0].balance)
+        }
+
+        if (data.error) {
+            setValues({ ...values, error: data.error });
+        } 
+        if(!data.error) {
+            setWallet(wData);
+            setValues({
+                ...values,
+                 selectRecharges: data,
+                formData: new FormData(),
+                loading: false
+            });           
+        }
+        
     };
 
     useEffect(() => {
         init();
     }, []);
-
-        //setwallet
-        useEffect(()=>{
-            setValues({ ...values, loading: true });
-            getWallet(user._id, token).then(data=>{
-                if (!data) {
-                    //console.log(err)
-                } else {
-                    setWallet(data);
-                    setValues({ ...values, loading: false });
-                }
-            })
-        }, []);
     
-    
-
-    //set admin limit
-    useEffect(()=>{
-        setValues({ ...values, loading: true });
-        showBalance().then(data=>{
-            if (!data) {
-                 //console.log(err)
-                setAdminLimit(0);
-            } else {
-                setDiamondValue(data[0].takaPerDiamond);
-                setAdminLimit(data[0].balance)
-                setValues({ ...values, loading: false  });
-            }
-        })
-    }, []);
 
     useEffect(()=>{
         if(selectRecharges.length > 0){
@@ -115,7 +97,6 @@ const TopupForm = () => {
             let selectedpack = selectRecharges.filter(sr =>{
                 return sr._id === selectRecharge;
             });
-            console.log('se', selectedpack);
 
             if(selectedpack.length > 0){
                 setAmount(selectedpack[0].packageAmount);
@@ -195,7 +176,7 @@ const TopupForm = () => {
         });
     }
 
-    const selectARecharge = (id)=>{
+    const selectARechargePackage = (id)=>{
         setValues({
             ...values,
             selectRecharge: id,
@@ -227,56 +208,58 @@ const TopupForm = () => {
             { type === 'inGame' ?
                 
                 <Fragment>
-                    {console.log(type)}
+                    
                     <div className="row">
 
-                    <div className="form-group col-md-4">
-                        
-                        <label className="text-muted">Account Type</label>
-                        <select name="accountType" onChange={handleChange('accountType')} className="form-control">
-                            <option disabled selected>Please select</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="gmail">Gmail</option>
+                        <div className="form-group col-md-4">
                             
-                        </select>
-                    </div>
-
-                    <div className="form-group col-md-4">
-                        
-                        {
-                            accountType === 'facebook' ? 
-                                <label className="text-muted">Your Facebook</label>
-                            :
-                            <Fragment>
-                            {
-                                accountType === 'gmail' ? 
-                                    <label className="text-muted">Your Gmailt</label>
+                            <label className="text-muted">Account Type</label>
+                            <select name="accountType" onChange={handleChange('accountType')} className="form-control">
+                                <option disabled selected>Please select</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="gmail">Gmail</option>
                                 
-                                :
-                                <label className="text-muted">Select Account type first</label>
-                                
-                            }
-                            </Fragment>
-                        }
-                        <input onChange={handleChange('gmailOrFacebook')} type="text" className="form-control" value={gmailOrFacebook} />
-                        
-                    </div>
-
-                    <div className="form-group col-md-4">
-                        <label className="text-muted">Password</label>
-                        <input onChange={handleChange('password')} type="password" className="form-control" name="password" value={password} />
-                    </div>
-                    </div>
-
-                    {
-                    accountType === 'gmail' ? 
-                        <div className="form-group">
-                            <label className="text-muted">Security Code</label>
-                            <input onChange={handleChange('securityCode')} type="text" className="form-control" value={securityCode} />
+                            </select>
                         </div>
-                        :
-                        <Fragment></Fragment>
-                    }
+
+                        <div className="form-group col-md-4">
+                            
+                            {
+                                accountType === 'facebook' ? 
+                                    <label className="text-muted">Your Facebook</label>
+                                :
+                                <Fragment>
+                                {
+                                    accountType === 'gmail' ? 
+                                        <label className="text-muted">Your Gmailt</label>
+                                    
+                                    :
+                                    <label className="text-muted">Select Account type first</label>
+                                    
+                                }
+                                </Fragment>
+                            }
+                            <input onChange={handleChange('gmailOrFacebook')} type="text" className="form-control" value={gmailOrFacebook} />
+                            
+                        </div>
+
+                        <div className="form-group col-md-4">
+                            <label className="text-muted">Password</label>
+                            <input onChange={handleChange('password')} type="password" className="form-control" name="password" value={password} />
+                        </div>
+                    </div>
+                    <div className="row security-code">
+
+                        {
+                            accountType === 'gmail' ? 
+                                <div className="form-group">
+                                    <label className="text-muted">Security Code</label>
+                                    <input onChange={handleChange('securityCode')} type="text" className="form-control" value={securityCode} />
+                                </div>
+                            :
+                                <Fragment></Fragment>
+                        }
+                    </div>
                 </Fragment>:
 
                 <Fragment></Fragment>
@@ -301,25 +284,30 @@ const TopupForm = () => {
                  <Fragment></Fragment>
             }
             
-
-            <div className="form-group">
-                <label className="text-muted">Recharge Package</label>
-               
-
-                    <div className="row">
-                    
-                    {selectRecharges &&
-                        selectRecharges.map((c, i) => (
-                            
-                             <p id={c._id} className="cursor-pointer select-recharge col-md-3" onClick={()=>{
-                                selectARecharge(c._id);
-
-                             }}><img className="check-mark" id={`${c._id}-check-mark`} src="/images/icons/check-mark.svg" width="20" /> {c.packageName} </p>
-                            
-                            
-                    ))}
-                    </div>
+            <div className="row">
+                <div className="form-group col-9">
+                    <p className="text-muted">Recharge Package</p>
                 
+
+                        
+                        <div className="row">
+                        {selectRecharges? 
+                            selectRecharges.map((c, i) => {
+                                return(
+                                    <p id={c._id} className="cursor-pointer select-recharge col-md-3" onClick={()=>{selectARechargePackage(c._id)}}>
+                                        <img className="check-mark" id={`${c._id}-check-mark`} src="/images/icons/check-mark.svg" width="20" />
+                                        <span>{c.packageName} </span>
+                                    </p>
+                                )
+                                
+                            })
+                            :
+                            <p>Loading</p>
+                        }
+                        </div>
+                        
+                    
+                </div>
             </div>
 
 
