@@ -17,163 +17,136 @@ const adminId = '5fdadfe6cc7fc11b2772b5e0';
 
 
 //@GET all topup thumbs
-exports.getAllTopupOrders = (req, res, next)=>{
-    TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo').exec((err, topuporder) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'topupOrder thumbs not found'
-            });
-        }
+exports.getAllTopupOrders = async (req, res, next)=>{
+    try{
+        const topuporder = await TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo');
+            
         res.json(topuporder);
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not get topup orders'
+        });
+    }
     
 }
 
-exports.assignTopupOrder = (req, res)=>{
-    console.log('hi')
-    const {adminId, topupOrderId} = req.params;
-    console.log(req.params)
-    TopupOrder.findByIdAndUpdate(topupOrderId, {assignedTo: adminId}).then(data=>{
-        if(data){
-            res.json(data);
-        }
-    })
+exports.assignTopupOrder = async (req, res)=>{
+    try{
+        const {adminId, topupOrderId} = req.params;
+
+        const data = await TopupOrder.findByIdAndUpdate(topupOrderId, {assignedTo: adminId});
+           
+        res.json(data);
+            
+        
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not assign topup orders'
+        });
+    }
+
 }
 
 //get all assigned topup orders
-exports.getAllAssignedTopupOrders = (req, res, next) => {
-    const { userId } = req.params;
-    TopupOrder.find({assignedTo: userId }).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').exec((err, topuporder) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'topup Orders not found'
-            });
-        }
-        res.json(topuporder);
-    });
+exports.getAllAssignedTopupOrders = async (req, res, next) => {
+    try{
+        const { userId } = req.params;
+        const topuporder = await TopupOrder.find({assignedTo: userId }).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair');
+
+        return res.json(topuporder);
+    }catch(err){
+        return res.status(400).json({
+            error: 'topup Orders not found'
+        });
+    }
     
 }
 
 
-exports.SSLComSuccess = (req, res)=>{
-    const {transactionId} = req.params;
-    console.log('ok')
-    
-        //validate transaction id
-    sslcommerz.transaction_status_id(transactionId)
-    .then(response=>{
+exports.SSLComSuccess = async (req, res)=>{
+    try{
+        const {transactionId} = req.params;
+        
+            //validate transaction id
+        const response = await sslcommerz.transaction_status_id(transactionId);
+        
         if(response.element[0].status === 'VALID' || response.element[0].status === 'VALIDATED'){
-            TopupOrder.findById(transactionId)
-            .then(data=>{
-                console.log()
-                //save order as paid
-                data.paid = true;
-                
-                data.save();
+            const data = await TopupOrder.findById(transactionId);
 
-                //deduct admin balance
-                AdminBalance.find().then(bl=>{
-                    if(bl){
-                        if(Number(bl[0].balance) > Number(response.element[0].currency_amount)){
-                            bl[0].balance = Number(bl[0].balance) - Number(response.element[0].currency_amount);
-                            bl[0].save();
-                        }
+            if(!data){
+                return res.status(400).json({error: 'Invalid transaction id'});
+            }
+            //save order as paid
+            data.paid = true;
+            await data.save();
 
-                        //create diamonds
-                        const diamondAmount = parseInt(Number(response.element[0].currency_amount) / Number(bl[0].takaPerDiamond));
-                        Diamonds.findOne({user: data.user})
-                        .then(diamond=>{
-                            if(!diamond){
-                                const newDiamond = new Diamonds({
-                                    user: data.user,
-                                    amount: diamondAmount,
-                                });
-                                newDiamond.save();
-                            }
-                            if(diamond){
-                                diamond.amount = Number(diamond.amount) + diamondAmount;
-                                diamond.save();
-                            }
-                        })
+            //deduct admin balance
+            const bl = await AdminBalance.find();
+            if(bl){
+                if(Number(bl[0].balance) > Number(response.element[0].currency_amount)){
+                    bl[0].balance = Number(bl[0].balance) - Number(response.element[0].currency_amount);
+                    await bl[0].save();
+                    
+                    //create diamonds
+                    const diamondAmount = parseInt(Number(response.element[0].currency_amount) / Number(bl[0].takaPerDiamond));
+                    const diamond = await Diamonds.findOne({user: data.user});
+                    
+                    if(!diamond){
+                        const newDiamond = new Diamonds({
+                            user: data.user,
+                            amount: diamondAmount,
+                        });
+                        await newDiamond.save();
                     }
-                })
-                
-                //send message
-                let newMessage = new Message({
-                    user: adminId,
-                    receiver: data.user,
-                    message: `Your topup order no:- ${transactionId} has been created. Someone will start working on it in a moment`,
-                });
+                    if(diamond){
+                        diamond.amount = Number(diamond.amount) + diamondAmount;
+                        await diamond.save();
+                    }
+                    
+                }
+            }
+            //send message
+            let newMessage = new Message({
+                user: adminId,
+                receiver: data.user,
+                message: `Your topup order no:- ${transactionId} has been created. Someone will start working on it in a moment`,
+            })
+            const message = await newMessage.save();
+                const pair = await MessagePair.findOne({ $or: [{ $and: [{ user: data.user }, { receiver: data.user }] }, { $and: [{ user: data.user }, { receiver: data.user }] }] });
 
-                newMessage.save().then(message => {
-                                            
-                    MessagePair.findOne({ $or: [{ $and: [{ user: data.user }, { receiver: data.user }] }, { $and: [{ user: data.user }, { receiver: data.user }] }] })
-                    .then(pair => {
-                                                     
-                        if (pair) {
-                                                            
-                                                            
-                            pair.message.push(message);
-                            pair.save();
-                            //save pair id to topup order
-                            data.pair = pair;
-                            data.save();
-                            
-                            return res.redirect(`${process.env.SITE_URL}/topup-order/success/${transactionId}`);
-
-                                                            
-                        }
-                        if (!pair) {
-                            const msgId = message._id;
-
-
-
-                            const newPair = new MessagePair({
-                                user: adminId,
-                                receiver: data.user,
-                                message: [msgId],
-                            });
-
-                            newPair.save().then(newpair => {
-                                //save pair id to topup order
-                                data.pair = newpair;
-                                data.save().then(newOrder=>{
-                                    
-                                    //redirect to success page
-                                    return res.redirect(`${process.env.SITE_URL}/topup-order/success/${transactionId}`);
-                                }).catch(err=>{
-                                    console.log(err);
-                                })
-                                
-                                
-                            }).catch(err => {
-                                console.log(err);
-                            })
-                        }
+                if (pair){ 
+                    pair.message.push(message);
+                    await pair.save();
+                    //save pair id to topup order
+                    data.pair = pair;
+                    await data.save()
+                    return res.redirect(`${process.env.SITE_URL}/topup-order/success/${transactionId}`)
+                }
+                if (!pair) {
+                    const msgId = message._id
+                    const newPair = new MessagePair({
+                        user: adminId,
+                        receiver: data.user,
+                        message: [msgId],
                     })
-                })
-
-
-
-                
-                
-                
-            })
-            
+                    const newpair = await newPair.save();
+                        //save pair id to topup order
+                    data.pair = newpair;
+                    const newOrder = await data.save();
+                    //redirect to success page
+                    return res.redirect(`${process.env.SITE_URL}/topup-order/success/${transactionId}`);
+                    
+                    
+                }
         }else{
-            TopupOrder.findByIdAndDelete(transactionId).then(del=>{
-                return res.redirect(`${process.env.SITE_URL}/topup-order/fail/${transactionId}`);
-            }).catch(err=>{
-                console.log(err);
-            })
+            const del = await TopupOrder.findByIdAndDelete(transactionId);
+            return res.redirect(`${process.env.SITE_URL}/topup-order/fail/${transactionId}`);
             
         }
-
-
-        
-    }).catch(err=>{
-        console.log(err)
-    })
+    }catch(err){
+        res.status(400).json({error: 'Order saving failed'});
+    }
+    
 }
 
 exports.SSLComFail = (req, res)=>{
@@ -479,72 +452,72 @@ exports.createTopupOrder = (req, res, next) => {
 
 
 
-exports.getTopupOrderById = (req, res, next, id) => {
-    TopupOrder.findById(id)
-        .exec((err, topupOrder) => {
-            if (err || !topupOrder) {
-                return res.status(400).json({
-                    error: 'Topup Order not found'
-                });
-            }
-            req.topupOrder = topupOrder;
-            next();
+exports.getTopupOrderById = async (req, res, next, id) => {
+    try{
+        const topupOrder = await TopupOrder.findById(id);
+        req.topupOrder = topupOrder;
+        next();
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Topup Order not found'
         });
+    }
+
+    
 };
  
-exports.updateTopupOrderById = (req, res, next) => {
-    const { userId, topupOrderId, status, customerId } = req.params;
-    TopupOrder.findByIdAndUpdate(topupOrderId, { status: status })
-        .then(topupOrder => {
+exports.updateTopupOrderById = async (req, res, next) => {
+    try{
+        const { userId, topupOrderId, status, customerId } = req.params;
+        const topupOrder = await TopupOrder.findByIdAndUpdate(topupOrderId, { status: status });
 
-            //send message
-            let newMessage = new Message({
+        //send message
+        let newMessage = new Message({
+            user: userId,
+            receiver: customerId,
+            message: `Your topup order no:- ${topupOrderId} has been ${status}`,
+        })
+        const message = await newMessage.save();
+
+        const pair = await MessagePair.findOne({ $or: [{ $and: [{ user: userId }, { receiver: customerId }] }, { $and: [{ user: customerId }, { receiver: userId }] }] })
+        
+            
+        if (pair) {
+            
+            const msgId = message._id;
+            pair.message.push(message);
+            await pair.save();
+            
+            return res.json({message: 'updated'})
+            
+        }
+        if (!pair) {
+            const msgId = message._i
+            const newPair = new MessagePair({
                 user: userId,
                 receiver: customerId,
-                message: `Your topup order no:- ${topupOrderId} has been ${status}`,
+                message: [msgId],
             });
-
-            newMessage.save().then(message => {
-                
-                MessagePair.findOne({ $or: [{ $and: [{ user: userId }, { receiver: customerId }] }, { $and: [{ user: customerId }, { receiver: userId }] }] })
-                    .then(pair => {
-                        
-                        if (pair) {
-                            
-                            const msgId = message._id;
-                            pair.message.push(message);
-                            pair.save()
-                            
-                            res.json({message: 'updated'})
-                            
-                        }
-                        if (!pair) {
-                            const msgId = message._id;
-
-
-
-                            const newPair = new MessagePair({
-                                user: userId,
-                                receiver: customerId,
-                                message: [msgId],
-                            });
-
-                            newPair.save().then(newpair => {
-                                res.json({message: 'updated'})
-                            }).catch(err => {
-                                console.log(err);
-                            })
-                        }
-                })
-                
-            })
-
+            const newpair = await newPair.save();
+            return res.json({message: 'updated'})
             
-        }).catch(err => {
-            res.json(err);
-        })
+        }
+    
+    }catch(err){
+            return res.status(400).json({
+                error: 'Topup Order could not be updated'
+            });
+        }
 }
 exports.deleteTopupOrderById = async (req, res, next)=>{
-    const topups = await TopupOrder.find();
-    res.json(topups);
+    try{
+        const topups = await TopupOrder.find();
+        res.json(topups);
+    }catch(err){
+        return res.status(400).json({
+            error: 'Topup Order could not be deleted'
+        });
+    }
+
 }

@@ -188,9 +188,10 @@ exports.success = async (req, res)=>{
     }
 }
 
-exports.fail = (req, res)=>{
+exports.fail = async (req, res)=>{
     const {transactionId} = req.params;
-    PaymentHistory.findByIdAndDelete(transactionId).then(del=>{
-        res.redirect(`${process.env.SITE_URL}/topup-order/fail/${transactionId}`);
-    })
+    const del = await PaymentHistory.findByIdAndDelete(transactionId);
+    
+    return res.redirect(`${process.env.SITE_URL}/topup-order/fail/${transactionId}`);
+    
 }

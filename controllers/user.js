@@ -111,128 +111,152 @@ exports.read = (req, res) => {
 //     });
 // };
 
-exports.update = (req, res) => {
-    // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
-    const { name, password } = req.body;
+exports.update = async (req, res) => {
+    try{
+        const { name, password } = req.body;
 
-    User.findOne({ _id: req.profile._id }, (err, user) => {
-        if (err || !user) {
-            return res.status(400).json({
-                error: 'User not found'
-            });
-        }
-        if (!name) {
-            return res.status(400).json({
-                error: 'Name is required'
-            });
-        } else {
-            user.name = name;
-        }
-
-        if (password) {
-            if (password.length < 6) {
+        const user = await User.findOne({ _id: req.profile._id });
+            if (!user) {
                 return res.status(400).json({
-                    error: 'Password should be min 6 characters long'
+                    error: 'User not found'
+                });
+            }
+            if (!name) {
+                return res.status(400).json({
+                    error: 'Name is required'
                 });
             } else {
-                user.password = password;
+                user.name = name;
             }
-        }
 
-        user.save((err, updatedUser) => {
-            if (err) {
-                console.log('USER UPDATE ERROR', err);
-                return res.status(400).json({
-                    error: 'User update failed'
-                });
+            if (password) {
+                if (password.length < 6) {
+                    return res.status(400).json({
+                        error: 'Password should be min 6 characters long'
+                    });
+                } else {
+                    user.password = password;
+                }
             }
-            updatedUser.hashed_password = undefined;
-            updatedUser.salt = undefined;
-            res.json(updatedUser);
-        });
-    });
+
+            const updatedUser = await user.save();
+                if (!updatedUser) {
+                    console.log('USER UPDATE ERROR', err);
+                    return res.status(400).json({
+                        error: 'User update failed'
+                    });
+                }
+                updatedUser.hashed_password = undefined;
+                updatedUser.salt = undefined;
+                res.json(updatedUser);
+    }catch(err){
+            return res.status(400).json({
+                error: 'Error updating'
+            });
+        }
+    
 };
 
-exports.addOrderToUserHistory = (req, res, next) => {
-    let history = [];
+exports.addOrderToUserHistory = async (req, res, next) => {
+    try{
+        let history = [];
 
-    req.body.order.products.forEach(item => {
-        history.push({
-            _id: item._id,
-            name: item.name,
-            description: item.description,
-            category: item.category,
-            quantity: item.count,
-            transaction_id: req.body.order.transaction_id,
-            amount: req.body.order.amount
+        req.body.order.products.forEach(item => {
+            history.push({
+                _id: item._id,
+                name: item.name,
+                description: item.description,
+                category: item.category,
+                quantity: item.count,
+                transaction_id: req.body.order.transaction_id,
+                amount: req.body.order.amount
+            });
         });
-    });
 
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true }, (error, data) => {
-        if (error) {
+    const data = await User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true });
+        if (!data) {
             return res.status(400).json({
                 error: 'Could not update user purchase history'
             });
         }
         next();
-    });
+    
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not update user purchase history'
+        });
+    }
 };
 
-exports.purchaseHistory = (req, res) => {
-    Order.find({ user: req.profile._id })
-        .populate('user', '_id name')
-        .sort('-created')
-        .exec((err, orders) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(orders);
-        });
-};
-
-exports.sendMessagesByPair = (req, res) => {
-    const { userId, receiverId, pairId } = req.params;
-    let form = new formidable.IncomingForm();
-        form.keepExtensions = true;
-        
-    form.parse(req, (err, fields, files) => {
-            const { message } = fields;
-
-            const newMessage = new Message({
-            user: userId,
-            receiver: receiverId,
-            message,
-        });
-
-        newMessage.save().then(msg => {
-            MessagePair.findById(pairId).then(pair => {
-                
-                pair.message.push(msg);
-                pair.save()
-                                
-                res.json({message: 'message sent'})
-            })
-        })
-     })
+exports.purchaseHistory = async (req, res) => {
+    try{
 
     
-  
+        const orders = await Order.find({ user: req.profile._id })
+        .populate('user', '_id name')
+        .sort('-created');
+        
+        return res.json(orders);
 
+    }catch(err){
+             
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+            
+    }
+        
+};
+
+exports.sendMessagesByPair = async (req, res) => {
+    try{
+        const { userId, receiverId, pairId } = req.params;
+        let form = new formidable.IncomingForm();
+            form.keepExtensions = true;
+            
+        form.parse(req, async (err, fields, files) => {
+                const { message } = fields;
+
+                const newMessage = new Message({
+                user: userId,
+                receiver: receiverId,
+                message,
+            });
+
+            const msg = await newMessage.save();
+
+            const pair = await MessagePair.findById(pairId);
+                    
+            pair.message.push(msg);
+            await pair.save()
+                                    
+            return res.json({message: 'message sent'})
+                
+        })
+        
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not send message',
+        });
+    }
     
 }
 
-exports.getUnseenMessagesByReceiver = (req, res) => {
+exports.getUnseenMessagesByReceiver = async (req, res) => {
+    try{
         const { userId } = req.params; 
-        Message.find({receiver: userId, seen: false}).exec((err, messages) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(messages);
+        const messages = await Message.find({receiver: userId, seen: false});
+            
+        res.json(messages);
+        
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not send message',
         });
+    }
+        
 }
 
 exports.getMessagesByUser = async (req, res) => {
