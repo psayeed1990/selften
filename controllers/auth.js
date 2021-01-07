@@ -3,53 +3,188 @@ const jwt = require('jsonwebtoken'); // to generate signed token
 const expressJwt = require('express-jwt'); // for authorization check
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Wallet = require('../models/wallet');
+const axios = require('axios');
 
-// using promise
-exports.signup = (req, res) => {
-    // console.log("req.body", req.body);
-    
-    const user = new User(req.body);
-    user.save((err, user) => {
-        if (err) {
+exports.resendOTP = async (req, res)=>{
+    try{
+        const {phone} = req.params;
+        console.log(phone);
+        const user = await User.findOne({phone: phone});
+
+        if(!user){
             return res.status(400).json({
-                // error: errorHandler(err)
-                error: 'Email is taken'
+                
+                error: 'Phone number does not belong to any user'
             });
         }
-        user.salt = undefined;
-        user.hashed_password = undefined;
+        if(user){
+            if(user.otpcode === 'undefined'){
+                return res.status(400).json({
+                
+                error: 'Phone number already belongs to a verified user'
+            });
 
-        const newWallet = new Wallet({
-            user: user._id,
+            }else if(user.phone !== 'undefined' ){
+                const generateMsg = (length)=> {
+                    var result           = '';
+                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                    var charactersLength = characters.length;
+                    for ( var i = 0; i < length; i++ ) {
+                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    return result;
+                }
+
+                const generatedMsg = await generateMsg(5);
+                const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
+                user.otpcode = generatedMsg.toUpperCase(),
+                await user.save();
+                
+                const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
+                const {data} = await axios.get(alphaURI);
+                return res.json({sendAgain: 'again', phone: user.phone})
+            }
+
+        }
+
+
+
+    }catch(err){
+        return res.status(400).json({
+                
+            error: 'Something wrong happened'
         });
+    }
+    
+}
 
-        newWallet.save();
+//verify otp
+exports.verifyOTP = async (req, res, next)=>{
+    const { phone, otpcode } = req.params;
+    const user = await User.findOne({phone: phone});
 
-        res.json({
-            user
+    if(!user){
+        return res.status(400).json({
+                
+             error: 'Wrong phone number or user does not exist'
         });
+    }
+
+    if(user.otpcode !== otpcode){
+        return res.status(400).json({
+                
+            error: 'Wrong otp'
+        });
+    }
+
+    user.otpcode = undefined;
+    //after save
+    await user.save();
+    
+
+    const newWallet = new Wallet({
+        user: user._id,
     });
+
+    const wallet = await newWallet.save();
+
+    return res.json({
+        user
+    });
+
+
+
+}
+
+// using promise
+exports.signup = async (req, res) => {
+    // console.log("req.body", req.body);
+    try{    
+        //generate otp
+         const generateMsg = (length)=> {
+            var result           = '';
+            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        //check phone
+        const checkPhone = await User.findOne({phone: req.body.phone});
+        if(checkPhone){
+            if(checkPhone.otpcode !== 'undefined'){
+                //send otp message again
+                const generatedMsg = await generateMsg(5);
+                const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
+                checkPhone.otpcode = generatedMsg.toUpperCase(),
+                await checkPhone.save();
+                
+                const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${checkPhone.phone}&msg=${msg}`;
+                const {data} = await axios.get(alphaURI);
+                res.json({sendAgain: 'again', phone: checkPhone.phone})
+            }
+            else{
+                return res.status(400).json({
+                
+                    error: 'Phone already registered. Please sign in'
+                });
+            }
+
+        }
+        if(!checkPhone){
+            //check mail
+            const checkEmail = await User.findOne({email: req.body.email});
+            if(checkEmail){
+                if(checkEmail.otpcode !== 'undefined'){
+                    //send otp message again
+                    const generatedMsg = await generateMsg(5);
+                    const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
+                    checkEmail.otpcode = generatedMsg.toUpperCase(),
+                    await checkEmail.save();
+                    
+                    const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${checkEmail.phone}&msg=${msg}`;
+                    const {data} =  await axios.get(alphaURI);
+                    return res.json({sendAgain: 'again', phone: checkEmail.phone})
+                }
+                else{
+                    return res.status(400).json({
+                
+                        error: 'Email already registered'
+                    });
+                }
+                
+            }
+        }
+
+        
+
+        const newUser = new User(req.body);
+        const user = await newUser.save();
+        
+
+        //otp code
+       
+        const generatedMsg = await generateMsg(5);
+        const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
+        user.otpcode = generatedMsg.toUpperCase(),
+        await user.save();
+        
+        const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${req.body.phone}&msg=${msg}`;
+
+        const {data} = await axios.get(alphaURI);
+        return res.json({sendAgain: 'First', phone: user.phone});
+
+        
+    }catch(err){
+        return res.status(400).json({
+                
+            error: 'Something wrong happened'
+        });
+    }
 };
 
-// using async/await
-// exports.signup = async (req, res) => {
-//     try {
-//         const user = await new User(req.body);
-//         console.log(req.body);
-
-//         await user.save((err, user) => {
-//             if (err) {
-//                 // return res.status(400).json({ err });
-//                 return res.status(400).json({
-//                     error: 'Email is taken'
-//                 });
-//             }
-//             res.status(200).json({ user });
-//         });
-//     } catch (err) {
-//         console.error(err.message);
-//     }
-// };
 
 exports.signin = (req, res) => {
     // find the user based on email

@@ -57,6 +57,9 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: 'Coupon',
         },
+        otpcode:{
+            type: String,
+        },
         createdAt: {
             type: Date,
             default: Date.now,

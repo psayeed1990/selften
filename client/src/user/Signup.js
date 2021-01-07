@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../core/Layout';
-import { signup } from '../auth';
+import { signup, verifyOTP } from '../auth';
+import ResendOTP from './ResendOTP';
 
 const Signup = () => {
+    const [sendOTP, setSendOTP] = useState(false);
+    const [userPhone, setUserPhone] = useState('');
     const [values, setValues] = useState({
+        otp:'',
         name: '',
         email: '',
         phone: '',
@@ -16,7 +20,7 @@ const Signup = () => {
         success: false
     });
 
-    const { name, email, phone, password, address, postCode, city, success, error } = values;
+    const { otp, name, email, phone, password, address, postCode, city, success, error } = values;
 
     const handleChange = name => event => {
         setValues({ ...values, error: false, [name]: event.target.value });
@@ -28,19 +32,16 @@ const Signup = () => {
         signup({ name, email, phone, address, postCode, city, password }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, success: false });
-            } else {
-                setValues({
-                    ...values,
-                    name: '',
-                    email: '',
-                    phone: '',
-                    address: '',
-                    postCode: '',
-                    city:'',
-                    password: '',
-                    error: '',
-                    success: true
-                });
+            } 
+            if(data.sendAgain){
+                setValues({ ...values, error: data.error, success: false });
+                setSendOTP(true);
+                setUserPhone(data.phone)
+            }
+            
+            else {
+                setValues({ ...values, error: 'Server error', success: false });
+
             }
         });
     };
@@ -91,9 +92,42 @@ const Signup = () => {
 
     const showSuccess = () => (
         <div className="alert alert-info" style={{ display: success ? '' : 'none' }}>
-            New account is created. Please <Link to="/signin">Signin</Link>
+            New account is created. Please <Link to="/user/login">Signin</Link>
         </div>
     );
+
+    const validateOTP = async (event)=>{
+        event.preventDefault();
+        
+        const sendOTP = await verifyOTP(userPhone, otp);
+
+        if(sendOTP.error){
+            setValues({ ...values, error: sendOTP.error, success: false });
+
+        }else{
+            setValues({
+                    ...values,
+                    otp: '',
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: '',
+                    postCode: '',
+                    city:'',
+                    password: '',
+                    error: '',
+                    success: true
+                });
+
+            document.getElementById('otp-form').style.display= "none";
+
+            
+        }
+
+
+    }
+
+
 
     return (
         <Layout
@@ -103,7 +137,20 @@ const Signup = () => {
         >
             {showSuccess()}
             {showError()}
-            {signUpForm()}
+            {
+                sendOTP === true ?
+                <form onSubmit={validateOTP} id="otp-form" className="all-form">
+                    <div className="form-group">
+                        <h5 className="text-muted">OTP code send to your phone : <h1>{userPhone}</h1></h5>
+                        <input onChange={handleChange('otp')} type="text" className="form-control" value={otp} name="otp" />
+                    </div>
+                    <ResendOTP phone={userPhone} />
+                    <input className="btn btn-outline-primary submit-btn" type="submit" value="Verify Phone" />
+                </form>
+                :
+                signUpForm()
+            }
+            
         </Layout>
     );
 };

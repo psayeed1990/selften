@@ -5,12 +5,16 @@ const {
     signup,
     signin,
     signout,
-    requireSignin
+    requireSignin,
+    verifyOTP,
+    resendOTP,
 } = require("../controllers/auth");
 const { userSignupValidator } = require("../validator");
 
 router.post("/signup", userSignupValidator, signup);
 router.post("/signin", signin);
 router.get("/signout", signout);
+router.get("/verify-otp/:phone/:otpcode", verifyOTP);
+router.get("/resend-otp/:phone/", resendOTP);
 
 module.exports = router;

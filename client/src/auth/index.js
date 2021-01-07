@@ -1,5 +1,31 @@
 import { API } from '../config';
 
+export const verifyOTP = async (phone, otp)=>{
+    try{
+        const response = await fetch(`${API}/verify-otp/${phone}/${otp}`, {
+            method: 'GET'
+        });
+
+        return response.json();
+    }catch(err){
+        return console.log(err);
+    }
+
+}
+
+export const resendOTPCode = async (phone)=>{
+    try{
+        const response = await fetch(`${API}/resend-otp/${phone}`, {
+            method: "GET",
+            
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 export const signup = user => {
     return fetch(`${API}/signup`, {
         method: 'POST',
