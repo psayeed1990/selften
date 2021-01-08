@@ -10,7 +10,7 @@ const Footer = ()=>{
                 <p>Payment Verified by SSL commerce</p>
             </div>
 
-            <div>
+            <div className="footer-link">
                 <Link exact to="/terms-condition">Terms and Condition</Link>
                 <Link exact to="/privacy-policy">Privacy Policy</Link>
                 <Link exact to="/shipment-info">Shipment info</Link>

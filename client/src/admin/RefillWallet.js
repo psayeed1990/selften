@@ -7,6 +7,7 @@ import { isAuthenticated } from './../auth';
 import { AdminLinks } from '../user/AdminDashboard';
 import { UserLinks } from '../user/UserDashboard';
 import { Link } from 'react-router-dom';
+import './refillWallet.css';
 
 const RefillWallet = ()=>{
     const [profile, setProfile] = useState({});
@@ -90,12 +91,12 @@ const RefillWallet = ()=>{
                     :
                     <UserLinks />
                 }</div>
-                <div className="col-md-6 offset-md-2 m-b-250 mb-5">
+                <div className="col-md-9 m-b-250 mb-5">
                 
                     {showLoading()}
                     {showSuccess()}
                     {showError()}
-                    <form className="row" onSubmit={refillWallet}>
+                    <form className="row wallet" onSubmit={refillWallet}>
                 
                         <div className="form-group col-md-4">
                             <p>Balance: {wallet}.00 BDT</p>

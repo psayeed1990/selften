@@ -44,12 +44,13 @@ const AssignedTopupOrders = ()=>{
         <div className="col-md-3"><AdminLinks /></div>
             <div className="col-md-6">
                 <p>Assigned to you to complete</p>
+                <div className="row">
             {
                 orders ? 
                 orders.map(order=>{
                     return(
                         
-                                <div className="col-md-6 p-5" key={order._id}>
+                                <div className="col-md-4 p-5" key={order._id}>
                                     <Link exact to={`/topup-orders/${order._id}`}>
                                         
                                         <h6>Requested by: { order.user.name }</h6>
@@ -85,6 +86,7 @@ const AssignedTopupOrders = ()=>{
                 :
                 <Fragment>Loading...</Fragment>
             }
+                </div>
             </div>
         </div>
 

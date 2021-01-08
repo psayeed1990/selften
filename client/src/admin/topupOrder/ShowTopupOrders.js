@@ -46,14 +46,15 @@ const ShowTopupOrders = ()=>{
         >
 
         <div className="row">
-        <div className="col-md-3"><AdminLinks /></div>
-            <div className="col-md-6">
+            <div className="col-md-3"><AdminLinks /></div>
+            <div className="col-md-9">
+                 <div className="row">
             {
                 orders ? 
                 orders.map(order=>{
                     return(
-                        
-                                <div className="col-md-6 p-5" key={order._id}>
+                           
+                                <div className="col-md-4 p-5" key={order._id}>
                                     <Link exact to={`/topup-orders/${order._id}`}>
                                         
                                         <h6>Requested by: { order.user.name }</h6>
@@ -98,13 +99,15 @@ const ShowTopupOrders = ()=>{
                                         }
                                         
                                     
-                                </div>          
+                                </div>
+                                     
                        
                     )
                 })
                 :
                 <Fragment>Loading...</Fragment>
             }
+            </div> 
             </div>
         </div>
 

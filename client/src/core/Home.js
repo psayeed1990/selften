@@ -48,10 +48,10 @@ const Home = () => {
             {
                 categories.length > 0 ?
                 <div className="showCategories row">
-                    {categories.map(category=>{
+                    {categories.map((category)=>{
                         return(
-                        <div className="col-md-2 home-categories">
-                            <Link exact path={`/categories/${category._id}`}>
+                        <div className="col-md-1 home-categories" key={category._id}>
+                            <Link exact to={`/categories/${category._id}`}>
                                 <ShowThumb item={category} url="categories" />
                                 <h6>{category.name}</h6>
                                 
@@ -71,7 +71,7 @@ const Home = () => {
             <h2 className="mb-4">New Arrivals</h2>
             <div className="row">
                 {productsByArrival.map((product, i) => (
-                    <div key={i} className="col-4 mb-3">
+                    <div key={i} className="col-md-4 mb-3">
                         <Card product={product} />
                     </div>
                 ))}
@@ -80,7 +80,7 @@ const Home = () => {
             <h2 className="mb-4">Best Sellers</h2>
             <div className="row">
                 {productsBySell.map((product, i) => (
-                    <div key={i} className="col-4 mb-3">
+                    <div key={i} className="col-md-4 mb-3">
                         <Card product={product} />
                     </div>
                 ))}

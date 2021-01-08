@@ -68,7 +68,7 @@ const AddSlider = () => {
     };
 
     const newPostForm = () => (
-        <form className="mb-3" onSubmit={clickSubmit}>
+        <form className="mb-3 m-5" onSubmit={clickSubmit}>
             <h4>Slider Photo</h4>
             <div className="form-group">
                 <label className="btn btn-secondary">
@@ -109,7 +109,7 @@ const AddSlider = () => {
         <Layout title="Add a new topup system" description={`G'day ${user.name}, ready to add a new topup?`}>
             <div className="row">
             <div className="col-md-3"><AdminLinks /></div>
-                <div className="col-md-6 offset-md-2">
+                <div className="col-md-9">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

@@ -39,7 +39,7 @@ const ShowMessagePair = () => {
                         <div className="col-md-3"><UserLinks /></div>
                 }
             
-                <div className="col-md-6 offset-md-2 m-b-250 mb-5">
+                <div className="col-md-9 m-b-250 mb-5">
                     
                     {
                         messagesPair ?
@@ -67,7 +67,7 @@ const ShowMessagePair = () => {
                             
                             })
                             :
-                            <Fragment></Fragment>
+                            <Fragment>Loading...</Fragment>
                     }
                 </div>  
                

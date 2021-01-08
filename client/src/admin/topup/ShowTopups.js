@@ -38,17 +38,16 @@ const ShowTopups = ()=>{
                 topupThumbnails.map(thumb=>{
                     return(
 
-                                <Fragment>
+                                
                                     
-                                    <div className="col-md-2 thumb-show" key={thumb._id}>
-                                        <Link exact to={`/topups/${thumb._id}/type/${thumb.type}`}>
-                                        
-                                            <ShowThumb item={thumb} url="topup-thumbs" />
-                                            <h6>{ thumb.title }</h6>
-
-                                        </Link>
-                                    </div>    
-                                </Fragment>      
+                        <div className="col-md-2 thumb-show" key={thumb._id}>
+                            <Link exact to={`/topups/${thumb._id}/type/${thumb.type}`}>
+                            
+                                <ShowThumb item={thumb} url="topup-thumbs" />
+                                <h6>{ thumb.title }</h6>
+                            </Link>
+                        </div>    
+                                
                        
                     )
                 })

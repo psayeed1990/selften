@@ -7,6 +7,7 @@ import { messageByPairId, sendMessage } from '../core/apiCore';
 import { AdminLinks } from '../user/AdminDashboard';
 import { UserLinks } from '../user/UserDashboard';
 import { NotificationsContext } from '../context/notificationsContext';
+import './message.css';
 
 
 const ShowChat = () => {
@@ -136,13 +137,19 @@ const ShowChat = () => {
                 {
                     messages.map(msg => {
                         return (
-                            <p className="border message">{msg.message}</p>
+                            <Fragment>
+                            {msg.user === user._id ?
+                                <p className="message own-msg"><span className="border own-message">{msg.message}</span></p>
+                                :
+                                <p className="message "><span className="border sender-msg">{msg.message}</span></p>
+                            }
+                            </Fragment>
                         )
                         
                     })
                 }
             </div>
-            <form className="mb-3" onSubmit={clickSubmit}>
+            <form id="message" className="mb-3" onSubmit={clickSubmit}>
                 <div className="form-group">
                     
                     <input placeholder="type" onChange={handleChange('message')} type="text" className="form-control" value={message} />
@@ -182,7 +189,7 @@ const ShowChat = () => {
                     <div className="col-md-3"><UserLinks /></div>
                 }
             
-                <div className="col-md-6 offset-md-2">
+                <div className="col-md-9">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

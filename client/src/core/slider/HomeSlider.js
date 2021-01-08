@@ -109,7 +109,7 @@ const HomeSLider = ()=>{
             <div className="slide-icons">
                 {slides.map((s, index)=>{
                     return(
-                        <div>
+                        <div key={index}>
                             { count === index  ?
                                 <p className="slide-btn-selected"></p>
                                 :

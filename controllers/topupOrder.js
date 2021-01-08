@@ -19,7 +19,7 @@ const adminId = '5fdadfe6cc7fc11b2772b5e0';
 //@GET all topup thumbs
 exports.getAllTopupOrders = async (req, res, next)=>{
     try{
-        const topuporder = await TopupOrder.find().populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo');
+        const topuporder = await TopupOrder.find({ status: 'pending'}).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo');
             
         res.json(topuporder);
     }catch(err){
@@ -48,10 +48,10 @@ exports.assignTopupOrder = async (req, res)=>{
 }
 
 //get all assigned topup orders
-exports.getAllAssignedTopupOrders = async (req, res, next) => {
+exports.getAllAssignedTopupOrders = async (req, res, next) => { 
     try{
         const { userId } = req.params;
-        const topuporder = await TopupOrder.find({assignedTo: userId }).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair');
+        const topuporder = await TopupOrder.find({assignedTo: userId, status: 'pending' }).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair');
 
         return res.json(topuporder);
     }catch(err){

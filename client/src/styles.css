@@ -54,7 +54,9 @@ h6:hover {
 
 .form-control {
 	transition: border 2s linear;
+	max-width: 300px;
 }
+
 /*ends custom css */
 
 /**

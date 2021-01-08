@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth";
 import { itemTotal } from "./cartHelpers";
@@ -15,11 +15,26 @@ const isActive = (history, path) => {
     }
 };
 
-const Menu = ({ history }) => (
+const Menu = ({ history }) => {
+
+    const toggleMenuView = (event)=>{
+        event.preventDefault();
+        const userMenu = document.getElementById('user-menu')
+        if(userMenu.style.visibility === ''){
+            return userMenu.style.visibility = 'visible';
+        }
+        if(userMenu.style.visibility === 'visible'){
+            return userMenu.style.visibility = 'hidden';
+        }if(userMenu.style.visibility === 'hidden'){
+            return userMenu.style.visibility = 'visible';
+        }
+    }
+
+    return(
     <Fragment>
 
         {/* start top bar */}
-        <div className="top-bar">
+        <div className="top-bar wow">
             <span className="top-bar-left">
                 <img src="/images/icons/call-icon.svg" width="18" /><span>01301997184</span>
                 <img src="/images/icons/message-icon.svg" width="18" /><span>support@selften.com</span>
@@ -52,7 +67,8 @@ const Menu = ({ history }) => (
                     <TopSearch />
 
                     {/* user menu */}
-                    <div className="user-menu">
+                    <div className="menu-icon" onClick={toggleMenuView}><img src="/images/icons/menu.svg" width="22" /></div>
+                    <div className="user-menu" id="user-menu">
                          <li className="nav-item">
                         <Link
                             className="nav-link"
@@ -267,6 +283,7 @@ const Menu = ({ history }) => (
             </div>
         </div>
     </Fragment>
-);
+    )
+};
 
 export default withRouter(Menu);

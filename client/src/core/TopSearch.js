@@ -59,7 +59,7 @@ const TopSearch = ()=>{
     return(
         <div className="top-search">
             <form onSubmit={clickSubmit}>
-                <input name="search" onChange={handleChange('search')} type="text" placeholder="search for game and item" /><img onClick={clickSubmit} className="search-icon cursor-pointer" src="/images/icons/search-icon.svg" width="18" />
+                <input name="search" onChange={handleChange('search')} type="text" placeholder="search" /><img onClick={clickSubmit} className="search-icon cursor-pointer" src="/images/icons/search-icon.svg" width="18" />
             </form>
         </div>
     )

@@ -79,7 +79,7 @@ const ModifyDiamondsValue = () => {
     };
 
     const newPostForm = () => (
-        <form className="mb-3" onSubmit={clickSubmit}>
+        <form className="mb-3 m-5" onSubmit={clickSubmit}>
             <h4>How many taka equals to 1 diamond? Now {oldDiamondValue}tk = 1 Diamond</h4>
 
             <div className="form-group">
@@ -114,7 +114,7 @@ const ModifyDiamondsValue = () => {
         <Layout title="Add balance" description={`for stock of topup ?`}>
             <div className="row">
                 <div className="col-md-3"><AdminLinks /></div>
-                <div className="col-md-6 offset-md-2">
+                <div className="col-md-9">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

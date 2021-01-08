@@ -79,7 +79,7 @@ const clickSubmit = event => {
 };
 
 const newPostForm = () => (
-    <form className="mb-3" onSubmit={clickSubmit}>
+    <form className="mb-3 m-5" onSubmit={clickSubmit}>
         <h4>Create Racharge Package</h4>
         
         <div className="form-group">
@@ -135,7 +135,7 @@ return (
     <Layout title="Add a new recharge package" description={`G'day ${user.name}, ready to add a new recharge package?`}>
         <div className="row">
         <div className="col-md-3"><AdminLinks /></div>
-            <div className="col-md-6 offset-md-2">
+            <div className="col-md-9">
                 {showLoading()}
                 {showSuccess()}
                 {showError()}

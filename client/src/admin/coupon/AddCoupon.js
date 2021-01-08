@@ -118,7 +118,7 @@ const AddCoupon = () => {
 
     const newPostForm = () => (
         <Fragment>
-            <form className="mb-3" onSubmit={clickSubmit}>
+            <form className="mb-3 m-5" onSubmit={clickSubmit}>
                 <h4>Add a coupon </h4>
                 <div className="form-group">
                     <label className="text-muted">Coupon Name</label>
@@ -145,14 +145,14 @@ const AddCoupon = () => {
 
                 <button className="btn btn-outline-primary">Add a coupon</button>
             </form>
-            <h4>Your diamonds or purchased points: {diamondAmount} </h4>
-            <h3>All coupons</h3>
-            <div className="row">
+            <h4 className="m-5">Your diamonds or purchased points: {diamondAmount} </h4>
+            <h3 className="m-5">All coupons</h3>
+            <div className="row m-5">
                 
                 {
                     coupons.map((coupon, index)=>{
                         return(
-                            <div className="border col-md-5 bg-new p-2">
+                            <div className="border col-md-4 bg-new p-2">
                                 <p>{index + 1}</p>
                                 <h3>{coupon.couponName}</h3>
                                 <h5 className="bg-light p-2 rounded"><b>{coupon.couponCode}</b></h5>
@@ -201,7 +201,7 @@ const AddCoupon = () => {
         <Layout title="Add balance" description={`for stock of topup ?`}>
             <div className="row">
                 <div className="col-md-3"><AdminLinks /></div>
-                <div className="col-md-6 offset-md-2">
+                <div className="col-md-9">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}
