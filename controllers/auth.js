@@ -42,6 +42,7 @@ exports.resendOTP = async (req, res)=>{
                 
                 const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
                 const {data} = await axios.get(alphaURI);
+                console.log(data.data)
                 return res.json({sendAgain: 'again', phone: user.phone})
             }
 
@@ -101,7 +102,7 @@ exports.signup = async (req, res) => {
     // console.log("req.body", req.body);
     try{    
         //generate otp
-         const generateMsg = (length)=> {
+        const generateMsg = (length)=> {
             var result           = '';
             var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             var charactersLength = characters.length;
@@ -123,6 +124,7 @@ exports.signup = async (req, res) => {
                 
                 const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${checkPhone.phone}&msg=${msg}`;
                 const {data} = await axios.get(alphaURI);
+                console.log(data.data)
                 return res.json({sendAgain: 'again', phone: checkPhone.phone})
             }
             else{
@@ -146,6 +148,7 @@ exports.signup = async (req, res) => {
                     
                     const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${checkEmail.phone}&msg=${msg}`;
                     const {data} =  await axios.get(alphaURI);
+                    console.log(data.data)
                     return res.json({sendAgain: 'again', phone: checkEmail.phone})
                 }
                 else{
@@ -174,6 +177,7 @@ exports.signup = async (req, res) => {
         const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${req.body.phone}&msg=${msg}`;
 
         const {data} = await axios.get(alphaURI);
+        console.log(data.data)
         return res.json({sendAgain: 'First', phone: user.phone});
 
         
