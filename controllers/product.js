@@ -24,70 +24,73 @@ exports.read = (req, res) => {
     return res.json(req.product);
 };
 
-exports.create = (req, res) => {
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'Image could not be uploaded'
-            });
-        }
-        // check for all fields
-        const { name, description, price, category, quantity, shipping } = fields;
-
-        if (!name || !description || !price || !category || !quantity || !shipping) {
-            return res.status(400).json({
-                error: 'All fields are required'
-            });
-        }
-
-        let product = new Product(fields);
-
-        // 1kb = 1000
-        // 1mb = 1000000
-
-        if (files.photo) {
-            // console.log("FILES PHOTO: ", files.photo);
-            if (files.photo.size > 1000000) {
-                return res.status(400).json({
-                    error: 'Image should be less than 1mb in size'
-                });
-            }
-            product.photo.data = fs.readFileSync(files.photo.path);
-            product.photo.contentType = files.photo.type;
-        }
-
-        product.save((err, result) => {
+exports.create = async (req, res) => {
+    try{
+        let form = new formidable.IncomingForm();
+        form.keepExtensions = true;
+        form.parse(req, async (err, fields, files) => {
             if (err) {
-                console.log('PRODUCT CREATE ERROR ', err);
                 return res.status(400).json({
-                    error: errorHandler(err)
+                    error: 'Image could not be uploaded'
                 });
             }
-            res.json(result);
+            // check for all fields
+            const { name, description, price, category, quantity, shipping } = fields;
+
+            if (!name || !description || !price || !category || !quantity || !shipping) {
+                return res.status(400).json({
+                    error: 'All fields are required'
+                });
+            }
+
+            let product = new Product(fields);
+
+            // 1kb = 1000
+            // 1mb = 1000000
+
+            if (files.photo) {
+                // console.log("FILES PHOTO: ", files.photo);
+                if (files.photo.size > 1000000) {
+                    return res.status(400).json({
+                        error: 'Image should be less than 1mb in size'
+                    });
+                }
+                product.photo.data = fs.readFileSync(files.photo.path);
+                product.photo.contentType = files.photo.type;
+            }
+
+            const result = await product.save();
+
+            return res.json(result);
+
         });
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: 'Failed product creation'
+        });
+    }
 };
 
-exports.remove = (req, res) => {
-    let product = req.product;
-    product.remove((err, deletedProduct) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
-        res.json({
+exports.remove = async (req, res) => {
+    try{
+        let product = req.product;
+        const deletedProduct = await product.remove();
+
+        return res.json({
             message: 'Product deleted successfully'
         });
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
 };
 
-exports.update = (req, res) => {
-    let form = new formidable.IncomingForm();
+exports.update = async (req, res) => {
+    try
+    {let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
         if (err) {
             return res.status(400).json({
                 error: 'Image could not be uploaded'
@@ -111,15 +114,16 @@ exports.update = (req, res) => {
             product.photo.contentType = files.photo.type;
         }
 
-        product.save((err, result) => {
-            if (err) {
-                return res.status(400).json({
+        const result = await product.save();
+         
+        return res.json(result);
+        
+    });}catch(err){
+        return res.status(400).json({
                     error: errorHandler(err)
                 });
-            }
-            res.json(result);
-        });
-    });
+    }
+
 };
 
 /**

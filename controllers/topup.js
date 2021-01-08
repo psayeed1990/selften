@@ -16,12 +16,12 @@ exports.getAllTopups = async (req, res, next)=>{
     
     
 }
-exports.createTopup = (req, res) => {
-        
+exports.createTopup = async (req, res) => {
+    try{
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, async (err, fields, files) => {
             
             if (err) {
                 
@@ -62,18 +62,16 @@ exports.createTopup = (req, res) => {
                 topup.thumb.contentType = files.thumb.type;
             }
     
-            topup.save((err, result) => {
-                if (err) {
-                    console.log('PRODUCT CREATE ERROR ', err);
-                    return res.status(400).json({
-                        error: errorHandler(err)
-                    });
-                }
-      
-                res.json(result);
-            });
+            const result = await topup.save();
+            res.json(result);
+            
         });
-    };
+    }catch(err){
+        return res.status(400).json({
+            error: 'Topup create error',
+        });
+    }
+}
 
 
 //photo

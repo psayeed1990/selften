@@ -9,7 +9,7 @@ exports.searchProductAndTopup = async (req, res, next)=>{
 
         res.status(200).json([product, topup])
     }catch(err){
-        console.log(err);
+        res.status(400).json({error: 'Not found'})
     }
 
 }

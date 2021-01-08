@@ -67,11 +67,12 @@ exports.addUpdateBalance = async (req, res, next) => {
        
 }
 
-exports.addUpdateDiamondValue = (req, res)=>{
-
+exports.addUpdateDiamondValue = async (req, res)=>{
+    try{
         const { userId } = req.params;
 
         let { diamondValue } = req.body;
+
         if(!diamondValue){
             return res.status(400).json({
                 error: 'Value field is required'
@@ -84,38 +85,36 @@ exports.addUpdateDiamondValue = (req, res)=>{
             });
         }
 
-        AdminBalance.find().then(prevbalance=>{
+        const prevbalance = await AdminBalance.find();
+        
+        if(!prevbalance){
+            const newBalance = new AdminBalance({
+                balance: 0,
+                updatedBy: userId,
+                takaPerDiamond: diamondValue,
+            })
+            const data = await newBalance.save();
+               
+            return res.json(data);
             
-            if(!prevbalance){
-                const newBalance = new AdminBalance({
-                    balance: 0,
-                    updatedBy: userId,
-                    takaPerDiamond: diamondValue,
-                })
-                newBalance.save().exec((err, data)=>{
-                    if (err) {
-                        return res.status(400).json({
-                            error: 'Diamonds could not add',
-                        });
-                    }
-                    res.json(data);
-                })
-                
-            }
-
-            if(prevbalance){
-                
-                
-                prevbalance[0].takaPerDiamond = Number(diamondValue);
-                prevbalance[0].save()
-                .then(b=>{
-                    res.json(b);
-                }).catch(err=>{
-                    console.log(err)
-                })
-            }
+            
+        }
+        if(prevbalance){
+            
+            
+            prevbalance[0].takaPerDiamond = Number(diamondValue);
+            const b = await prevbalance[0].save();
+            
+            return res.json(b);
+            
+        }
+    }catch(err){
+        return res.status(400).json({
+            error: 'Diamonds could not add',
+        });
+    }
 
             
-        })
+        
 }
 

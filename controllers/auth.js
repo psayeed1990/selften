@@ -123,7 +123,7 @@ exports.signup = async (req, res) => {
                 
                 const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${checkPhone.phone}&msg=${msg}`;
                 const {data} = await axios.get(alphaURI);
-                res.json({sendAgain: 'again', phone: checkPhone.phone})
+                return res.json({sendAgain: 'again', phone: checkPhone.phone})
             }
             else{
                 return res.status(400).json({

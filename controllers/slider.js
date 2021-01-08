@@ -3,12 +3,13 @@ const Slider = require("../models/Slider")
 const fs = require('fs');
 
 
-exports.createSlider = (req, res) => {
+exports.createSlider = async (req, res) => {
+    try{
         
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, async (err, fields, files) => {
             
             if (err) {
                 
@@ -43,18 +44,14 @@ exports.createSlider = (req, res) => {
                 slider.photo.contentType = files.photo.type;
             }
     
-            slider.save((err, result) => {
-                if (err) {
-                    console.log('PRODUCT CREATE ERROR ', err);
-                    return res.status(400).json({
-                        error: errorHandler(err)
-                    });
-                }
-      
-                res.json(result);
-            });
+            const result = await slider.save();
+            res.json(result);
+            
         });
-    };
+    }catch(err){
+        res.status(400).json({error: 'Slider can not add'})
+    }
+}
 
 
 exports.slider = async (req, res,next)=> {

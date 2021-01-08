@@ -4,38 +4,41 @@ const fs = require('fs');
 const RechargePackage = require('../models/rechargePackage');
 
 //@GET all RechargePackage thumbs
-exports.getAllRechargePackages = (req, res, next)=>{
-    RechargePackage.find().populate('topupGameName').exec((err, rechargePackage) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'RechargePackage not found'
-            });
-        }
+exports.getAllRechargePackages = async (req, res, next)=>{
+    try{
+        const rechargePackage = await RechargePackage.find().populate('topupGameName');
+
         res.json(rechargePackage);
-    });
+    }
+
+    catch(err){
+        return res.status(400).json({
+            error: 'RechargePackage not found'
+        });
+    }
+    
     
 }
 
-exports.getRechargePackageByGameId = (req, res, next)=>{
-    
-    const {gameId} = req.params;
-    console.log(gameId);
-    RechargePackage.find({topupGameName: gameId}).populate('topupGameName').exec((err, rechargePackage) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'RechargePackage not found'
-            });
-        }
+exports.getRechargePackageByGameId = async (req, res, next)=>{
+    try{
+        const {gameId} = req.params;
+        const rechargePackage = await RechargePackage.find({topupGameName: gameId}).populate('topupGameName');
         res.json(rechargePackage);
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: 'RechargePackage not found'
+        });
+    }
 }
 
-exports.createRechargePackage = (req, res) => {
+exports.createRechargePackage = async (req, res) => {
+    try{
         
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         
-        form.parse(req, (err, fields) => {
+        form.parse(req, async (err, fields) => {
             
             // check for all fields
             const { topupGameName, packageName, packageAmount } = fields;
@@ -67,34 +70,33 @@ exports.createRechargePackage = (req, res) => {
             
             
     
-            rechargePackage.save((err, result) => {
-                if (err) {
-                    console.log('Recharge Package CREATE ERROR ', err);
-                    return res.status(400).json({
-                        error: errorHandler(err)
-                    });
-                }
-                console.log(result);
-                res.json(result);
-            });
+            const result = await rechargePackage.save();
+            
+              
+            res.json(result);
+            
         });
-    };
-
-
-
-
-exports.getRechargePackageById = (req, res, next, id) => {
-    RechargePackage.findById(id)
-    .populate('topupGameName')
-        .exec((err, rechargePackage) => {
-            if (err || !rechargePackage) {
-                return res.status(400).json({
-                    error: 'Recharge Package not found'
-                });
-            }
-            req.rechargePackage = rechargePackage;
-            next();
+    }catch(err){
+        return res.status(400).json({
+            error: 'RechargePackage not created'
         });
+    }
+}
+
+
+
+
+exports.getRechargePackageById = async (req, res, next, id) => {
+    try{
+        const rechargePackage = await RechargePackage.findById(id)
+        .populate('topupGameName');
+        req.rechargePackage = rechargePackage;
+        next();
+    }catch(err){
+        return res.status(400).json({
+            error: 'Recharge Package not found'
+        });
+    } 
 };
 
 exports.updateRechargePackageById = async (req, res, next)=>{
