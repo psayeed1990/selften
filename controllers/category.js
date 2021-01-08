@@ -18,10 +18,11 @@ exports.categoryById = async (req, res, next, id) => {
     
 };
 
-exports.create = (req, res) => { 
+exports.create = async (req, res) => { 
+    try{
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
         if (err) {
             return res.status(400).json({
                 error: 'Image could not be uploaded'
@@ -52,67 +53,68 @@ exports.create = (req, res) => {
             category.photo.contentType = files.photo.type;
         }
 
-        category.save((err, result) => {
-            if (err) {
-                console.log('Category CREATE ERROR ', err);
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(result);
-        });
+        const result = await category.save();
+            
+        return res.json(result);
+        
     });
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
 };
 
-exports.photo = (req, res, next) => {
+exports.photo = async (req, res, next) => {
     if (req.category.photo.data) {
         res.set('Content-Type', req.category.photo.contentType);
-        return res.send(req.category.photo.data);
+        return await res.send(req.category.photo.data);
     }
     next();
 };
 
 
 exports.read = async (req, res) => {
-    return res.json(req.category);
+    return await res.json(req.category);
 };
 
-exports.update = (req, res) => {
-    console.log('req.body', req.body);
-    console.log('category update param', req.params.categoryId);
+exports.update = async (req, res) => {
+    try{
+        const category = req.category;
+        category.name = req.body.name;
+        const data = await category.save();
+        return res.json(data);
+    }
 
-    const category = req.category;
-    category.name = req.body.name;
-    category.save((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
-        res.json(data);
-    });
+    
+    catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
 };
 
-exports.remove = (req, res) => {
-    const category = req.category;
-    Product.find({ category }).exec((err, data) => {
+exports.remove = async (req, res) => {
+    try{
+        const category = req.category;
+        const data = await Product.find({ category });
         if (data.length >= 1) {
             return res.status(400).json({
                 message: `Sorry. You cant delete ${category.name}. It has ${data.length} associated products.`
             });
         } else {
-            category.remove((err, data) => {
-                if (err) {
-                    return res.status(400).json({
-                        error: errorHandler(err)
-                    });
-                }
-                res.json({
-                    message: 'Category deleted'
-                });
+            await category.remove();
+                
+            return res.json({
+                message: 'Category deleted'
             });
         }
-    });
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
+    
 };
 
 exports.list = async (req, res) => {

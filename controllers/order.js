@@ -4,30 +4,27 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 
-exports.orderById = (req, res, next, id) => {
-    Order.findById(id)
-        .populate('products.product', 'name price')
-        .exec((err, order) => {
-            if (err || !order) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            req.order = order;
-            next();
+exports.orderById = async (req, res, next, id) => {
+    try{
+        const order = await Order.findById(id)
+        .populate('products.product', 'name price');
+        
+
+        req.order = order;
+        next();
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
         });
+    }
+        
 };
 
-exports.create = (req, res) => {
-    console.log('CREATE ORDER: ', req.body);
-    req.body.order.user = req.profile;
-    const order = new Order(req.body.order);
-    order.save((error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: errorHandler(error)
-            });
-        }
+exports.create = async (req, res) => {
+    try{
+        req.body.order.user = req.profile;
+        const order = new Order(req.body.order);
+        const data = await order.save();
         // send email alert to admin
         // order.address
         // order.products.length
@@ -43,36 +40,49 @@ exports.create = (req, res) => {
             <p>Login to dashboard to the order in detail.</p>
         `
         };
-        sgMail.send(emailData);
-        res.json(data);
-    });
+        await sgMail.send(emailData);
+        return res.json(data);
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(error)
+        });
+    }
+    
 };
 
-exports.listOrders = (req, res) => {
-    Order.find()
-        .populate('user', '_id name address')
-        .sort('-created')
-        .exec((err, orders) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(error)
-                });
-            }
-            res.json(orders);
+exports.listOrders = async (req, res) => {
+    try{
+        const orders = await Order.find()
+            .populate('user', '_id name address')
+            .sort('-created');
+
+        
+        return res.json(orders);
+
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(error)
         });
+    }
+
+        
 };
 
 exports.getStatusValues = (req, res) => {
     res.json(Order.schema.path('status').enumValues);
 };
 
-exports.updateOrderStatus = (req, res) => {
-    Order.update({ _id: req.body.orderId }, { $set: { status: req.body.status } }, (err, order) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
+exports.updateOrderStatus = async (req, res) => {
+    try{
+        const order = await Order.update({ _id: req.body.orderId }, { $set: { status: req.body.status } });
+        
         res.json(order);
-    });
+
+    }catch(err){
+        return res.status(400).json({
+            error: errorHandler(err)
+        });
+    }
+
+    
 };

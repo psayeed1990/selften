@@ -1,16 +1,16 @@
 const Diamonds = require('./../models/diamonds');
 
-exports.getDiamonds = (req, res)=>{
+exports.getDiamonds = async (req, res)=>{
     const {userId } = req.params;
 
-    Diamonds.findOne({user: userId}).then(diamond=>{
-        if(diamond){
-            res.json(diamond);
+    try{
+        const diamond = await Diamonds.findOne({user: userId})
+        
+        return res.json(diamond);
 
-        }
-        if(!diamond){
-            res.json({error: "No diamonds found"})
-        }
-    })
+    }catch(err){
+       res.status(400).json({error: 'Diamond get error'}); 
+    }
+
 
 }

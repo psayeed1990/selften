@@ -4,46 +4,54 @@ const User = require('../models/user');
 const Coupon  = require('./../models/coupon');
 
 
-exports.getCouponsByUser = (req, res)=>{
-    const {userId} = req.params;
+exports.getCouponsByUser = async (req, res)=>{
+    try{
+        const {userId} = req.params;
 
     
-    User.findById(userId).then(user=>{
-        res.json(user);
-    })
+        const user = await User.findById(userId);
+        return res.json(user);
+
+    }catch(err){
+        res.status(400).json({error: 'No coupon found'})
+    }
+
+    
 }
 
-exports.collectCoupon = (req, res) =>{
+exports.collectCoupon = async (req, res) =>{
+    try{
+
     const { userId, couponId } = req.params;
 
-    Coupon.findById(couponId).then(coupon=>{
-        if(coupon){
-            User.findById(userId).then(user=>{
-                if(!user.coupon){
-                    user.coupon = coupon;
-                    user.save();
-                    res.json(coupon)
-                }
-                if(user.coupon){
-                    user.coupon.push(coupon);
-                    user.save().then(user=>{
-                        res.json(coupon);
-                    }).catch(err=>{
-                        console.log(err);
-                    })
-                }
-            })
-        }else{
-            res.json({error: 'Invalid coupon id'})
+    const coupon = await Coupon.findById(couponId);
+        
+        const user = await User.findById(userId)
+        if(!user.coupon){
+            user.coupon = coupon;
+            await user.save();
+            return res.json(coupon)
         }
-    })
+        if(user.coupon){
+            user.coupon.push(coupon);
+            await user.save();
+            res.json(coupon);
+            
+        }
+    }
+    catch(err){
+        return res.status(400).json({error: 'Invalid coupon id'});
+    }
+        
+    
 }
 
-exports.addCoupon = (req, res)=>{
-        let form = new formidable.IncomingForm();
+exports.addCoupon = async (req, res)=>{
+    try{
+                let form = new formidable.IncomingForm();
         form.keepExtensions = true;
         
-        form.parse(req, (err, fields, files) => {
+        form.parse(req, async (err, fields, files) => {
             const { couponName, couponCode, shortDetails, diamonds, discounts} = fields;
             if( !couponName || !couponCode || !shortDetails || !diamonds || !discounts) {
                 return res.status(400).json({
@@ -59,34 +67,25 @@ exports.addCoupon = (req, res)=>{
                 discounts
             });
 
-            newCoupon.save().then(coupon=>{
-                if(coupon){
-                    res.json(coupon);
-                }
-                if(!coupon){
-                    res.status(400).json({
-                        error: 'Coupon was not created'
-                    });
-                }
+            const coupon = await newCoupon.save()
                 
-            }).catch(err=>{
-                console.log(err);
-            })
+            return res.json(coupon);    
         
         })
-}
-exports.showCoupon = (req, res)=>{
-    Coupon.find().then(coupon=>{
-        if(coupon) {
-            res.json(coupon)
-        }
+    }catch(err){
+        return res.status(400).json({error: 'Coupon was not created'})
+    }
 
-        if(!coupon){
-            res.status(400).json({
+}
+exports.showCoupon = async (req, res)=>{       
+    try{
+        const coupon = await Coupon.find();
+        return res.json(coupon);
+
+    }
+    catch(err){
+        res.status(400).json({
                 error: 'Coupon could not found'
             });
-        }
-    }).catch(err=>{
-        console.log(err);
-    })
+    }
 }
