@@ -3,68 +3,78 @@ import queryString from "query-string";
 
 
 //send messages
-export const sendMessage = (token, userId, receiverId, pairId, message) => {
-        return fetch(`${API}/user/${userId}/message/${receiverId}/pair/${pairId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: message
-    })
-        .then(response => {
-            return response.json();
+export const sendMessage = async (token, userId, receiverId, pairId, message) => {
+    try{
+        const response = await fetch(`${API}/user/${userId}/message/${receiverId}/pair/${pairId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: message
         })
-        .catch(err => {
-            console.log(err);
-        });
+
+        return response.json();
+    }
+
+    
+    catch(err) {
+        console.log(err);
+    }
 }
 
 // read chats for eavh pair
-export const messageByPairId = (userId, token, pairId) => {
-        return fetch(`${API}/user/${userId}/message-pair/${pairId}`, {
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const messageByPairId = async (userId, token, pairId) => {
+    try{
+        const response = await fetch(`${API}/user/${userId}/message-pair/${pairId}`, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+    catch(err){ console.log(err)}
 }
 
 //show messages list of pair to user
-export const getMessage = (userId, token) => {
-        return fetch(`${API}/user/messages/${userId}`, {
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const getMessage = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/user/messages/${userId}`, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    }
+
+    
+    catch(err) {console.log(err)}
 }
 
 //creating topup order
-export const createTopupOrder = (userId, token, order, id, withSSLCommerz)=>{
+export const createTopupOrder = async (userId, token, order, id, withSSLCommerz)=>{
+    try{
+        const response = await fetch(`${API}/topup-orders/${userId}/topup/${id}/${withSSLCommerz}`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: order
+            })
 
-    return fetch(`${API}/topup-orders/${userId}/topup/${id}/${withSSLCommerz}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: order
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        return response.json();
+    }
+
+
+    
+    catch(err) {
+        console.log(err);
+    }
 }
 
 //get wallet
@@ -95,25 +105,30 @@ export const getTopupThumbs = async () => {
 };
 
 //get Recharge Packages for admin
-export const getRechargePackages = () => {
-    return fetch(`${API}/recharge-package`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
+export const getRechargePackages = async () => {
+    try{
+        const response = await fetch(`${API}/recharge-package`, {
+            method: "GET"
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+
+    
+    catch(err) {console.log(err)};
 };
 
 //get recharge packages by game id
-export const getRechargePackagesByGameName = (game) => {
-    return fetch(`${API}/recharge-package/get-by-game/${game}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
+export const getRechargePackagesByGameName = async (game) => {
+    try{
+        const response = await fetch(`${API}/recharge-package/get-by-game/${game}`, {
+            method: "GET"
         })
-        .catch(err => console.log(err));
+        return response.json();
+    }
+
+        
+    catch(err) {console.log(err)}
 };
 
 export const getProducts = async (sortBy) => {
@@ -134,26 +149,26 @@ export const getCategories = async () => {
     }catch(err){ console.log(err)};
 };
 
-export const getFilteredProducts = (skip, limit, filters = {}) => {
-    const data = {
-        limit,
-        skip,
-        filters
-    };
-    return fetch(`${API}/products/by/search`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => {
-            return response.json();
+export const getFilteredProducts = async (skip, limit, filters = {}) => {
+    try{
+        const data = {
+            limit,
+            skip,
+            filters
+        };
+        const response = await fetch(`${API}/products/by/search`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         })
-        .catch(err => {
+
+        return response.json();
+    }catch(err) {
             console.log(err);
-        });
+    }
 };
 
 export const list = params => {
@@ -168,71 +183,79 @@ export const list = params => {
         .catch(err => console.log(err));
 };
 
-export const read = productId => {
-    return fetch(`${API}/product/${productId}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
+export const read = async (productId) => {
+    try{
+        const response = await fetch(`${API}/product/${productId}`, {
+            method: "GET"
         })
-        .catch(err => console.log(err));
+        return response.json();
+    }
+    catch(err){ console.log(err)}
 };
 
-export const listRelated = productId => {
-    return fetch(`${API}/products/related/${productId}`, {
-        method: "GET"
-    })
-        .then(response => {
-            return response.json();
+export const listRelated = async (productId) => {
+    try{
+        const response = await fetch(`${API}/products/related/${productId}`, {
+            method: "GET"
         })
-        .catch(err => console.log(err));
+            
+        return response.json();
+    }
+    
+    catch(err){console.log(err)}
 };
 
-export const getBraintreeClientToken = (userId, token) => {
-    return fetch(`${API}/braintree/getToken/${userId}`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const getBraintreeClientToken = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/braintree/getToken/${userId}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+            
+        return response.json();
+    }
+
+    
+    catch(err){console.log(err)}
 };
 
-export const processPayment = (userId, token, paymentData) => {
-    return fetch(`${API}/braintree/payment/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(paymentData)
-    })
-        .then(response => {
-            return response.json();
+export const processPayment = async (userId, token, paymentData) => {
+    try{
+        const response = await fetch(`${API}/braintree/payment/${userId}`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(paymentData)
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    }
+
+    
+    catch(err){console.log(err)}
 };
 
-export const createOrder = (userId, token, createOrderData) => {
-    return fetch(`${API}/order/create/${userId}`, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ order: createOrderData })
-    })
-        .then(response => {
-            return response.json();
+export const createOrder = async (userId, token, createOrderData) => {
+    try{
+        const response = await fetch(`${API}/order/create/${userId}`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ order: createOrderData })
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    }catch(err){console.log(err)}
 };
 
 //search by item for both product and topup

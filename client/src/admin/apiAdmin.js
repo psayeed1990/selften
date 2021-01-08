@@ -39,39 +39,45 @@ export const createSlider = async (userId, token, slider) => {
 };
 
 // add coupons
-export const addCoupon = (userId, token, coupon) => {
-    return fetch(`${API}/coupon/create/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: coupon
-    })
-        .then(response => {
-            return response.json();
+export const addCoupon = async (userId, token, coupon) => {
+    try{
+        const response = await fetch(`${API}/coupon/create/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: coupon
         })
-        .catch(err => {
-            console.log(err);
-        });
+
+        return response.json();
+    }
+    catch(err){
+        console.log(err);
+    }
+        
+        
 };
 
 // show coupons
-export const showCoupon = (userId, token, coupon) => {
-    return fetch(`${API}/coupon/`, {
-        method: 'GET',
-        })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
+export const showCoupon = async (userId, token, coupon) => {
+    try{
+        const response = await fetch(`${API}/coupon/`, {
+            method: 'GET',
         });
+
+        return response.json();
+    }
+        
+    catch(err){
+        console.log(err);
+    };
 };
 
 //assign topup order to admin
-export const assignTopupOrder = (user, token, adminId, topupOrderId)=>{
-        return fetch(`${API}/topup-orders/assigning/${adminId}/${user._id}/${topupOrderId}`, {
+export const assignTopupOrder = async (user, token, adminId, topupOrderId)=>{
+    try{
+        const response = await fetch(`${API}/topup-orders/assigning/${adminId}/${user._id}/${topupOrderId}`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -80,66 +86,69 @@ export const assignTopupOrder = (user, token, adminId, topupOrderId)=>{
             },
             
         })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
+        
+        return response.json();
+        
+    }catch(err) {
             console.log(err);
-        });
+    }
 }
 
 //get all admins to assign order
-export const getAllAdmins = (user, token) => {
-    return fetch(`${API}/user/admins/${user._id}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        
-    })
-        .then(response => {
-            return response.json();
+export const getAllAdmins = async (user, token) => {
+    try{
+        const response = await fetch(`${API}/user/admins/${user._id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+
         })
-        .catch(err => {
-            console.log(err);
-        });
+
+        return response.json();
+    
+    }catch(err){
+        console.log(err);
+    }
 };
 
 
 // show balance
-export const showBalance = ()=> {
+export const showBalance = async ()=> {
+    try{
 
-    return fetch(`${API}/admin/balance`, {
-        method: 'GET'
-    })
-        .then(response => {
-            return response.json();
+        const response = await fetch(`${API}/admin/balance`, {
+            method: 'GET'
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    
+    }catch(err){console.log(err)}
 }
 
 //add balance
-export const addBalance = (userId, token, balance) => {
-    return fetch(`${API}/admin/balance/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(balance)
-    })
-        .then(response => {
-            return response.json();
+export const addBalance = async (userId, token, balance) => {
+    try{
+        const response = await fetch(`${API}/admin/balance/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(balance)
         })
-        .catch(err => {
+
+        return response.json();
+    }catch(err) {
             console.log(err);
-        });
+        }
 }; 
-export const addDiamondValue = (userId, token, diamondValue) => {
-    return fetch(`${API}/admin/add-diamonds/${userId}`, {
+export const addDiamondValue = async (userId, token, diamondValue) => {
+    try{
+    const response = await fetch(`${API}/admin/add-diamonds/${userId}`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -148,118 +157,129 @@ export const addDiamondValue = (userId, token, diamondValue) => {
         },
         body: JSON.stringify(diamondValue)
     })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    
+    return response.json();    
+}    catch(err){
+    console.log(err);
+}   
 }; 
 
 //update topup orders
-export const updateTopupOrderAdmin = (topupOrderId, userId, token, sentStatus) => {
-    console.log(sentStatus);
-    return fetch(`${API}/topup-orders/update/${topupOrderId}/${userId}/${sentStatus.status}/${sentStatus.customerId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: sentStatus,
-    })
-        .then(response => {
-            return response.json();
+export const updateTopupOrderAdmin = async (topupOrderId, userId, token, sentStatus) => {
+    try{
+        const response = await fetch(`${API}/topup-orders/update/${topupOrderId}/${userId}/${sentStatus.status}/${sentStatus.customerId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: sentStatus,
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+
+    
+    catch(err) {console.log(err)}
 };
 
 
 //get all topup orders
-export const getTopupOrdersAdmin = (userId, token) => {
-    return fetch(`${API}/topup-orders/admin/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: {}
-    })
-        .then(response => {
-            return response.json();
+export const getTopupOrdersAdmin = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/topup-orders/admin/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: {}
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+    catch(err){console.log(err)}
 };
 
 //get assigned topup orders for admin
-export const getAssignedTopupOrdersAdmin = (userId, token) => {
-    return fetch(`${API}/topup-orders/assigned/admin/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: {}
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getAssignedTopupOrdersAdmin = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/topup-orders/assigned/admin/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: {}
+        });
+
+        return response.json();
+    }
+    catch(err){console.log(err)}
 };
 
 //create recharge packages
-export const createRechargePackage = (userId, token, rechargePackage)=>{
-    return fetch(`${API}/recharge-package/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: rechargePackage
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => {
-            console.log(err);
+export const createRechargePackage = async (userId, token, rechargePackage)=>{
+    try{
+        const response = await fetch(`${API}/recharge-package/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: rechargePackage
         });
+
+        return response.json();
+    }
+    catch(err){
+            console.log(err);
+    }
 }
 
-export const createTopupThumb = (userId, token, topup) => {
-    return fetch(`${API}/topup-thumbs/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: topup
-    })
-        .then(response => {
-            return response.json();
+export const createTopupThumb = async (userId, token, topup) => {
+    try{
+        const response = await fetch(`${API}/topup-thumbs/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: topup
         })
-        .catch(err => {
-            console.log(err);
-        });
+
+        return response.json();
+    }
+
+    
+    catch(err) {
+        console.log(err);
+    }
 };
 
-export const createCategory = (userId, token, category) => {
-    return fetch(`${API}/category/create/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: category
-    })
-        .then(response => {
-            return response.json();
+export const createCategory = async (userId, token, category) => {
+    try{
+        const response = await fetch(`${API}/category/create/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: category
         })
-        .catch(err => {
-            console.log(err);
-        });
+
+        return response.json();
+    }
+
+    
+    catch(err) {
+        console.log(err);
+    }
 };
 
-export const updateCategory = (categoryId, userId, token, category) => {
-    return fetch(`${API}/category/${categoryId}/${userId}`, {
+export const updateCategory = async (categoryId, userId, token, category) => {
+    try{
+        const response = await fetch(`${API}/category/${categoryId}/${userId}`, {
         method: 'PUT',
         headers: {
             // content type?
@@ -269,91 +289,105 @@ export const updateCategory = (categoryId, userId, token, category) => {
         },
         body: JSON.stringify(category)
     })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+    
+    return response.json();
+    }
+
+    
+    catch(err){console.log(err)}
 };
 
-export const createProduct = (userId, token, product) => {
-    return fetch(`${API}/product/create/${userId}`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: product
-    })
-        .then(response => {
-            return response.json();
+export const createProduct = async (userId, token, product) => {
+    try{
+        const response = await fetch(`${API}/product/create/${userId}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: product
         })
-        .catch(err => {
-            console.log(err);
-        });
+        
+        return response.json();
+    }
+
+    
+    catch(err) {
+        console.log(err);
+    }
 };
 
-export const getCategory = categoryId => {
-    return fetch(`${API}/category/${categoryId}`, {
-        method: 'GET'
-    })
-        .then(response => {
-            return response.json();
+export const getCategory = async categoryId => {
+    try{
+        const response = await fetch(`${API}/category/${categoryId}`, {
+            method: 'GET'
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+    
+    catch(err){console.log(err)}
 };
 
-export const getCategories = () => {
-    return fetch(`${API}/categories`, {
-        method: 'GET'
-    })
-        .then(response => {
-            return response.json();
+export const getCategories = async () => {
+    try{
+        const response = await fetch(`${API}/categories`, {
+            method: 'GET'
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+
+    catch(err){ console.log(err)}
 };
 
-export const listOrders = (userId, token) => {
-    return fetch(`${API}/order/list/${userId}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const listOrders = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/order/list/${userId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    
+    }catch(err) {console.log(err)}
 };
 
-export const getStatusValues = (userId, token) => {
-    return fetch(`${API}/order/status-values/${userId}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const getStatusValues = async (userId, token) => {
+    try{
+        const response = await fetch(`${API}/order/status-values/${userId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    }
+
+    
+    catch(err) {console.log(err)}
 };
 
-export const updateOrderStatus = (userId, token, orderId, status) => {
-    return fetch(`${API}/order/${orderId}/status/${userId}`, {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ status, orderId })
-    })
-        .then(response => {
-            return response.json();
+export const updateOrderStatus = async (userId, token, orderId, status) => {
+    try{
+        const response = await fetch(`${API}/order/${orderId}/status/${userId}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ status, orderId })
         })
-        .catch(err => console.log(err));
+        return response.json();
+    }
+
+    catch(err){ console.log(err)}
 };
 
 /**
@@ -364,52 +398,61 @@ export const updateOrderStatus = (userId, token, orderId, status) => {
  * delete single product
  */
 
-export const getProducts = () => {
-    return fetch(`${API}/products?limit=undefined`, {
-        method: 'GET'
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.log(err));
+export const getProducts = async () => {
+    try{
+        const response = await fetch(`${API}/products?limit=undefined`, {
+            method: 'GET'
+        });
+        
+        return response.json();
+    }
+
+    
+    catch(err){ console.log(err)}
 };
 
-export const deleteProduct = (productId, userId, token) => {
-    return fetch(`${API}/product/${productId}/${userId}`, {
-        method: 'DELETE',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        }
-    })
-        .then(response => {
-            return response.json();
+export const deleteProduct = async (productId, userId, token) => {
+    try{
+        const response = await fetch(`${API}/product/${productId}/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            }
         })
-        .catch(err => console.log(err));
+        return response.json();
+    }
+
+    catch(err){console.log(err)}
 };
 
-export const getProduct = productId => {
-    return fetch(`${API}/product/${productId}`, {
-        method: 'GET'
-    })
-        .then(response => {
-            return response.json();
+export const getProduct = async (productId) => {
+    try{
+        const response = await fetch(`${API}/product/${productId}`, {
+            method: 'GET'
         })
-        .catch(err => console.log(err));
+        
+        return response.json();
+    }
+    catch(err){console.log(err)}
 };
 
-export const updateProduct = (productId, userId, token, product) => {
-    return fetch(`${API}/product/${productId}/${userId}`, {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-        body: product
-    })
-        .then(response => {
-            return response.json();
+export const updateProduct = async (productId, userId, token, product) => {
+    try{
+
+    
+        const response = await fetch(`${API}/product/${productId}/${userId}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: product
         })
-        .catch(err => console.log(err));
+
+        return response.json();
+    }
+    
+    catch(err){console.log(err)}
 };
