@@ -12,9 +12,14 @@ const ShowTopupOrders = ()=>{
     const {user, token} = isAuthenticated();
 
     useEffect(()=>{
-        getTopupOrdersAdmin(user._id, token).then(order=>{
+        getTopupOrdersAdmin(user._id, token).then(ord=>{
+            if(ord.error){
+                console.log(ord.error)
+            }
+            if(ord){
+                setOrders(ord);
+            }
             
-            setOrders(order);
         })
     
     },[]);
@@ -62,10 +67,16 @@ const ShowTopupOrders = ()=>{
                                         <h6>Paid Amount: { order.price } Tk</h6>
                                         <h6>Status: {order.status} </h6>
                                         
+                                        {
+                                            order.pair ?
+                                            <Link exact to={`/messages/pair/${order.pair._id}`} >
+                                                <h5 className="border"><b>Send message</b></h5>
+                                            </Link>
+                                        :
+                                            <Fragment></Fragment>
+
+                                        }
                                         
-                                        <Link exact to={`/messages/pair/${order.pair._id}`} >
-                                            <h5 className="border"><b>Send message</b></h5>
-                                        </Link>
 
                                         { order.status === 'completed' || order.status === 'cancelled' ?
                                             <Fragment></Fragment>
