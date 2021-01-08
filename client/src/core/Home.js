@@ -14,57 +14,26 @@ const Home = () => {
     const [productsByArrival, setProductsByArrival] = useState([]);
     const [error, setError] = useState(false);
 
-    const loadCategories = async () => {
+    const init = async () => {
         try{
             const cats = await getCategories();
-            setCategories(cats);
-        }catch{
-            
-        }
-        
-    };
-
-    useEffect(() => {
-        loadCategories();
-    }, []);
-
-    const loadProductsBySell = async () => {
-        try{
-            const data = await getProducts('sold');
-            if(data.error){
-                return setError(data.error);
-            }
-        
-            setProductsBySell(data);
-        }
-        
-        catch(err){
-            
-        }
-            
-        
-    };
-
-    const loadProductsByArrival = async () => {
-
-        try{
+            const datas = await getProducts('sold');
             const data = await getProducts('createdAt');
-            if(data.error){
-                return setError(data.error);
-            }
-        
+
+            setCategories(cats);
+            setProductsBySell(datas);
             setProductsByArrival(data);
+
+        }catch{
+            setError('Error');
         }
         
-        catch(err){
-            
-        }
     };
 
     useEffect(() => {
-        loadProductsByArrival();
-        loadProductsBySell();
+        init();
     }, []);
+
 
     return (
         <Layout

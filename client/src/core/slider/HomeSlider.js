@@ -66,10 +66,6 @@ const HomeSLider = ()=>{
    
     })
 
-    // useEffect(()=>{
-    //     slideAnim();
-    // },[count, slides])
-
 
 
 

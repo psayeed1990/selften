@@ -4,12 +4,12 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { getPurchaseHistory } from "./apiUser";
 import moment from "moment";
-import { updateUser, updateUserProfile, getUserProfile } from "./apiUser";
+import { updateUserProfile, getUserProfile } from "./apiUser";
 import './adminDashboard.css'
 
 export const UserLinks = () => {
     const {
-        user: { _id, name, email, role }
+        user: { _id }
     } = isAuthenticated();
         return (
             <div className="card">
@@ -83,8 +83,8 @@ const Dashboard = () => {
     const init = async () => {
         
         const datas = await getPurchaseHistory(user._id, token)
-        setHistory(datas);
         const data = await getUserProfile(user, token);
+        setHistory(datas);
         setValues({...values, formData: new FormData(),
             name: data.name,
             email: data.email,
