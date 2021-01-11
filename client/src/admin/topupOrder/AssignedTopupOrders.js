@@ -58,8 +58,16 @@ const AssignedTopupOrders = ()=>{
                                         <h6 className="hidden">{ order._id }</h6>
                                         <h6>Game: {order.topupGameId.title}</h6>
                                         <h6>Pecharge Package: {order.selectRecharge.packageName}</h6>
-                                        <h6>Account type: { order.accountType }</h6>
-                                        <h6>Number: { order.gmailOrFacebook }</h6>
+                                        
+                                        {
+                                            order.gameUserId ?
+                                            <h6>Game User Id: { order.gameUserId }</h6>
+                                            :
+                                            <Fragment>
+                                                <h6>Account type: { order.accountType }</h6>
+                                                <h6>Number: { order.gmailOrFacebook }</h6>
+                                            </Fragment>
+                                        }
                                         <h6>Password: { order.password }</h6>
                                         <h6>Paid Amount: { order.price } Tk</h6>
                                         <h6>Status: { order.status } </h6>

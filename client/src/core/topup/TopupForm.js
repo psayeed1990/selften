@@ -67,8 +67,9 @@ const TopupForm = () => {
             setAdminLimit(0);
         } 
         if(bl) {
-            setDiamondValue(data[0].takaPerDiamond);
-            setAdminLimit(data[0].balance)
+
+            setDiamondValue(bl[0].takaPerDiamond);
+            setAdminLimit(bl[0].balance)
         }
 
         if (data.error) {
@@ -260,14 +261,13 @@ const TopupForm = () => {
                                 <Fragment></Fragment>
                         }
                     </div>
-                </Fragment>:
+                </Fragment>
+                :
 
-                <Fragment></Fragment>
+               
                 
-            }
-
-            {
-                 type === 'codeId' ?
+            
+                
                  
                 <div className="row">
                      <div className="form-group col-md-4">
@@ -280,8 +280,7 @@ const TopupForm = () => {
                     </div>
                 </div>
                  
-                 :
-                 <Fragment></Fragment>
+                 
             }
             
             <div className="row">
