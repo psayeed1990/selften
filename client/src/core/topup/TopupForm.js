@@ -60,7 +60,8 @@ const TopupForm = () => {
     const init = async () => {
         setValues({ ...values, loading: true });
         const data = await getRechargePackagesByGameName(id);
-        const wData = await getWallet(user._id, token);
+        
+        
         const bl = await showBalance();
 
         if (!bl) {
@@ -71,12 +72,17 @@ const TopupForm = () => {
             setDiamondValue(bl[0].takaPerDiamond);
             setAdminLimit(bl[0].balance)
         }
+        
 
         if (data.error) {
             setValues({ ...values, error: data.error });
         } 
-        if(!data.error) {
+        if(user){
+            const wData = await getWallet(user._id, token);
             setWallet(wData);
+        }
+        if(!data.error) {
+            
             setValues({
                 ...values,
                  selectRecharges: data,
@@ -380,7 +386,7 @@ const TopupForm = () => {
         );
 
     return (
-        <Layout title="Request a topup" description={`G'day ${user.name}, ready to add a new topup request?`}>
+        <Layout>
             <div className="row">
                 <div className="col-md-8 offset-md-2">
                     {showLoading()}
