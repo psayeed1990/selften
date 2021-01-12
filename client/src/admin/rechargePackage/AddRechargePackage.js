@@ -183,7 +183,7 @@ const newPostForm = () => (
     </form>
 
     <div className="form-group">
-            <label className="text-muted">Game Name</label>
+            <label className="text-muted">See packages by Game Name</label>
             <select name="topupForPackages" onChange={handleChange('topupForPackages')} className="form-control">
                 <option selected value=''>Please select</option>
                 {topupGameNames &&
