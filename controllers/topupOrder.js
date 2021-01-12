@@ -15,6 +15,18 @@ const Diamonds = require('./../models/diamonds');
 const {sslcommerz} = require('./sslCommerce');
 const adminId = '5fdadfe6cc7fc11b2772b5e0';
 
+exports.topupOrdersByUser = async (req, res, next)=>{
+    try{
+        const {userId} = req.params;
+        const topuporders = await TopupOrder.find({ user: userId}).populate('user').populate('topupGameId').populate('selectRecharge').populate('pair').populate('assignedTo');
+        
+        return res.json(topuporders);
+    }catch(err){
+        return res.status(400).json({
+            error: 'Could not get topup orders'
+        });
+    }
+}
 
 //@GET all topup thumbs
 exports.getAllTopupOrders = async (req, res, next)=>{

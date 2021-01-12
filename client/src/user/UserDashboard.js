@@ -15,29 +15,34 @@ export const UserLinks = () => {
             <div className="card">
                 <h4 className="card-header">User Links</h4>
                 <ul className="list-group">
+                     <li className="list-group-item">
+                        <Link exact className="nav-link" to="/user/see-your-topup-orders">
+                            Your topup orders
+                        </Link>
+                    </li>
 
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/user/messages">
+                        <Link exact className="nav-link" to="/user/messages">
                             See messages  <sup className="notifications">0</sup>
                         </Link>
                     </li>
                     <li className="list-group-item">
-                    <Link className="nav-link" to="/user/refill-wallet">
+                    <Link exact className="nav-link" to="/user/refill-wallet">
                         Wallet
                     </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to="/cart">
+                        <Link exact className="nav-link" to="/cart">
                             My Cart
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to={`/profile/${_id}`}>
+                        <Link exact className="nav-link" to={`/profile/${_id}`}>
                             Update Profile
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link className="nav-link" to={`/user/coupons`}>
+                        <Link exact className="nav-link" to={`/user/coupons`}>
                             Diamonds Coupons
                         </Link>
                     </li>

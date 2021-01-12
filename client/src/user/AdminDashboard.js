@@ -2,10 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { API } from './../config';
 import './adminDashboard.css';
 import { NotificationsContext } from "../context/notificationsContext";
-import { updateUser, updateUserProfile, getUserProfile } from "./apiUser";
+import { updateUserProfile, getUserProfile } from "./apiUser";
 
 
 export const AdminLinks = () => {
@@ -21,69 +20,74 @@ export const AdminLinks = () => {
                  </Link>
             </li>
              <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/topup-orders">
+                    <Link exact className="nav-link" to="/admin/topup-orders">
                         See New Topup Orders
                     </Link>
                 </li>
             <li className="list-group-item">
-                <Link className="nav-link" to="/admin/messages">
+                <Link exact className="nav-link" to="/admin/messages">
                         See messages <sup className="notifications">{ notifications }</sup>
                  </Link>
             </li>
             <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/refill-wallet">
+                    <Link exact className="nav-link" to="/admin/refill-wallet">
                         Wallet
                     </Link>
                 </li>
 
             <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/balance-stock">
+                    <Link exact className="nav-link" to="/admin/balance-stock">
                         Stocks for topup
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/diamond-value">
+                    <Link exact className="nav-link" to="/admin/diamond-value">
                         Diamond or Purchase Point
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/add-coupons">
+                    <Link exact className="nav-link" to="/admin/add-coupons">
                         Add coupons
                     </Link>
                 </li>
                  <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/recharge-package">
+                    <Link exact className="nav-link" to="/admin/recharge-package">
                         Create Recharge Package
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/topup">
+                    <Link exact  className="nav-link" to="/admin/topup">
                         Create Game for Topup
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/add-slider">
+                    <Link exact className="nav-link" to="/admin/add-slider">
                         Create Slider
+                    </Link>
+                </li>
+                <li className="list-group-item">
+                    <Link exact className="nav-link" to="/admin/see-your-topup-orders">
+                        Your topup orders
                     </Link>
                 </li>
 
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/create/category">
+                    <Link exact className="nav-link" to="/create/category">
                         Create Category
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/create/product">
+                    <Link exact className="nav-link" to="/create/product">
                         Create Product
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/orders">
+                    <Link exact className="nav-link" to="/admin/orders">
                         View Orders
                     </Link>
                 </li>
                 <li className="list-group-item">
-                    <Link className="nav-link" to="/admin/products">
+                    <Link exact className="nav-link" to="/admin/products">
                         Manage Products
                     </Link>
                 </li>

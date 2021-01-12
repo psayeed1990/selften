@@ -309,48 +309,54 @@ const TopupForm = () => {
                 </div>
             </div>
 
+            {
+                user ?
+                    <Fragment>
+                        <div className="form-group col-md-4">
+                            <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
+                        </div>
 
-            <div className="form-group col-md-4">
-                <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
-            </div>
+                        <div className="money">
+                            <h4>Your Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
+                        </div>
 
-            <div className="money">
-                <h4>Your Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
-            </div>
+                                        { wallet && amount ? wallet.amount < amount ? 
+                                            <p>You have less balance than you have to pay. Please <Link to={()=>{
+                                                if(user.role === 1){
+                                                    return '/admin/refill-wallet';
+                                                }else{
+                                                    return '/user/refill-wallet';
+                                                }
 
-                            { wallet && amount ? wallet.amount < amount ? 
-                                <p>You have less balance than you have to pay. Please <Link to={()=>{
-                                    if(user.role === 1){
-                                        return '/admin/refill-wallet';
-                                    }else{
-                                        return '/user/refill-wallet';
-                                    }
+                                            }}><button className="btn btn-primary">add money</button></Link></p>
+                                            :
+                                            <Fragment></Fragment>
+                                            :
+                                            <Fragment></Fragment>
+                                        }
                                     
-                                }}><button className="btn btn-primary">add money</button></Link></p>
-                                :
-                                <Fragment></Fragment>
-                                :
-                                <Fragment></Fragment>
-                            }
+                                        { amount > adminLimit ? 
+                                            <p>You are ordering more than admin can handle. Please select less</p>
+                                            :
+                                            <Fragment></Fragment>
 
-                            { amount > adminLimit ? 
-                                <p>You are ordering more than admin can handle. Please select less</p>
-                                :
-                                <Fragment></Fragment>
-                                
-                            }
-            {/* <h4>Admin Balance: { adminLimit }</h4> */}
+                                        }
+                        {/* <h4>Admin Balance: { adminLimit }</h4> */}
+                                    
+                        { diamondValue && amount ?
+                            <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
+                            :
+                            <Fragment></Fragment>
+                        }
 
-            { diamondValue && amount ?
-                <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
-                :
-                <Fragment></Fragment>
+                        <button className="btn btn-outline-primary submit-btn">Order With Balance</button>
+                        <br />
+                        <br />
+                        <p onClick={()=>{orderWithSSLCommerz()}} className="submit-btn btn btn-outline-primary">Order With Card, Bkash and more</p>
+            </Fragment>
+            :
+            <p>Please login to order a topup</p>
             }
-
-            <button className="btn btn-outline-primary submit-btn">Order With Balance</button>
-            <br />
-            <br />
-            <p onClick={()=>{orderWithSSLCommerz()}} className="submit-btn btn btn-outline-primary">Order With Card, Bkash and more</p>
         </form>
     );
 

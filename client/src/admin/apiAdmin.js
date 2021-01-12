@@ -1,6 +1,41 @@
 
 import { API } from '../config';
 
+//edit recharge package
+
+export const editRechargePackage = async (user, token, rp, packageName, packageAmount)=>{
+    try{
+        const response = await fetch(`${API}/recharge-package/edit/${user._id}/${rp}/${packageName}/${packageAmount}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+            
+        })
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
+//delete recharge package
+export const deleteRechargePackage = async (user, token, rp)=>{
+    try{
+        const response = await fetch(`${API}/recharge-package/delete/${user._id}/${rp}`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+            
+        })
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 //add to wallet
 export const addToWallet = async (user, token, wallet)=>{
     try{

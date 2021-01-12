@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
-const { SSLComFail, SSLComSuccess, assignTopupOrder, getAllTopupOrders, updateTopupOrderById, createTopupOrder, deleteTopupOrderById, getTopupOrderById, getAllAssignedTopupOrders } = require('./../controllers/topupOrder');
+const { topupOrdersByUser, SSLComFail, SSLComSuccess, assignTopupOrder, getAllTopupOrders, updateTopupOrderById, createTopupOrder, deleteTopupOrderById, getTopupOrderById, getAllAssignedTopupOrders } = require('./../controllers/topupOrder');
 const { userById } = require("../controllers/user");
 
+router.get('/topup-order/by-user/:userId', requireSignin, isAuth,topupOrdersByUser )
 router.post('/topup-order/success/:transactionId', SSLComSuccess);
 router.post('/topup-order/fail/:transactionId', SSLComFail);
 router.post('/topup-order/cancell/:transactionId', SSLComFail);

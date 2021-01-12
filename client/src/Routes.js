@@ -41,6 +41,7 @@ import CheckCart from './core/CheckCart';
 import SearchPage from './core/SearchPage';
 import AddSlider from './admin/AddSlider';
 import RefillWallet from './admin/RefillWallet';
+import SeeTopupOrders from './user/SeeTopupOrders';
 
 
 
@@ -65,8 +66,13 @@ const Routes = () => {
                 <Route path="/cart" exact component={Cart} />
                 <Route path="/topup-order/success/:transactionId" exact component={TopupOrderSuccess} />
                 <Route path="/topup-order/fail/:transactionId" exact component={TopupOrderFail} />
+                <Route path="/topups/:id/type/:type" exact component={TopupForm} />
                 
                 <UserProvider>
+                    <PrivateRoute path="/user/see-your-topup-orders" exact component={ SeeTopupOrders } />
+                    <AdminRoute path="/admin/see-your-topup-orders" exact component={ SeeTopupOrders } />
+
+                    <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
                     <AdminRoute path="/admin/refill-wallet" exact component={ RefillWallet } />
                     <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
                     <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
@@ -79,7 +85,6 @@ const Routes = () => {
                     <AdminRoute path="/admin/topup-orders" exact component={ShowTopupOrders} />
                     <AdminRoute path="/admin/assigned-topup-orders" exact component={AssignedTopupOrders} />
                     <AdminRoute path="/admin/recharge-package" exact component={AddRechargePackage} />
-                    <PrivateRoute path="/topups/:id/type/:type" exact component={TopupForm} />
                     <PrivateRoute path="/user/messages" exact component={ShowMessagePair} />
                     <AdminRoute path="/admin/messages" exact component={ShowMessagePair} />
                     <PrivateRoute path="/messages/pair/:pairId" exact component={ShowChat} />

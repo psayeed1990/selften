@@ -8,8 +8,8 @@ router.get('/recharge-package', getAllRechargePackages);
 router.get('/recharge-package/get-by-game/:gameId', getRechargePackageByGameId);
 router.post('/recharge-package/:userId', requireSignin, isAuth, isAdmin, createRechargePackage);
 router.get('/recharge-package/:userId', getRechargePackageById);
-router.patch('/recharge-package/:userId', updateRechargePackageById)
-router.delete('/recharge-package/:userId', deleteRechargePackageById);
+router.post('/recharge-package/edit/:userId/:packageId/:packageName/:packageAmount',requireSignin, isAuth, isAdmin, updateRechargePackageById)
+router.post('/recharge-package/delete/:userId/:packageId',requireSignin, isAuth, isAdmin, deleteRechargePackageById);
 
 router.param("userId", userById);
 router.param("RechargePackageId", getRechargePackageById);

@@ -24,6 +24,8 @@ exports.getRechargePackageByGameId = async (req, res, next)=>{
     try{
         const {gameId} = req.params;
         const rechargePackage = await RechargePackage.find({topupGameName: gameId}).populate('topupGameName');
+        console.log(rechargePackage)
+        
         res.json(rechargePackage);
     }catch(err){
         return res.status(400).json({
@@ -100,10 +102,28 @@ exports.getRechargePackageById = async (req, res, next, id) => {
 };
 
 exports.updateRechargePackageById = async (req, res, next)=>{
-    const rechargePackages = await RechargePackage.find();
-    res.json(rechargePackages);
+    try{
+        const {packageId, packageName, packageAmount} = req.params;
+        if(!packageId || !packageName, !packageAmount){
+            return res.status(400).json({
+                error: 'Required field missing'
+            });
+        }
+        const rechargePackage = await RechargePackage.findById(packageId);
+        rechargePackage.packageName = packageName;
+        rechargePackage.packageAmount = packageAmount;
+        await rechargePackage.save();
+
+        res.json(newPK);
+    }catch(err){
+        return res.status(400).json({
+            error: 'Recharge Package not found'
+        });
+    }
+
 }
 exports.deleteRechargePackageById = async (req, res, next)=>{
-    const rechargePackages = await RechargePackage.find();
+    const {packageId} = req.params;
+    const rechargePackages = await RechargePackage.findByIdAndDelete(packageId);
     res.json(rechargePackages);
 }

@@ -193,12 +193,33 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
     try{
     // find the user based on email
-    const { password } = req.body;
+    const { password } = req.body; 
     const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(400).json({
-                error: 'User with that email does not exist. Please signup'
-            });
+
+            const phoneUser = await User.findOne({ phone: req.body.email });
+             
+            if(!phoneUser){
+                return res.status(400).json({
+                    error: 'User with that phone does not exist. Please signup'
+                });
+            }
+
+            // if user is found make sure the email and password match
+            // create authenticate method in user model
+            if (!user.authenticate(password)) {
+                return res.status(401).json({
+                    error: 'Phone and password dont match'
+                });
+            }
+            // generate a signed token with user id and secret
+            const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+            // persist the token as 't' in cookie with expiry date
+            res.cookie('t', token, { expire: new Date() + 9999 });
+            // return response with user and token to frontend client
+            const { _id, name, email, role, phone } = user;
+            return res.json({ token, user: { _id, email, name, role, phone } });
+            
         }
         // if user is found make sure the email and password match
         // create authenticate method in user model
@@ -212,11 +233,11 @@ exports.signin = async (req, res) => {
         // persist the token as 't' in cookie with expiry date
         res.cookie('t', token, { expire: new Date() + 9999 });
         // return response with user and token to frontend client
-        const { _id, name, email, role } = user;
-        return res.json({ token, user: { _id, email, name, role } });
+        const { _id, name, email, role, phone } = user;
+        return res.json({ token, user: { _id, email, name, role, phone } });
     }catch(err){
         return res.status(400).json({
-                error: 'User with that email does not exist. Please signup'
+                error: 'User with that email or phone does not exist. Please signup'
             });
     }
 };
