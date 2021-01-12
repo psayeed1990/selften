@@ -235,8 +235,8 @@ const TopupForm = () => {
                 </div>
                 <div className="col-5">
                     <p>Publisher: {thisTopup.publisher}</p>
-                    <p>Publisher: {thisTopup.platform}</p>
-                    <p>Publisher: {thisTopup.region}</p>
+                    <p>Platform: {thisTopup.platform}</p>
+                    <p>Region: {thisTopup.region}</p>
                 </div>
             </div>
             <h4>Request a Topup</h4>
