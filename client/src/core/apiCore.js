@@ -90,7 +90,18 @@ export const getWallet = async (id, token) => {
         })
         return response.json();
     }catch(err){console.log(err)};
-};
+}
+
+export const getTopupById = async (id)=>{
+    try{
+        const response = await fetch(`${API}/topup-thumbs/single/${id}`, {
+            method: "GET"
+        });
+            
+        return response.json();
+    }
+    catch(err){console.log(err)};
+}
 
 //get topup thumbs
 export const getTopupThumbs = async () => {

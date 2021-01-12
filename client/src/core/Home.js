@@ -7,6 +7,7 @@ import ShowTopups from '../admin/topup/ShowTopups';
 import HomeSLider from './slider/HomeSlider';
 import { Link } from 'react-router-dom';
 import ShowThumb from './ShowThumb';
+import './home.css';
 
 const Home = () => {
     const [categories, setCategories] = useState([]);
@@ -44,13 +45,27 @@ const Home = () => {
 
             <HomeSLider />
 
-            <h6 className="heading">Top categories</h6>
-            {
+
+            <div className="row center-flex">
+                <div className="col-md-2">
+                    <div className="row">
+                            <div className="col-md-6">
+                            <h6>Popular Category</h6>
+
+                            </div>
+                            <div  className="col-md-6">
+                                {/* <img src="/images/icons/category.svg" width="100" /> */}
+                                
+                            </div>
+                        </div>
+                </div>
+                <div className="col-md-8">
+                    {
                 categories.length > 0 ?
                 <div className="showCategories row">
                     {categories.map((category)=>{
                         return(
-                        <div className="col-md-1 home-categories" key={category._id}>
+                        <div className="col-md-2 home-categories" key={category._id}>
                             <Link exact to={`/categories/${category._id}`}>
                                 <ShowThumb item={category} url="categories" />
                                 <h6>{category.name}</h6>
@@ -65,10 +80,16 @@ const Home = () => {
                 <Fragment></Fragment>
                 
             }
+                </div>
+                <div className="col-md-2">
+                    <Link exact to="/topups">View All Categories</Link>
+                </div>
+            </div>
+            
            
             <ShowTopups />
             
-            <h2 className="mb-4">New Arrivals</h2>
+            {/* <h2 className="mb-4">New Arrivals</h2> */}
             <div className="row">
                 {productsByArrival.map((product, i) => (
                     <div key={i} className="col-md-4 mb-3">
@@ -77,7 +98,7 @@ const Home = () => {
                 ))}
             </div>
 
-            <h2 className="mb-4">Best Sellers</h2>
+            {/* <h2 className="mb-4">Best Sellers</h2> */}
             <div className="row">
                 {productsBySell.map((product, i) => (
                     <div key={i} className="col-md-4 mb-3">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '../core/Layout';
 import { signup, verifyOTP } from '../auth';
 import ResendOTP from './ResendOTP';
+import './signup.css';
 
 const Signup = () => {
     const [sendOTP, setSendOTP] = useState(false);
@@ -141,11 +142,17 @@ const Signup = () => {
                 sendOTP === true ?
                 <form onSubmit={validateOTP} id="otp-form" className="all-form">
                     <div className="form-group">
-                        <h5 className="text-muted">OTP code send to your phone : <h1>{userPhone}</h1></h5>
-                        <input onChange={handleChange('otp')} type="text" className="form-control" value={otp} name="otp" />
+                        <p className="text-muted otp-text row">Phone verification is required. Please make setUserPhone
+                        your phone is available to receive verification code</p>
+                        <ResendOTP phone={userPhone} />
+                        <div className="row otp-width">
+                            <input onChange={handleChange('otp')} placeholder="Code here" type="text" className="col-7 otp-input" value={otp} name="otp" />
+                            <input className="col-4 cursor pointer otp-input" type="submit" value="Verify" />
+
+                        </div>
+                        <div className="sms-sent-text row">SMS code sent!</div>
                     </div>
-                    <ResendOTP phone={userPhone} />
-                    <input className="btn btn-outline-primary submit-btn" type="submit" value="Verify Phone" />
+                    
                 </form>
                 :
                 signUpForm()

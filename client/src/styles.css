@@ -105,6 +105,7 @@ a {
 /* top up thumb */
 .center-flex {
 	justify-content: center;
+	margin: 50px auto 0;
 }
 .center-flex .product-img {
 	width: 100px;

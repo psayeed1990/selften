@@ -1,12 +1,13 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Layout from './../../core/Layout';
 import { isAuthenticated } from './../../auth';
-import { getRechargePackagesByGameName, getWallet } from './../apiCore';
+import { getRechargePackagesByGameName, getTopupById, getWallet } from './../apiCore';
 import { Redirect, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { createTopupOrder } from './../apiCore';
 import { showBalance } from './../../admin/apiAdmin';
 import './topupForm.css';
+import ShowThumb from '../ShowThumb';
 
 
 
@@ -18,6 +19,7 @@ const TopupForm = () => {
     const [wallet, setWallet] = useState(null);
     const [amount, setAmount] = useState(null);
     const [adminLimit, setAdminLimit] = useState(0);
+    const [thisTopup, setThisTopup] = useState({});
     const [diamondValue, setDiamondValue] = useState(null);
 
     const [values, setValues] = useState({
@@ -58,31 +60,42 @@ const TopupForm = () => {
     // load Recharge packages and set form data
 
     const init = async () => {
+        try{
+
+        
         setValues({ ...values, loading: true });
         const data = await getRechargePackagesByGameName(id);
         
-        
+        const topupData = await getTopupById(id);
         const bl = await showBalance();
-
-        if (!bl) {
-            setAdminLimit(0);
-        } 
-        if(bl) {
-
-            setDiamondValue(bl[0].takaPerDiamond);
-            setAdminLimit(bl[0].balance)
+        
+        
+        if (data.error) {
+            return setValues({ ...values, error: data.error });
         }
         
-
-        if (data.error) {
-            setValues({ ...values, error: data.error });
+        if (topupData.error) {
+            return setValues({ ...values, error: topupData.error });
         } 
+        if (bl.error) {
+            return setValues({ ...values, error: bl.error });
+        }
+
         if(user){
             const wData = await getWallet(user._id, token);
-            setWallet(wData);
+            if (!wData) {
+                setWallet(0);
+            }else{
+                setWallet(wData);
+            }
         }
-        if(!data.error) {
+        
+        
+        if(!data.error || !bl.error || !topupData.error) {
+            setDiamondValue(bl[0].takaPerDiamond);
+            setAdminLimit(bl[0].balance)
             
+            setThisTopup(topupData);
             setValues({
                 ...values,
                  selectRecharges: data,
@@ -90,6 +103,10 @@ const TopupForm = () => {
                 loading: false
             });           
         }
+        
+    }catch(err){
+        console.log(err)
+    }
         
     };
 
@@ -211,6 +228,17 @@ const TopupForm = () => {
 
     const newPostForm = () => (
         <form className="mb-3 topup-form" onSubmit={clickSubmit}>
+            <div className="row">
+                <div className="col-2">
+                   
+                    <ShowThumb item={{_id: id}} url="topup-thumbs"/>
+                </div>
+                <div className="col-5">
+                    <p>Publisher: {thisTopup.publisher}</p>
+                    <p>Publisher: {thisTopup.platform}</p>
+                    <p>Publisher: {thisTopup.region}</p>
+                </div>
+            </div>
             <h4>Request a Topup</h4>
             { type === 'inGame' ?
                 
@@ -341,12 +369,12 @@ const TopupForm = () => {
                                             <Fragment></Fragment>
                                         }
                                     
-                                        { amount > adminLimit ? 
+                                        {/* { amount > adminLimit ? 
                                             <p>You are ordering more than admin can handle. Please select less</p>
                                             :
                                             <Fragment></Fragment>
 
-                                        }
+                                        } */}
                         {/* <h4>Admin Balance: { adminLimit }</h4> */}
                                     
                         { diamondValue && amount ?
@@ -363,6 +391,9 @@ const TopupForm = () => {
             :
             <p>Please login to order a topup</p>
             }
+
+            <h5>About {thisTopup.title}</h5>
+            <p>{thisTopup.about}</p>
         </form>
     );
 

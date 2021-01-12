@@ -11,7 +11,12 @@ exports.getWallet = async (req, res, next)=>{
     try{
         const {userId} = req.params;
         const wallet =  await Wallet.findOne({user: userId});
-        res.json(wallet);
+        
+        if(!wData){
+            return res.json({});
+        }
+
+        return res.json(wallet);
     }catch(err){
         return res.status(400).json({
                 error: 'RechargePackage not found'

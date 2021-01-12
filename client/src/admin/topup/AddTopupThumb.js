@@ -6,6 +6,10 @@ import { AdminLinks } from '../../user/AdminDashboard';
 
 const AddTopupThumb = () => {
     const [values, setValues] = useState({
+        region:'',
+        platform: '',
+        publisher: '',
+        about:'',
         title: '',
         type: '',
         thumb: '',
@@ -18,6 +22,10 @@ const AddTopupThumb = () => {
 
     const { user, token } = isAuthenticated();
     const {
+        region,
+        platform,
+        publisher,
+        about,
         title,
         loading,
         type,
@@ -91,6 +99,22 @@ const AddTopupThumb = () => {
             <div className="form-group">
                 <label className="text-muted">Title of the Game</label>
                 <input onChange={handleChange('title')} type="text" className="form-control" value={title} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Region</label>
+                <input onChange={handleChange('region')} type="text" className="form-control" value={region} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Platform</label>
+                <input onChange={handleChange('platform')} type="text" className="form-control" value={platform} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Publisher</label>
+                <input onChange={handleChange('publisher')} type="text" className="form-control" value={publisher} />
+            </div>
+            <div className="form-group">
+                <label className="text-muted">About</label>
+                <textarea onChange={handleChange('about')} type="text" className="form-control" value={about}>About</textarea>
             </div>
 
             <button className="btn btn-outline-primary">Create Topup Thumb</button>

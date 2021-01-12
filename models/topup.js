@@ -6,7 +6,22 @@ const topupSchema = new schema({
         type: String,
         required: [true, 'New top up system needs a title']
     },
-
+    region: {
+        type: String,
+        trim: true,
+    },
+    platform: {
+        type: String,
+        trim: true,
+    },
+    publisher: {
+        type: String,
+        trim: true,
+    },
+    about: {
+        type: String,
+        trim: true,
+    },
     thumb:{
         data: Buffer,
         contentType: String

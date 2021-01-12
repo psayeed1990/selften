@@ -98,6 +98,21 @@ exports.getTopupById = async (req, res, next, id) => {
         
 };
 
+exports.getSingleTopupBy = async (req, res, next) => {
+    try{
+        const {topupId} = req.params;
+        const topup = await Topup.findById(topupId);
+        return res.json(topup);
+    }
+    
+    catch(err){
+        return res.status(400).json({
+            error: 'topup not found'
+        });
+    }
+        
+};
+
 exports.updateTopupById = async (req, res, next)=>{
     const topups = await Topup.find();
     res.json(topups);
