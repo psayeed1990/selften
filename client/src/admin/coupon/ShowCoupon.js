@@ -36,6 +36,9 @@ const ShowCoupon = () => {
         });
 
         getDiamonds(user, token).then(data=>{
+            if(!data){
+                return setDiamondAmount(0);
+            }
             if (data.error) {
                 setDiamondAmount(0);
             } else{
