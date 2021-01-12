@@ -192,12 +192,17 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
     try{
-    // find the user based on email
-    const { password } = req.body; 
-    const user = await User.findOne({ email: req.body.email });
-        if (!user) {
+        
+        // find the user based on email
+        const { password } = req.body;
 
-            const phoneUser = await User.findOne({ phone: req.body.email });
+        function checkEmailOrPhone(email){
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        if(!checkEmailOrPhone(req.body.email)){
+        const phoneUser = await User.findOne({ phone: req.body.email });
              
             if(!phoneUser){
                 return res.status(400).json({
@@ -207,9 +212,35 @@ exports.signin = async (req, res) => {
 
             // if user is found make sure the email and password match
             // create authenticate method in user model
-            if (!user.authenticate(password)) {
+            if (!phoneUser.authenticate(password)) {
                 return res.status(401).json({
                     error: 'Phone and password dont match'
+                });
+            }
+            // generate a signed token with user id and secret
+            const token = await jwt.sign({ _id: phoneUser._id }, process.env.JWT_SECRET);
+            // persist the token as 't' in cookie with expiry date
+            res.cookie('t', token, { expire: new Date() + 9999 });
+            // return response with user and token to frontend client
+            const { _id, name, email, role, phone } = phoneUser;
+            
+            return res.json({ token, user: { _id, email, name, role, phone } });
+        }
+
+        if(checkEmailOrPhone(req.body.email)){
+            const user = await User.findOne({ email: req.body.email });
+            if (!user) {
+
+                return res.status(401).json({
+                    error: 'Email does not belong to any user'
+                });
+
+            }
+            // if user is found make sure the email and password match
+            // create authenticate method in user model
+            if (!user.authenticate(password)) {
+                return res.status(401).json({
+                    error: 'Email and password dont match'
                 });
             }
             // generate a signed token with user id and secret
@@ -219,26 +250,17 @@ exports.signin = async (req, res) => {
             // return response with user and token to frontend client
             const { _id, name, email, role, phone } = user;
             return res.json({ token, user: { _id, email, name, role, phone } });
-            
+
         }
-        // if user is found make sure the email and password match
-        // create authenticate method in user model
-        if (!user.authenticate(password)) {
-            return res.status(401).json({
-                error: 'Email and password dont match'
-            });
-        }
-        // generate a signed token with user id and secret
-        const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-        // persist the token as 't' in cookie with expiry date
-        res.cookie('t', token, { expire: new Date() + 9999 });
-        // return response with user and token to frontend client
-        const { _id, name, email, role, phone } = user;
-        return res.json({ token, user: { _id, email, name, role, phone } });
+
+
+
+
+
     }catch(err){
         return res.status(400).json({
-                error: 'User with that email or phone does not exist. Please signup'
-            });
+                error: 'User with that email or phone does not exist'
+        });
     }
 };
 
