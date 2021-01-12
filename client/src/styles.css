@@ -173,6 +173,10 @@ a {
 	padding: 0 0 4px 0;
 }
 
+.product-img img {
+	border-radius: 10px;
+}
+
 @-webkit-keyframes Gradient {
 	0% {
 		background-position: 0% 50%;

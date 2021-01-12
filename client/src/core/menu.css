@@ -111,20 +111,25 @@ select {
 	width: 95%;
 	display: none;
 }
+#footer h5 {
+	color: #999;
+}
 
 #footer {
 	padding: 30px;
 	margin-top: 100px;
 	text-align: center;
 	box-shadow: 0px -1px 3px #957d7d;
-	display: grid;
-	grid-template-columns: auto auto;
 }
 
 #footer a {
 	margin: 5px;
 	padding: 5px;
-	border: 1px solid;
+	font-weight: bold;
+}
+#footer p {
+	font-size: 0.8rem;
+	color: #666;
 }
 
 .search-bar .input-group-text {
