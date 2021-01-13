@@ -56,12 +56,30 @@ const ShowTopupOrders = ()=>{
                            
                                 <div className="col-md-4 p-5" key={order._id}>
                                     <Link exact to={`/topup-orders/${order._id}`}>
-                                        
-                                        <h6>Requested by: { order.user.name }</h6>
+                                        {
+                                            order.user ?
+                                         <h6>Requested by: { order.user.name }</h6>
+                                         :
+                                         <p>User deleted</p>
+
+
+                                        }
                                     </Link>
                                         <h6 className="hidden">{ order._id }</h6>
-                                        <h6>Game: {order.topupGameId.title}</h6>
+                                        {
+                                            order.topupGameId?
+                                            <h6>Game: {order.topupGameId.title}</h6>
+                                            :
+                                            <p>Game deleted</p>
+
+                                        }
+                                        {
+                                            order.selectRecharge ?
                                         <h6>Pecharge Package: {order.selectRecharge.packageName}</h6>
+
+                                        :
+                                        <p>Recharge package deleted</p>
+                                        }
                                          {
                                             order.gameUserId ?
                                             <h6>Game User Id: { order.gameUserId }</h6>
