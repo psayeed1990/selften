@@ -49,6 +49,10 @@ const userSchema = new mongoose.Schema(
             type: Array,
             default: []
         },
+        count:{
+            type: Number,
+            default: 0
+        },
         pair: [{
             type: mongoose.Schema.ObjectId,
             ref: 'MessagePair',

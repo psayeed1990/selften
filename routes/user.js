@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
+const { setNewPassword, checkResetOTP, resetPassword, requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 
-const {getUserById, profileUpdate, gerAllAdmins, userById, read, update, purchaseHistory, getMessagesByUser, getMessagesByPair, sendMessagesByPair, getUnseenMessagesByReceiver } = require('../controllers/user');
+const { getUserById, profileUpdate, gerAllAdmins, userById, read, update, purchaseHistory, getMessagesByUser, getMessagesByPair, sendMessagesByPair, getUnseenMessagesByReceiver } = require('../controllers/user');
 
 router.get('/secret', requireSignin, (req, res) => {
     res.json({
@@ -11,6 +11,9 @@ router.get('/secret', requireSignin, (req, res) => {
     });
 });
 
+router.get('/user/set-new-password/:phone/:password', setNewPassword)
+router.get('/user/check-reset-otp/:phone/:otpcode', checkResetOTP)
+router.get('/user/reset-password/:phone', resetPassword)
 router.get('/user/profile/:userId', requireSignin, isAuth, getUserById);
 router.get('/user/admins/:userId', requireSignin, isAuth, isAdmin, gerAllAdmins);
 router.get('/user/:userId', requireSignin, isAuth, read);

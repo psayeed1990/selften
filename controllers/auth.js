@@ -5,6 +5,38 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 const Wallet = require('../models/wallet');
 const axios = require('axios');
 
+exports.resetPassword = async (req, res, next)=>{
+    const {phone} = req.params;
+
+    try{
+        const user = await User.findOne({phone});
+        const generateMsg = (length)=> {
+            var result           = '';
+            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+        const generatedMsg = await generateMsg(5);
+        const msg = `Your selften password reset OTP:- ${generatedMsg.toUpperCase()}`
+        user.otpcode = generatedMsg.toUpperCase(),
+        await user.save();
+        
+        const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
+        const {data} = await axios.get(alphaURI);
+        return res.json({sendAgain: 'again', phone: user.phone})
+
+    }catch(err){
+        return res.status(400).json({
+            error: 'Phone number does not belong to any user'
+        });
+    }
+}
+
+
+
 exports.resendOTP = async (req, res)=>{
     try{
         const {phone} = req.params;
@@ -42,7 +74,7 @@ exports.resendOTP = async (req, res)=>{
                 
                 const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
                 const {data} = await axios.get(alphaURI);
-                console.log(data)
+                
                 return res.json({sendAgain: 'again', phone: user.phone})
             }
 
@@ -59,41 +91,110 @@ exports.resendOTP = async (req, res)=>{
     
 }
 
+exports.checkResetOTP = async (req, res, next)=>{
+    try{
+        const { phone, otpcode } = req.params;
+        const user = await User.findOne({phone: phone});
+
+        if(!user){
+            return res.status(400).json({
+
+                 error: 'Wrong phone number or user does not exist'
+            });
+        }
+
+        if(user.otpcode !== otpcode){
+            return res.status(400).json({
+
+                error: 'Wrong otp'
+            });
+        }
+
+        user.otpcode = undefined;
+        //after save
+        await user.save();
+
+        return res.json({
+            user
+        });
+    }catch(err){
+        return res.status(400).json({
+
+                error: 'Wrong otp'
+            });
+    }
+}   
 //verify otp
 exports.verifyOTP = async (req, res, next)=>{
-    const { phone, otpcode } = req.params;
-    const user = await User.findOne({phone: phone});
+    try{
+        const { phone, otpcode } = req.params;
+        const user = await User.findOne({phone: phone});
 
-    if(!user){
-        return res.status(400).json({
-                
-             error: 'Wrong phone number or user does not exist'
+        if(!user){
+            return res.status(400).json({
+
+                 error: 'Wrong phone number or user does not exist'
+            });
+        }
+
+        if(user.otpcode !== otpcode){
+            return res.status(400).json({
+
+                error: 'Wrong otp'
+            });
+        }
+
+        user.otpcode = undefined;
+        //after save
+        await user.save();
+
+
+        const newWallet = new Wallet({
+            user: user._id,
         });
+
+        const wallet = await newWallet.save();
+
+        return res.json({
+            user
+        });
+    }catch(err){
+        return res.status(400).json({
+
+                error: 'Wrong otp'
+            });
     }
 
-    if(user.otpcode !== otpcode){
-        return res.status(400).json({
-                
-            error: 'Wrong otp'
-        });
+
+
+
+}
+
+//set new password after forget password
+exports.setNewPassword = async (req, res, next)=>{
+    try{
+        const {phone, password} = req.params;
+
+        if(!phone){
+            return res.status(400).json({error: 'Missing password field'})
+        }
+        if(!password || password.length < 6){
+            return res.status(400).json({error: 'Password should be 6 character long'})
+        }
+
+        const user = await User.findOne({phone});
+        if(user.count > 10){
+            return res.status(400).json({error: 'You have reached try limit'})
+        }else{
+            user.count = user.count + 1
+        }
+        user.password = password;
+        await user.save();
+
+        return res.json({success: 'success password change'})
+    }catch(err){
+        res.status(400).json({error: 'User does not exist'})
     }
-
-    user.otpcode = undefined;
-    //after save
-    await user.save();
-    
-
-    const newWallet = new Wallet({
-        user: user._id,
-    });
-
-    const wallet = await newWallet.save();
-
-    return res.json({
-        user
-    });
-
-
 
 }
 
