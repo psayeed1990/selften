@@ -42,6 +42,7 @@ import SearchPage from './core/SearchPage';
 import AddSlider from './admin/AddSlider';
 import RefillWallet from './admin/RefillWallet';
 import SeeTopupOrders from './user/SeeTopupOrders';
+import ForgetPassword from './user/ForgetPassword';
 
 
 
@@ -54,6 +55,8 @@ const Routes = () => {
                 <Route path="/refund-return-policy" exact component={ReturnPolicy} />
                 <Route path="/about-us" exact component={AboutUs} />
                 <Route path="/shipment-info" exact component={Shipment} />
+                <Route path="/forget-password" exact component={ForgetPassword} />
+                
 
 
                 <Route path="/shop" exact component={Shop} />

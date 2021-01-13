@@ -13,6 +13,19 @@ export const verifyOTP = async (phone, otp)=>{
 
 }
 
+export const resendResetOTPCode = async (phone)=>{
+    try{
+        const response = await fetch(`${API}/resend-reset-otp/${phone}`, {
+            method: "GET",
+            
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 export const resendOTPCode = async (phone)=>{
     try{
         const response = await fetch(`${API}/resend-otp/${phone}`, {

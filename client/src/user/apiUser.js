@@ -1,5 +1,43 @@
 import { API } from "../config";
 
+export const resetNewPassword = async (phone, password)=>{
+
+    try{
+        const response = await fetch(`${API}/user/set-new-password/${phone}/${password}`, {
+            method: 'GET'
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+    
+}
+
+export const resetPasswordByPhone = async (phone, otp)=>{
+    try{
+        const response = await fetch(`${API}/user/check-reset-otp/${phone}/${otp}`, {
+            method: 'GET'
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
+export const sendResetOTP = async (phone)=>{
+    try{
+        const response = await fetch(`${API}/user/reset-password/${phone}`, {
+            method: 'GET'
+        });
+
+        return response.json();
+    }catch(err){
+        console.log(err);
+    }
+}
+
 //get topup order by user
 export const getTopupOrdersByUser = async (user, token)=>{
 

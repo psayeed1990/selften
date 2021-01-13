@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import Layout from "../core/Layout";
 import { signin, authenticate, isAuthenticated } from "../auth";
 
@@ -37,6 +37,7 @@ const Signin = () => {
     };
 
     const signUpForm = () => (
+    <Fragment>
         <form>
             <div className="form-group">
                 <label className="text-muted">Email or Phone</label>
@@ -58,9 +59,12 @@ const Signin = () => {
                 />
             </div>
             <button onClick={clickSubmit} className="btn btn-primary">
-                Submit
+                Login
             </button>
+            
         </form>
+        <Link exact to="/forget-password" >Forget Password?</Link>
+    </Fragment>
     );
 
     const showError = () => (
