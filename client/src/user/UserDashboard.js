@@ -70,6 +70,7 @@ const Dashboard = () => {
         error: '',
         updated: '',
         formData: '',
+        verified:'',
     });
     const {
         name,
@@ -83,6 +84,7 @@ const Dashboard = () => {
         error,
         updated,
         formData,
+        verified,
     } = values;
 
     const init = async () => {
@@ -98,6 +100,7 @@ const Dashboard = () => {
             postCode: data.postCode,
             city: data.city,
             about:data.about,
+            verified: data.verified,
         })
             
         
@@ -169,6 +172,11 @@ const Dashboard = () => {
                     <div className="form-group">
                         <label className="text-muted">Phone</label>
                         <input onChange={handleChange('phone')} type="text" className="form-control" name="phone" value={phone} />
+                        { verified ?
+                        <p>Phone Verified</p>
+                        :
+                        <Link exact to="/verify-phone" >Phone verification is necessary</Link>
+                    }
                     </div>
                     <div className="form-group">
                         <label className="text-muted">Address</label>
@@ -239,8 +247,8 @@ const Dashboard = () => {
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-3"><UserLinks /></div>
-                <div className="col-9">
+                <div className="col-md-3"><UserLinks /></div>
+                <div className="col-md-9">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

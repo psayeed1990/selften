@@ -112,6 +112,7 @@ const AdminDashboard = () => {
         loading: '',
         error: '',
         updated: '',
+        verified: '',
         formData: '',
     });
 
@@ -126,6 +127,7 @@ const AdminDashboard = () => {
         loading,
         error,
         updated,
+        verified,
         formData,
     } = values;
 
@@ -140,6 +142,7 @@ const AdminDashboard = () => {
             postCode: data.postCode,
             city: data.city,
             about:data.about,
+            verified: data.verified,
         })
         
         
@@ -216,6 +219,11 @@ const AdminDashboard = () => {
                     <div className="form-group">
                         <label className="text-muted">Phone</label>
                         <input onChange={handleChange('phone')} type="text" className="form-control" name="phone" value={phone} />
+                    { verified ?
+                        <p>Phone Verified</p>
+                        :
+                        <Link exact to="/verify-phone" >Verify phone is required to perform in this website</Link>
+                    }
                     </div>
                     <div className="form-group">
                         <label className="text-muted">Address</label>

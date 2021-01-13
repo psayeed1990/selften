@@ -43,7 +43,7 @@ import AddSlider from './admin/AddSlider';
 import RefillWallet from './admin/RefillWallet';
 import SeeTopupOrders from './user/SeeTopupOrders';
 import ForgetPassword from './user/ForgetPassword';
-
+import VerifyPhone from './user/VerifyPhone'
 
 
 const Routes = () => {
@@ -74,6 +74,7 @@ const Routes = () => {
                 <UserProvider>
                     <PrivateRoute path="/user/see-your-topup-orders" exact component={ SeeTopupOrders } />
                     <AdminRoute path="/admin/see-your-topup-orders" exact component={ SeeTopupOrders } />
+                    <PrivateRoute path="/verify-phone" exact component={ VerifyPhone } />
 
                     <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
                     <AdminRoute path="/admin/refill-wallet" exact component={ RefillWallet } />

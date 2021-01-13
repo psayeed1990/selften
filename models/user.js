@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        verified: {
+            type: Boolean,
+            required: false,
+        },
         pair: [{
             type: mongoose.Schema.ObjectId,
             ref: 'MessagePair',

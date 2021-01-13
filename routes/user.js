@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { setNewPassword, checkResetOTP, resetPassword, requireSignin, isAuth, isAdmin } = require('../controllers/auth');
+const { resendOTP, setNewPassword, checkResetOTP, resetPassword, requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 
 const { getUserById, profileUpdate, gerAllAdmins, userById, read, update, purchaseHistory, getMessagesByUser, getMessagesByPair, sendMessagesByPair, getUnseenMessagesByReceiver } = require('../controllers/user');
 
@@ -11,6 +11,7 @@ router.get('/secret', requireSignin, (req, res) => {
     });
 });
 
+router.get('/user/resend-otp-user/:phone/', resendOTP)
 router.get('/user/set-new-password/:phone/:password', setNewPassword)
 router.get('/user/check-reset-otp/:phone/:otpcode', checkResetOTP)
 router.get('/user/reset-password/:phone', resetPassword)

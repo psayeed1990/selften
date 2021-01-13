@@ -12,7 +12,7 @@ exports.resetPassword = async (req, res, next)=>{
         const user = await User.findOne({phone});
         const generateMsg = (length)=> {
             var result           = '';
-            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var characters       = '0123456789';
             var charactersLength = characters.length;
             for ( var i = 0; i < length; i++ ) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -39,53 +39,46 @@ exports.resetPassword = async (req, res, next)=>{
 
 exports.resendOTP = async (req, res)=>{
     try{
+        
         const {phone} = req.params;
-        console.log(phone);
         const user = await User.findOne({phone: phone});
-
-        if(!user){
+        
+        if(user.verified){
             return res.status(400).json({
-                
-                error: 'Phone number does not belong to any user'
-            });
+            
+            error: 'Phone number already belongs to a verified user'
+        });
         }
-        if(user){
-            if(user.otpcode === 'undefined'){
-                return res.status(400).json({
-                
-                error: 'Phone number already belongs to a verified user'
-            });
 
-            }else if(user.phone !== 'undefined' ){
-                const generateMsg = (length)=> {
-                    var result           = '';
-                    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                    var charactersLength = characters.length;
-                    for ( var i = 0; i < length; i++ ) {
-                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                    }
-                    return result;
+        if(!user.verified){
+            const generateMsg = (length)=> {
+                var result           = '';
+                var characters       = '0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
-
-                const generatedMsg = await generateMsg(5);
-                const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
-                user.otpcode = generatedMsg.toUpperCase(),
-                await user.save();
-                
-                const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
-                const {data} = await axios.get(alphaURI);
-                
-                return res.json({sendAgain: 'again', phone: user.phone})
+                return result;
             }
-
+            const generatedMsg = await generateMsg(5);
+            const msg = `Your selften registration OTP:- ${generatedMsg.toUpperCase()}`
+            user.otpcode = generatedMsg.toUpperCase(),
+            await user.save();
+            
+            const alphaURI = `http://alphasms.biz/index.php?app=ws&u=${process.env.ALPHA_OTP_USER_NAME}&h=${process.env.ALPHA_OTP_HASH_TOKEN}&op=pv&to=${user.phone}&msg=${msg}`;
+            const {data} = await axios.get(alphaURI);
+            
+            return res.json({sendAgain: 'again', phone: user.phone})
         }
+
+        
 
 
 
     }catch(err){
         return res.status(400).json({
                 
-            error: 'Something wrong happened'
+            error: 'Phone number does not belong to any user'
         });
     }
     
@@ -130,38 +123,41 @@ exports.verifyOTP = async (req, res, next)=>{
         const { phone, otpcode } = req.params;
         const user = await User.findOne({phone: phone});
 
-        if(!user){
+        if(user.verified){
             return res.status(400).json({
-
-                 error: 'Wrong phone number or user does not exist'
-            });
+            
+            error: 'Phone number already belongs to a verified user'
+        });
         }
 
-        if(user.otpcode !== otpcode){
-            return res.status(400).json({
+        if(!user.verified){
+            if(user.otpcode !== otpcode){
+                return res.status(400).json({
 
-                error: 'Wrong otp'
+                    error: 'Wrong otp'
+                });
+            }
+
+            user.otpcode = undefined;
+            user.verified = true;
+            //after save
+            await user.save();
+
+
+            const newWallet = new Wallet({
+                user: user._id,
+            });
+
+            const wallet = await newWallet.save();
+
+            return res.json({
+                user
             });
         }
-
-        user.otpcode = undefined;
-        //after save
-        await user.save();
-
-
-        const newWallet = new Wallet({
-            user: user._id,
-        });
-
-        const wallet = await newWallet.save();
-
-        return res.json({
-            user
-        });
     }catch(err){
         return res.status(400).json({
 
-                error: 'Wrong otp'
+                error: 'Wrong phone number or user does not exist'
             });
     }
 
@@ -205,7 +201,7 @@ exports.signup = async (req, res) => {
         //generate otp
         const generateMsg = (length)=> {
             var result           = '';
-            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var characters       = '0123456789';
             var charactersLength = characters.length;
             for ( var i = 0; i < length; i++ ) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -323,9 +319,9 @@ exports.signin = async (req, res) => {
             // persist the token as 't' in cookie with expiry date
             res.cookie('t', token, { expire: new Date() + 9999 });
             // return response with user and token to frontend client
-            const { _id, name, email, role, phone } = phoneUser;
+            const { _id, name, email, role, phone, verified } = phoneUser;
             
-            return res.json({ token, user: { _id, email, name, role, phone } });
+            return res.json({ token, user: { _id, email, name, role, phone, verified } });
         }
 
         if(checkEmailOrPhone(req.body.email)){

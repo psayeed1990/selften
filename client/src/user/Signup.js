@@ -142,7 +142,7 @@ const Signup = () => {
                 sendOTP === true ?
                 <form onSubmit={validateOTP} id="otp-form" className="all-form">
                     <div className="form-group">
-                        <p className="text-muted otp-text row">Phone verification is required. Please make setUserPhone
+                        <p className="text-muted otp-text row">Phone verification is required. Please make sure
                         your phone is available to receive verification code</p>
                         <ResendOTP phone={userPhone} />
                         <div className="row otp-width">
