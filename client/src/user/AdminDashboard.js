@@ -222,7 +222,7 @@ const AdminDashboard = () => {
                     { verified ?
                         <p>Phone Verified</p>
                         :
-                        <Link exact to="/verify-phone" >Verify phone is required to perform in this website</Link>
+                        <Link exact to="/verify-phone" >Phone verification is necessary</Link>
                     }
                     </div>
                     <div className="form-group">
