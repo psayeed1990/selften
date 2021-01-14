@@ -229,11 +229,11 @@ const TopupForm = () => {
     const newPostForm = () => (
         <form className="mb-3 topup-form" onSubmit={clickSubmit}>
             <div className="row">
-                <div className="col-2">
+                <div className="col-md-2">
                    
                     <ShowThumb item={{_id: id}} url="topup-thumbs"/>
                 </div>
-                <div className="col-5">
+                <div className="col-md-5">
                     <p>Publisher: {thisTopup.publisher}</p>
                     <p>Platform: {thisTopup.platform}</p>
                     <p>Region: {thisTopup.region}</p>
@@ -419,7 +419,7 @@ const TopupForm = () => {
     return (
         <Layout>
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+                <div className="col-md-12 topup-form-wrapper">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}

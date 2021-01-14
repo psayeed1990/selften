@@ -210,6 +210,9 @@ select {
 	.slides img {
 		min-height: 60px !important;
 	}
+	.topup-form-wrapper {
+		padding: 10px;
+	}
 }
 
 @media only screen and (max-width: 450px) {
@@ -235,5 +238,18 @@ select {
 	}
 	.float-right {
 		float: left !important;
+	}
+	.left-slide,
+	.right-slide {
+		display: none;
+	}
+	.middle-slide {
+		width: 65%;
+		border-radius: 3px !important ;
+	}
+
+	.slides {
+		grid-template-columns: auto;
+		height: 135px;
 	}
 }

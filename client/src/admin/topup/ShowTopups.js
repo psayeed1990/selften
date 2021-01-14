@@ -32,7 +32,7 @@ const ShowTopups = ()=>{
                     
             <div className="row">
                 <div className="col-md-6">
-                    <h6>Popular Mobile Game topup</h6>
+                    <h5 className="site-name-footer">Popular Mobile Game topup</h5>
 
                 </div>
                 <div  className="col-md-6">

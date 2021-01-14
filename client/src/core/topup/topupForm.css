@@ -21,3 +21,8 @@
 .security-code {
 	margin-left: 5px;
 }
+.topup-form-wrapper {
+	max-width: 900px;
+	width: 90%;
+	margin: 0 auto;
+}

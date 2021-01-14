@@ -101,6 +101,9 @@ h6:hover {
 a {
 	color: rgb(216, 28, 75);
 }
+.site-name-footer {
+	color: #999;
+}
 
 /* top up thumb */
 .center-flex {
@@ -176,40 +179,4 @@ a {
 
 .product-img img {
 	border-radius: 10px;
-}
-
-@-webkit-keyframes Gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-@-moz-keyframes Gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-@keyframes Gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
 }

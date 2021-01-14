@@ -47,7 +47,7 @@ const Home = () => {
             <div className="wrapper">
             <div className="row">
                             <div className="col-md-6">
-                            <h6>Popular Category</h6>
+                            <h5 className="site-name-footer">Popular Category</h5>
 
                             </div>
                             <div  className="col-md-6">
@@ -67,7 +67,7 @@ const Home = () => {
                 <div className="showCategories row">
                     {categories.map((category)=>{
                         return(
-                        <div className="col-md-1 home-categories" key={category._id}>
+                        <div className="col-3 col-md-2 home-categories" key={category._id}>
                             <Link exact to={`/categories/${category._id}`}>
                                 <ShowThumb item={category} url="categories" />
                                 <h6>{category.name}</h6>
