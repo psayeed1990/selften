@@ -117,7 +117,7 @@ const AddTopupThumb = () => {
                 <textarea onChange={handleChange('about')} type="text" className="form-control" value={about}>About</textarea>
             </div>
 
-            <button className="btn btn-outline-primary">Create Topup Thumb</button>
+            <button className="btn btn-outline-primary submit-btn">Create Topup Thumb</button>
         </form>
     );
 

@@ -179,7 +179,7 @@ const newPostForm = () => (
         </div>
 
 
-        <button className="btn btn-outline-primary">Create Recharge Package</button>
+        <button className="btn btn-outline-primary submit-btn">Create Recharge Package</button>
     </form>
 
     <div className="form-group">
@@ -209,8 +209,8 @@ const newPostForm = () => (
                                 <input onChange={handleChange('pkgName')} type="text" placeholder={r.packageName} className="form-control" value={pkgName} name={`${r._id}-packageName`} />
                                 <input onChange={handleChange('pkgAmount')} type="text" placeholder={r.packageAmount} className="form-control" value={pkgAmount} name={`${r._id}-packageAmount`} />
                        
-                                <p className="btn btn-primary cursor-pointer" onClick={()=>{editRP( r._id, i)}}>Update</p>
-                                <p className="btn btn-primary cursor-pointer" onClick={()=>{deleteRP( r._id, i)}}>delete</p>
+                                <p className="btn btn-primary cursor-pointer submit-btn" onClick={()=>{editRP( r._id, i)}}>Update</p>
+                                <p className="btn btn-primary cursor-pointer submit-btn" onClick={()=>{deleteRP( r._id, i)}}>delete</p>
                             </div>
                             
                             {/* <div id={`${r._id}-show`}>
