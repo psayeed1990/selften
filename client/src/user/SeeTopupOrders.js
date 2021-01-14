@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { getTopupOrdersByUser } from "./apiUser";
 import { AdminLinks } from "./AdminDashboard";
 import { UserLinks } from "./UserDashboard";
+import moment from 'moment'
 import './seeTopupOrders.css';
 
 const SeeTopupOrders = ()=>{
@@ -69,6 +70,7 @@ const SeeTopupOrders = ()=>{
                                                 
                                                 }
                                                 <h6>Player ID: {order.user._id} </h6>
+                                                <p className="time">Time: {moment(order.createdAt).fromNow()}</p>
 
                                             
                                         </div>

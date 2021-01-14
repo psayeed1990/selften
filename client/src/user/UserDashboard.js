@@ -173,7 +173,7 @@ const Dashboard = () => {
                         <label className="text-muted">Phone</label>
                         <input onChange={handleChange('phone')} type="text" className="form-control" name="phone" value={phone} />
                         { verified ?
-                        <p>Phone Verified</p>
+                        <p className="time">Phone Verified</p>
                         :
                         <Link exact to="/verify-phone" >Phone verification is necessary</Link>
                     }

@@ -210,3 +210,7 @@ a {
 	font-family: roboto;
 	text-align: center;
 }
+.time {
+	font-size: 0.7rem;
+	color: tomato;
+}

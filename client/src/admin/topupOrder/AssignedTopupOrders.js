@@ -4,6 +4,7 @@ import { getAssignedTopupOrdersAdmin, updateTopupOrderAdmin } from '../apiAdmin'
 import { Link } from 'react-router-dom';
 import Layout from '../../core/Layout';
 import { AdminLinks } from '../../user/AdminDashboard';
+import moment from 'moment';
 import { sendMessage } from '../../core/apiCore';
 import './topuporder.css';
 
@@ -117,6 +118,8 @@ const AssignedTopupOrders = ()=>{
                                             <p className="btn btn-primary submit-btn" role="button" onClick={() => { markTopupOrderStatus(order._id, 'cancelled', order.user._id) }}>Mark cancelled</p>
                                         </Fragment>
                                         }
+                                        <p className="time">Time: {moment(order.createdAt).fromNow()}</p>
+                                        
                                         
                                     
                                 </div>

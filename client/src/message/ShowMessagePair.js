@@ -5,6 +5,8 @@ import { AdminLinks } from '../user/AdminDashboard';
 import { UserLinks } from './../user/UserDashboard';
 import { isAuthenticated } from '../auth';
 import { getMessage } from '../core/apiCore';
+import moment from 'moment';
+import './message.css';
 
 const ShowMessagePair = () => {
     const [messagesPair, setMessagesPair] = useState(null);
@@ -45,20 +47,24 @@ const ShowMessagePair = () => {
                         messagesPair ?
                             messagesPair.map(messages=>{
                                 return (
-                                    <div className="border p-1 m-3" key={messages._id}>
+                                    <div className="border p-1 m-3 msg-pair" key={messages._id}>
                                         <Link exact to={`/messages/pair/${messages._id}/`}>
-                                            <p>By: {messages.user.name}</p>
+                                            <p className="msg-text">By: {messages.user.name}</p>
                                             {
                                                 messages.message.filter(receivedMsg => {
                                                     return (receivedMsg.user === user._id && receivedMsg.seen === false)
                                                 }).length > 0 ?
-                                                    <p>Unread messages</p>
+                                                <Fragment>
+                                                
+                                                    <p>Latest Message: {messages.message[messages.message.length - 1].message}<sup>unread</sup></p>
+                                                    </Fragment>
                                                     :
-                                                    <Fragment></Fragment>
+                                                    <p>Latest Message: {messages.message[messages.message.length - 1].message}<sup>read</sup></p>
+
                                                 
                                             }
-                                            <p>Message: {messages.message[messages.message.length - 1].message}</p>
-                                            <p>To: {messages.receiver.name}</p>
+                                            <p className="msg-text">To: {messages.receiver.name}</p>
+                                            <p className="time">{moment(messages.message[messages.message.length - 1].createdAt).fromNow()}</p>
                                             
                                         </Link>
                                     </div>

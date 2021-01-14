@@ -7,6 +7,7 @@ import { messageByPairId, sendMessage } from '../core/apiCore';
 import { AdminLinks } from '../user/AdminDashboard';
 import { UserLinks } from '../user/UserDashboard';
 import { NotificationsContext } from '../context/notificationsContext';
+import moment from 'moment';
 import './message.css';
 
 
@@ -76,7 +77,7 @@ const ShowChat = () => {
 
     const clickSubmit = event => {
         event.preventDefault();
-        setValues({ ...values, error: '', loading: true });
+        
         const newMsgDetails = {};
         newMsgDetails.userId = user;
         newMsgDetails.receiverId = receiverId;
@@ -93,7 +94,7 @@ const ShowChat = () => {
                 messages: [...messages, msg],
                 message: '',
                 loading: false,
-                createdMessage: 'Message loaded'
+                
             });
             
         });
@@ -139,9 +140,15 @@ const ShowChat = () => {
                         return (
                             <Fragment>
                             {msg.user === user._id ?
-                                <p className="message own-msg"><span className="border own-message">{msg.message}</span></p>
+                            <Fragment>
+                                <p className="message own-msg"><span className="border own-message">{msg.message}</span>
+                                <sup className="time">{moment(msg.createdAt).fromNow()}</sup></p>
+                            </Fragment>
                                 :
-                                <p className="message "><span className="border sender-msg">{msg.message}</span></p>
+                                <Fragment>
+                                <p className="message "><span className="border sender-msg">{msg.message}</span>
+                                <sup className="time">{moment(msg.createdAt).fromNow()}</sup></p>
+                                </Fragment>
                             }
                             </Fragment>
                         )
@@ -152,10 +159,10 @@ const ShowChat = () => {
             <form id="message" className="mb-3" onSubmit={clickSubmit}>
                 <div className="form-group">
                     
-                    <input placeholder="type" onChange={handleChange('message')} type="text" className="form-control" value={message} />
+                    <textarea placeholder="type" onChange={handleChange('message')} type="text" className="form-control" value={message}>Type</textarea>
                 </div>
 
-                <button className="btn btn-outline-primary">Send Message</button>
+                <button className="btn btn-outline-primary submit-btn">Send Message</button>
             </form>
         </Fragment>
     );
@@ -189,7 +196,7 @@ const ShowChat = () => {
                     <div className="col-md-3"><UserLinks /></div>
                 }
             
-                <div className="col-md-9">
+                <div className="col-md-9 content">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}
