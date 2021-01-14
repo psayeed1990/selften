@@ -8,13 +8,14 @@ import { createTopupOrder } from './../apiCore';
 import { showBalance } from './../../admin/apiAdmin';
 import './topupForm.css';
 import ShowThumb from '../ShowThumb';
+import { getUserProfile } from '../../user/apiUser';
 
 
 
 const TopupForm = () => {
-
     // Id for the game name to load packages under it
     // id comes from parameter url
+    const [profile, setProfile] = useState({});
     const { id, type } = useParams();
     const [wallet, setWallet] = useState(null);
     const [amount, setAmount] = useState(null);
@@ -38,7 +39,7 @@ const TopupForm = () => {
         formData: ''
     });
 
-    const { user, token } = isAuthenticated();
+    const { user, token, role } = isAuthenticated();
     const {
         withSSLCommerz,
         gameUserId,
@@ -83,6 +84,8 @@ const TopupForm = () => {
 
         if(user){
             const wData = await getWallet(user._id, token);
+            const dataUser = await getUserProfile(user, token);
+            setProfile(dataUser);
             if (!wData) {
                 setWallet(0);
             }else{
@@ -179,7 +182,7 @@ const TopupForm = () => {
                     withSSLCommerz: 'n',
                     createdTopupOrder: data.name
                 });
-                //console.log(data);
+                console.log(data);
                 //redirect to payment page
                window.location.replace(data.GatewayPageURL);
                 
@@ -266,7 +269,7 @@ const TopupForm = () => {
                                 <Fragment>
                                 {
                                     accountType === 'gmail' ? 
-                                        <label className="text-muted">Your Gmailt</label>
+                                        <label className="text-muted">Your Gmail</label>
                                     
                                     :
                                     <label className="text-muted">Select Account type first</label>
@@ -345,14 +348,21 @@ const TopupForm = () => {
 
             {
                 user ?
-                    <Fragment>
-                        <div className="form-group col-md-4">
-                            <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
-                        </div>
+                 
+                     (!profile.address || !profile.city || !profile.postCode) ?
+                        <p>Please fill your address, city postal code in your <Link exact to={()=>{
+                            return role && role === 1 ? '/admin/dashboard' : '/user/dashboard'
+                        }} >profile</Link> before you can order a topup</p>
+                        
+                        :
+                        <Fragment>
+                            <div className="form-group col-md-4">
+                                <label className="text-muted">Amount to pay: { amount ? <b>{amount}</b>: <b>0</b> }</label>
+                            </div>
 
-                        <div className="money">
-                            <h4>Your Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
-                        </div>
+                            <div className="money">
+                                <h4>Your Balance: { wallet ? wallet.amount : <span>Loading...</span>}</h4>
+                            </div>
 
                                         { wallet && amount ? wallet.amount < amount ? 
                                             <p>You have less balance than you have to pay. Please <Link to={()=>{
@@ -387,9 +397,11 @@ const TopupForm = () => {
                         <br />
                         <br />
                         <p onClick={()=>{orderWithSSLCommerz()}} className="submit-btn btn btn-outline-primary">Order With Card, Bkash and more</p>
-            </Fragment>
-            :
-            <p>Please login to order a topup</p>
+                    </Fragment>
+                                
+                    
+                :
+                    <p>Please login to order a topup</p>
             }
 
             <h5>About {thisTopup.title}</h5>

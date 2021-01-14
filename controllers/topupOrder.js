@@ -169,7 +169,6 @@ exports.SSLComFail = (req, res)=>{
 }
 
 exports.createTopupOrder = (req, res, next) => {
-        
         const { userId, topupGameId, withSSLCommerz } = req.params;
         let form = new formidable.IncomingForm();
         form.keepExtensions = true;
@@ -184,6 +183,7 @@ exports.createTopupOrder = (req, res, next) => {
         }
             
         Topup.findById(topupGameId).then(topup => {
+        
             
             if (!topup) {
                 return res.status(400).json({
@@ -238,36 +238,37 @@ exports.createTopupOrder = (req, res, next) => {
 
             if(topup && topup.type === 'codeId'){
 
-                    if (!gameUserId ) {
-                        
-                        return res.status(400).json({
-                            error: 'Account Type field is required'
-                        });
-                    }
-                    if (!password ) {
-                        
-                        return res.status(400).json({
-                            error: 'Password Type field is required'
-                        });
-                    }
-                    if (!selectRecharge ) {
-                        
-                        return res.status(400).json({
-                            error: 'Recharge Package field is required'
-                        });
-                    }
-                    if (!topupGameId ) {
-                        
-                        return res.status(400).json({
-                            error: 'You are in a wrong url'
-                        });
-                    }
+                if (!gameUserId ) {
+                    
+                    return res.status(400).json({
+                        error: 'Account Type field is required'
+                    });
                 }
+                if (!password ) {
+                    
+                    return res.status(400).json({
+                        error: 'Password Type field is required'
+                    });
+                }
+                if (!selectRecharge ) {
+                    
+                    return res.status(400).json({
+                        error: 'Recharge Package field is required'
+                    });
+                }
+                if (!topupGameId ) {
+                    
+                    return res.status(400).json({
+                        error: 'You are in a wrong url'
+                    });
+                }
+            }
                 
                 
                 //get price
                 RechargePackage.findById(selectRecharge)
                     .then(package => {
+                        
                         let topuporder = new TopupOrder(fields);
                         topuporder.topupGameId = topupGameId;
                         topuporder.user = userId;
@@ -317,8 +318,11 @@ exports.createTopupOrder = (req, res, next) => {
                                         if(response.status === 'SUCCESS'){
                                             result.sslComSessionKey = response.sessionkey;
                                             result.save();
+                                            return res.json(response);
+                                        }else{
+                                            return res.status(400).json({error: 'Error: try to fill address information, city, zipcode etc if empty'})
                                         }
-                                        return res.json(response);
+                                        
                                     }).catch(error => {
                                         return console.log(error);
                                     })
