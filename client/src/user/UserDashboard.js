@@ -12,7 +12,7 @@ export const UserLinks = () => {
         user: { _id }
     } = isAuthenticated();
         return (
-            <div className="card">
+            <div className="card" id="admin-links">
                 <h4 className="card-header">User Links</h4>
                 <ul className="list-group">
                      <li className="list-group-item">

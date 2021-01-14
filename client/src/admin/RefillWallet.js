@@ -110,7 +110,7 @@ const RefillWallet = ()=>{
                                 }} >profile</Link> before you can add money</p>
 
                                 :
-                                <input type="submit" className="btn-primary" value="Add via credit card, bKash etc" />
+                                <input type="submit" className="btn-primary submit-btn" value="Add via credit card, bKash etc" />
 
                             }
 

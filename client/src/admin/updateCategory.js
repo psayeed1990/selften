@@ -79,7 +79,7 @@ const UpdateCategory = ({ match }) => {
                     />
                 </div>
                 <div className="w-size25">
-                    <button type="submit" className="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+                    <button type="submit" className="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4 submit-btn">
                         Save Changes
                     </button>
                 </div>

@@ -53,7 +53,7 @@ const SeeTopupOrders = ()=>{
                             topupOrders.map((order, i)=>(
 
 
-                                        <div className="col-md-4 p-5" key={order._id}>
+                                        <div className="col-md-4 p-5 topup-orders-list" key={order._id}>
                                                 <h6 className="">Order id: <p className="order-id">{ order._id }</p></h6>
                                                 
                                                 <h6>Total Price: { order.price } Tk</h6>

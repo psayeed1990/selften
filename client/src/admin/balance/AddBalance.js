@@ -89,7 +89,7 @@ const AddBalance = () => {
                 <input onChange={handleChange('balance')} type="number" className="form-control" value={balance} />
             </div>
 
-            <button className="btn btn-outline-primary">Add Balance</button>
+            <button className="btn btn-outline-primary submit-btn">Add Balance</button>
         </form>
     );
 

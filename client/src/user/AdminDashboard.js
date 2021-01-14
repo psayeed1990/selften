@@ -10,7 +10,7 @@ import { updateUserProfile, getUserProfile } from "./apiUser";
 export const AdminLinks = () => {
     const [notifications, setNotifications] = useContext(NotificationsContext);
     return ( 
-        <div className="card">
+        <div className="card" id="admin-links">
             <h4 className="card-header">Admin Links</h4>
            
             <ul className="list-group">
@@ -204,8 +204,8 @@ const AdminDashboard = () => {
 
     const adminInfo = () => {
         return (
-            <div className="card mb-5 dashboard-form">
-                <h3 className="card-header">User Information</h3>
+            <div className=" dashboard-form">
+                <h3 className="">User Information</h3>
 
                 <form onSubmit={updateProfile} >
                     <div className="form-group">
@@ -242,7 +242,7 @@ const AdminDashboard = () => {
                         <textarea onChange={handleChange('about')} type="text" className="form-control" name="about" value={about} >{about}</textarea>
                     </div>
 
-                   <input type="submit" className="btn-primary" value="Update Profile" />
+                   <input type="submit" className="btn-primary submit-btn" value="Update Profile" />
                     
 
                 </form>

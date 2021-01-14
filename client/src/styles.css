@@ -55,8 +55,29 @@ h6:hover {
 .form-control {
 	transition: border 2s linear;
 	max-width: 300px;
+	border: 1px solid #999;
+	box-shadow: inset 0px 0px 6px #999;
 }
-
+.h6,
+h6 {
+	font-size: 1rem;
+	font-weight: 400;
+	color: #444 !important;
+	font-family: lato;
+	text-align: left;
+}
+#admin-links .nav-link {
+	color: #2f2222 !important;
+	padding: 20px;
+	font-size: 14px;
+	font-weight: 500;
+	background: #ebedf2;
+	text-transform: uppercase;
+	box-shadow: 0 0 3px #bdbdbd;
+}
+.list-group-item {
+	background-color: #e3e3e3;
+}
 /*ends custom css */
 
 /**

@@ -56,6 +56,9 @@ const AddCoupon = () => {
         });
 
         getDiamonds(user, token).then(data=>{
+            if(!data){
+                return;
+            }
             if (data.error) {
                 setDiamondAmount(0);
             } else{
@@ -92,9 +95,13 @@ const AddCoupon = () => {
         setValues({ ...values, error: '', loading: true });
 
         addCoupon(user._id, token, formData).then(data => {
+            if(!data){
+                return;
+            }
             if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
+                return setValues({ ...values, error: data.error });
+            } 
+            if(data) {
                 
                 setValues({
                     ...values,
@@ -143,7 +150,7 @@ const AddCoupon = () => {
                     <input onChange={handleChange('diamonds')} type="number" className="form-control" value={diamonds} />
                 </div>
 
-                <button className="btn btn-outline-primary">Add a coupon</button>
+                <button className="btn btn-outline-primary submit-btn">Add a coupon</button>
             </form>
             <h4 className="m-5">Your diamonds or purchased points: {diamondAmount} </h4>
             <h3 className="m-5">All coupons</h3>

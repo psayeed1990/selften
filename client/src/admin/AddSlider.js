@@ -82,7 +82,7 @@ const AddSlider = () => {
                 <input onChange={handleChange('title')} type="text" className="form-control" value={title} />
             </div>
 
-            <button className="btn btn-outline-primary">Create Topup Thumb</button>
+            <button className="btn btn-outline-primary submit-btn">Create Topup Thumb</button>
         </form>
     );
 

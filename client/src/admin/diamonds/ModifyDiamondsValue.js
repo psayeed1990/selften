@@ -87,7 +87,7 @@ const ModifyDiamondsValue = () => {
                 <input onChange={handleChange('diamondValue')} type="number" className="form-control" value={diamondValue} />
             </div>
 
-            <button className="btn btn-outline-primary">Add Diamond value</button>
+            <button className="btn btn-outline-primary submit-btn">Add Diamond value</button>
         </form>
     );
 
