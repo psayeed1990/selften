@@ -2,9 +2,14 @@
 
 .top-bar {
 	padding: 5px;
+	background: #ac113c;
 }
 .top-bar img {
 	margin: 0 5px 0 10px;
+	background: white;
+	box-shadow: 0 0 5px inset #fff;
+	padding: 3px;
+	border-radius: 3px;
 }
 .float-left {
 	float: left;
@@ -19,7 +24,7 @@
 	font-weight: 300;
 	font-size: 12px;
 	padding: 5px 40px;
-	border: 1px solid #9d9595;
+	border: 1px solid #a1b387;
 	border-radius: 7px;
 	transition: 0.3s border linear;
 }
@@ -33,7 +38,7 @@
 	display: grid;
 	grid-template-columns: auto auto auto;
 	margin-bottom: 20px;
-	box-shadow: 0 1px 9px #d5cfcf;
+	box-shadow: 0 6px 7px #c8c3c3;
 }
 .top-menu li {
 	list-style: none;
@@ -50,7 +55,7 @@
 .top-bar-left,
 .float-right {
 	font-size: 13px;
-	color: #6f6861;
+	color: #eee5dd;
 }
 /* ends custom css */
 
@@ -59,7 +64,7 @@
 }
 
 .nav-link {
-	color: #2b2626 !important;
+	color: #1a164d !important;
 	padding: 20px;
 	font-size: 14px;
 	font-weight: 500;

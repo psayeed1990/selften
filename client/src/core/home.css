@@ -4,13 +4,19 @@
 }
 .center-flexs {
 	justify-content: center;
+	background: #e8fbe0;
 }
 .view-all a {
-	background: #df1a4c;
+	background: #1935a6;
 	padding: 5px;
 	border-radius: 5px;
 	color: #fff;
+	font-size: 0.8rem;
 }
 .wrapper {
 	padding: 20px;
+}
+.showCategories .product-img {
+	/* border: 3px solid #443a3a; */
+	background-color: #fff;
 }

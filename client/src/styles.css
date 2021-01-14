@@ -41,9 +41,12 @@ h6:hover {
 }
 .showCategories .home-categories {
 	text-align: center;
+	background: #e8fbe0;
+	padding-top: 10px;
 }
 .showCategories {
 	justify-content: center;
+	padding: 20px;
 }
 .showCategories img {
 	width: 60px;
@@ -123,21 +126,30 @@ a {
 	color: rgb(216, 28, 75);
 }
 .site-name-footer {
-	color: #999;
+	background: #d72859;
+	padding: 5px;
+	text-transform: uppercase;
+	width: max-content;
+	font-size: 0.8rem;
+	color: #f0eeee;
 }
 
 /* top up thumb */
 .center-flex {
 	justify-content: center;
-	margin: 50px auto 0;
+	margin: 0px auto 80px;
 }
 .center-flex .product-img {
 	width: 100px;
 	text-align: center;
 	margin: 0 auto;
+	background: #f4f2ca;
+	padding: 10px;
+	border-radius: 8px;
 }
 .thumb-show {
 	text-align: center;
+	padding-top: 15px;
 }
 
 /* black shade form 10-1 */
@@ -206,11 +218,28 @@ a {
 .thumb-show h6 {
 	font-size: 1rem;
 	font-weight: 400;
-	color: #444 !important;
+	color: #222c53 !important;
 	font-family: roboto;
 	text-align: center;
+	text-transform: uppercase;
+	padding: 20px 0 0 0;
 }
 .time {
 	font-size: 0.7rem;
 	color: tomato;
+}
+#dashboard-menu {
+	padding: 4px;
+	background-color: white;
+	display: none;
+}
+@media only screen and (max-width: 768px) {
+	#admin-links {
+		display: none;
+		position: absolute;
+		z-index: 999;
+	}
+	#dashboard-menu {
+		display: block;
+	}
 }

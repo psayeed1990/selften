@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -11,8 +11,26 @@ export const UserLinks = () => {
     const {
         user: { _id }
     } = isAuthenticated();
+
+    const toggleMenuView = (event)=>{
+        event.preventDefault();
+        const userMenu = document.getElementById('admin-links')
+        if(userMenu.style.display === ''){
+            return userMenu.style.display = 'block';
+        }
+        if(userMenu.style.display === 'block'){
+            return userMenu.style.display = 'none';
+        }if(userMenu.style.display === 'none'){
+            return userMenu.style.display = 'block';
+        }
+    }
         return (
-            <div className="card" id="admin-links">
+            <Fragment>
+                <div id="dashboard-menu" className="cursor-pointer" onClick={toggleMenuView}>
+                <img src="/images/icons/menu.svg" width="23" /> Dashboard Menu
+                </div>
+
+                <div className="card" id="admin-links">
                 <h4 className="card-header">User Links</h4>
                 <ul className="list-group">
                      <li className="list-group-item">
@@ -50,6 +68,8 @@ export const UserLinks = () => {
                     
                 </ul>
             </div>
+            </Fragment>
+            
         );
     };
 

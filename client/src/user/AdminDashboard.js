@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, Fragment } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -9,8 +9,25 @@ import { updateUserProfile, getUserProfile } from "./apiUser";
 
 export const AdminLinks = () => {
     const [notifications, setNotifications] = useContext(NotificationsContext);
+    const toggleMenuView = (event)=>{
+        event.preventDefault();
+        const userMenu = document.getElementById('admin-links')
+        if(userMenu.style.display === ''){
+            return userMenu.style.display = 'block';
+        }
+        if(userMenu.style.display === 'block'){
+            return userMenu.style.display = 'none';
+        }if(userMenu.style.display === 'none'){
+            return userMenu.style.display = 'block';
+        }
+    }
     return ( 
-        <div className="card" id="admin-links">
+        <Fragment>
+            <div id="dashboard-menu" className="cursor-pointer" onClick={toggleMenuView}>
+                <img src="/images/icons/menu.svg" width="23" /> Dashboard Menu
+            </div>
+
+            <div className="card" id="admin-links">
             <h4 className="card-header">Admin Links</h4>
            
             <ul className="list-group">
@@ -96,6 +113,8 @@ export const AdminLinks = () => {
                 
             </ul>
         </div>
+        </Fragment>
+        
     );
 };
 
@@ -252,6 +271,9 @@ const AdminDashboard = () => {
         );
     };
 
+
+
+
     return (
         <Layout
             title="Dashboard"
@@ -260,7 +282,9 @@ const AdminDashboard = () => {
         >
             <div className="row">
                 
-                <div className="col-md-3"><AdminLinks /></div>
+                <div className="col-md-3">
+                    <AdminLinks />
+                </div>
               
                 <div className="col-md-9">
                     {showLoading()}
