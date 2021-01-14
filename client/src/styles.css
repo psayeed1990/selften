@@ -201,3 +201,12 @@ a {
 .product-img img {
 	border-radius: 10px;
 }
+
+.home-categories h6,
+.thumb-show h6 {
+	font-size: 1rem;
+	font-weight: 400;
+	color: #444 !important;
+	font-family: roboto;
+	text-align: center;
+}
