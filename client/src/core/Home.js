@@ -44,28 +44,30 @@ const Home = () => {
         >
 
             <HomeSLider />
-
-
-            <div className="row center-flex">
-                <div className="col-md-2">
-                    <div className="row">
+            <div className="wrapper">
+            <div className="row">
                             <div className="col-md-6">
                             <h6>Popular Category</h6>
 
                             </div>
                             <div  className="col-md-6">
-                                {/* <img src="/images/icons/category.svg" width="100" /> */}
+                                
+                                <div className="row view-all"><Link exact to="/topups">View All Categories</Link></div>
+                            
                                 
                             </div>
-                        </div>
-                </div>
-                <div className="col-md-8">
+                    
+            </div>
+            <div className="row center-flex">
+                
+                    
+                <div className="col-md-12">
                     {
                 categories.length > 0 ?
                 <div className="showCategories row">
                     {categories.map((category)=>{
                         return(
-                        <div className="col-md-2 home-categories" key={category._id}>
+                        <div className="col-md-1 home-categories" key={category._id}>
                             <Link exact to={`/categories/${category._id}`}>
                                 <ShowThumb item={category} url="categories" />
                                 <h6>{category.name}</h6>
@@ -81,9 +83,7 @@ const Home = () => {
                 
             }
                 </div>
-                <div className="col-md-2">
-                    <Link exact to="/topups">View All Categories</Link>
-                </div>
+                
             </div>
             
            
@@ -105,6 +105,7 @@ const Home = () => {
                         <Card product={product} />
                     </div>
                 ))}
+            </div>
             </div>
         </Layout>
     );

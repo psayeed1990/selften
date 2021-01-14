@@ -44,6 +44,7 @@ import RefillWallet from './admin/RefillWallet';
 import SeeTopupOrders from './user/SeeTopupOrders';
 import ForgetPassword from './user/ForgetPassword';
 import VerifyPhone from './user/VerifyPhone'
+import Topups from './core/topup/Topups';
 
 
 const Routes = () => {
@@ -56,6 +57,8 @@ const Routes = () => {
                 <Route path="/about-us" exact component={AboutUs} />
                 <Route path="/shipment-info" exact component={Shipment} />
                 <Route path="/forget-password" exact component={ForgetPassword} />
+                <Route path="/topups" exact component={Topups} />
+
                 
 
 
