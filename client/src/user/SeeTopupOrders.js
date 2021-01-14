@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { getTopupOrdersByUser } from "./apiUser";
 import { AdminLinks } from "./AdminDashboard";
 import { UserLinks } from "./UserDashboard";
+import './seeTopupOrders.css';
 
 const SeeTopupOrders = ()=>{
     const {user, token} = isAuthenticated();
@@ -45,7 +46,7 @@ const SeeTopupOrders = ()=>{
               
                 <div className="col-md-9">
         
-                    <h5>Your topup orders</h5>
+                    <h5>My topup orders</h5>
                     <div className="row">
         
                         {
@@ -53,24 +54,9 @@ const SeeTopupOrders = ()=>{
 
 
                                         <div className="col-md-4 p-5" key={order._id}>
-                                            <Link exact to={`/topup-orders/${order._id}`}>
-
-                                                <h6>Requested by: { order.user.name }</h6>
-                                            </Link>
-                                                <h6>Order id: { order._id }</h6>
-                                                <h6>Game: {order.topupGameId.title}</h6>
-                                                <h6>Pecharge Package: {order.selectRecharge.packageName}</h6>
-                                                 {
-                                                    order.gameUserId ?
-                                                    <h6>Game User Id: { order.gameUserId }</h6>
-                                                    :
-                                                    <Fragment>
-                                                        <h6>Account type: { order.accountType }</h6>
-                                                        <h6>Number: { order.gmailOrFacebook }</h6>
-                                                    </Fragment>
-                                                }
-                                                <h6>Password: { order.password }</h6>
-                                                <h6>Paid Amount: { order.price } Tk</h6>
+                                                <h6 className="">Order id: <p className="order-id">{ order._id }</p></h6>
+                                                
+                                                <h6>Total Price: { order.price } Tk</h6>
                                                 <h6>Status: {order.status} </h6>
 
                                                 {
@@ -82,23 +68,7 @@ const SeeTopupOrders = ()=>{
                                                     <Fragment></Fragment>
                                                 
                                                 }
-
-                                            
-                                                { order.status === 'completed' || order.status === 'cancelled' ?
-                                                    <Fragment></Fragment>
-                                                    :
-                                            
-                                                <Fragment>
-                                                    <b>Assigned to:</b> {
-                                                        order.assignedTo ?
-                                                        <p>{order.assignedTo.name}</p>
-                                                        :
-                                                        <Fragment>
-                                                            <p>none</p>
-                                                        </Fragment>
-                                                    }
-                                                </Fragment>
-                                                }
+                                                <h6>Player ID: {order.user._id} </h6>
 
                                             
                                         </div>
