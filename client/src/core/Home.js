@@ -46,11 +46,11 @@ const Home = () => {
             <HomeSLider />
             <div className="wrapper">
             <div className="row">
-                            <div className="col-md-6">
+                            <div className="col-md-6 col-6">
                             <h5 className="site-name-footer">Popular Category</h5>
 
                             </div>
-                            <div  className="col-md-6">
+                            <div  className="col-md-6 col-6">
                                 
                                 <div className="row view-all"><Link exact to="/topups">View All Categories</Link></div>
                             
@@ -67,7 +67,7 @@ const Home = () => {
                 <div className="showCategories row">
                     {categories.map((category)=>{
                         return(
-                        <div className="col-3 col-md-2 home-categories" key={category._id}>
+                        <div className="col-6 col-md-2 col-lg-2 col-xl-2 mb-3 home-categories" key={category._id}>
                             <Link exact to={`/categories/${category._id}`}>
                                 <ShowThumb item={category} url="categories" />
                                 <h6>{category.name}</h6>

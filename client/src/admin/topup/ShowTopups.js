@@ -31,11 +31,11 @@ const ShowTopups = ()=>{
          
                     
             <div className="row">
-                <div className="col-md-6">
-                    <h5 className="site-name-footer">Popular Mobile Game topup</h5>
+                <div className="col-6">
+                    <h5 className="site-name-footer">Popular Game topup</h5>
 
                 </div>
-                <div  className="col-md-6">
+                <div  className="col-6">
                     <div className="row view-all"><Link exact to="/topups">View All Topups</Link></div>
                                 
                 </div>
@@ -54,7 +54,7 @@ const ShowTopups = ()=>{
                             return(
                                 <Fragment>
                                 {i < 5 ? 
-                                <div className="col-md-2 thumb-show" key={thumb._id}>
+                                <div className="col-6 col-md-2 col-lg-2 thumb-show" key={thumb._id}>
                                     <Link exact to={`/topups/${thumb._id}/type/${thumb.type}`}>
                                     
                                         <ShowThumb item={thumb} url="topup-thumbs" />

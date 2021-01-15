@@ -20,3 +20,28 @@
 	/* border: 3px solid #443a3a; */
 	background-color: #fff;
 }
+
+@media only screen and (max-width: 768px) {
+	.showCategories .product-img {
+		width: 60px;
+	}
+	.showCategories .product-img {
+		padding: 0px;
+	}
+	.showCategories {
+		padding: 20px 0;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.center-flex .product-img {
+		padding: 5px;
+	}
+	.thumb-show .product-img {
+		width: 100%;
+	}
+	.view-all a,
+	.site-name-footer {
+		font-size: 0.6rem;
+	}
+}

@@ -79,8 +79,8 @@ const Signup = () => {
                 <label className="text-muted">City [Optional]</label>
                 <input onChange={handleChange('city')} type="city" className="form-control" value={city} />
             </div>
-            <button onClick={clickSubmit} className="btn btn-primary">
-                Submit
+            <button onClick={clickSubmit} className="btn btn-primary submit-btn">
+                Signup
             </button>
         </form>
     );
