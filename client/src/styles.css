@@ -37,7 +37,7 @@ h6:hover {
 }
 .input-group,
 .custom-file {
-	margin: 15px;
+	margin: 15px 0;
 	max-width: 300px;
 }
 .submit-btn {
