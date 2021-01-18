@@ -72,6 +72,7 @@ const AddCoupon = () => {
             }else{
                 if(user.coupon){
                     setUserCoupons(data.coupon)
+                    
                 }else{
                     setUserCoupons([])
                 }
@@ -155,6 +156,7 @@ const AddCoupon = () => {
             <h4 className="m-5">Your diamonds or purchased points: {diamondAmount} </h4>
             <h3 className="m-5">All coupons</h3>
             <div className="row m-5">
+        
                 
                 {
                     coupons.map((coupon, index)=>{
@@ -169,10 +171,11 @@ const AddCoupon = () => {
                                     <p>You do not have enought diamond to avail this coupon</p>
                                     :
                                     <Fragment>
-                                        {userCoupons.indexOf(coupon._id) === -1 ?
-                                        <h3 onClick={()=>{collectCoupon(coupon._id)}} className="btn btn-primary cursor" role="btn" ><b>Collect</b></h3>
-                                        :
+                                        {userCoupons.includes(coupon._id) ?
                                         <h3 className="btn btn-primary cursor" role="btn" ><b>Collected</b></h3>
+
+                                        :
+                                        <h3 onClick={()=>{collectCoupon(coupon._id)}} className="btn btn-primary cursor submit-btn collect-btn" role="btn" ><b>Collect</b></h3>
 
                                         }
                                     </Fragment>

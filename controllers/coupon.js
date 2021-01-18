@@ -22,17 +22,15 @@ exports.getCouponsByUser = async (req, res)=>{
 exports.collectCoupon = async (req, res) =>{
     try{
 
-    const { userId, couponId } = req.params;
+        const { userId, couponId } = req.params;
 
-    const coupon = await Coupon.findById(couponId);
-        
+        const coupon = await Coupon.findById(couponId);
+
         const user = await User.findById(userId)
-        if(!user.coupon){
-            user.coupon = coupon;
-            await user.save();
-            return res.json(coupon)
-        }
-        if(user.coupon){
+
+        if(user.coupon.includes(coupon._id)){
+            return res.status(400).json({error: 'Already collected'});
+        }else{
             user.coupon.push(coupon);
             await user.save();
             res.json(coupon);

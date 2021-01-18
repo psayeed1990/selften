@@ -2,9 +2,10 @@
 	cursor: pointer;
 }
 .bg-new {
-	background-color: #ecf0fb;
+	background-color: #fff;
 	margin: 5px;
 	text-align: center;
+	box-shadow: inset 0 0 44px #ddd;
 }
 .bg-new h3 {
 	color: #df1a4c;
@@ -26,4 +27,7 @@
 	color: #2b3d9d !important;
 	border: 1px solid #555997;
 	box-shadow: 0 0 3px inset #d589a1;
+}
+.collect-btn {
+	color: white !important;
 }

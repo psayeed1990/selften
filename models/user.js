@@ -61,10 +61,10 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.ObjectId,
             ref: 'MessagePair',
         },],
-        coupon: {
+        coupon: [{
             type: mongoose.Schema.ObjectId,
             ref: 'Coupon',
-        },
+        },],
         otpcode:{
             type: String,
         },

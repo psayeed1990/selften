@@ -115,10 +115,12 @@ const ShowCoupon = () => {
                                     <p>You do not have enought diamond to avail this coupon</p>
                                     :
                                     <Fragment>
-                                        {userCoupons.filter(coupon._id) === -1 ?
-                                        <h3 onClick={()=>{collectCoupon(coupon._id)}} className="btn btn-primary cursor" role="btn" ><b>Collect</b></h3>
-                                        :
+                                        {userCoupons.includes(coupon._id) ?
                                         <h3 className="btn btn-primary cursor" role="btn" ><b>Collected</b></h3>
+
+                                        :
+                                        <h3 onClick={()=>{collectCoupon(coupon._id)}} className="btn btn-primary cursor submit-btn collect-btn" role="btn" ><b>Collect</b></h3>
+
 
                                         }
                                     </Fragment>
