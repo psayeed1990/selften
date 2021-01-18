@@ -68,7 +68,7 @@
 }
 
 .nav-link {
-	color: #1a164d !important;
+	color: #4d4d4d !important;
 	padding: 20px;
 	font-size: 14px;
 	font-weight: 500;
@@ -76,11 +76,11 @@
 
 .nav-link .cart-badge {
 	background-color: white;
-	color: red;
+	color: #48ad5e;
 }
 .nav-link .cart-badge:hover {
 	background-color: white;
-	color: red;
+	color: #9bfab0;
 }
 
 .nav-tabs {

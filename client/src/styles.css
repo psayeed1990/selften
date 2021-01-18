@@ -42,14 +42,19 @@ h6:hover {
 }
 .submit-btn {
 	cursor: pointer;
-	background: #243679;
+	background: #ad1f30;
 	color: white;
 	border: 0;
 	border-radius: 3px;
+	padding: 10px;
+	box-shadow: 0 0 5px 1px #888;
+}
+.submit-btn:hover {
+	background-color: #ff6173;
 }
 .form-control {
 	border: 2px solid #ced4da;
-	border-left: 4px solid #e87a1a !important;
+	border-left: 4px solid #48ad5e !important;
 }
 .showCategories .home-categories {
 	text-align: center;
@@ -83,7 +88,7 @@ h6 {
 	padding: 10px 15px;
 	font-size: 14px;
 	font-weight: bold;
-	background: #26365e;
+	background: #ff6173;
 	text-transform: uppercase;
 	box-shadow: 0 0 3px #bdbdbd;
 }
@@ -124,7 +129,9 @@ h6 {
 /**
  * single product page - product name
  */
-
+sup {
+	color: #9bfab0;
+}
 .name {
 	background: indigo;
 	color: #fff;
@@ -132,10 +139,10 @@ h6 {
 }
 
 a {
-	color: rgb(216, 28, 75);
+	color: #fa465b;
 }
 .site-name-footer {
-	background: #d72859;
+	background: #ff6173;
 	padding: 5px;
 	text-transform: uppercase;
 	width: max-content;
@@ -235,7 +242,7 @@ a {
 }
 .time {
 	font-size: 0.7rem;
-	color: tomato;
+	color: #8a8382;
 }
 #dashboard-menu {
 	padding: 4px;
