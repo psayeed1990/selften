@@ -55,11 +55,6 @@ export const UserLinks = () => {
                         </Link>
                     </li>
                     <li className="list-group-item">
-                        <Link exact className="nav-link" to={`/profile/${_id}`}>
-                            Update Profile
-                        </Link>
-                    </li>
-                    <li className="list-group-item">
                         <Link exact className="nav-link" to={`/user/coupons`}>
                             Diamonds Coupons
                         </Link>
@@ -215,7 +210,7 @@ const Dashboard = () => {
                         <textarea onChange={handleChange('about')} type="text" className="form-control" name="about" value={about} >{about}</textarea>
                     </div>
 
-                   <input type="submit" className="btn-primary" value="Update Profile" />
+                   <input type="submit" className="btn-primary submit-btn" value="Update Profile" />
                     
 
                 </form>
