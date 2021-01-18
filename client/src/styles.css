@@ -141,7 +141,8 @@ a {
 	width: max-content;
 	font-size: 0.8rem;
 	color: #f0eeee;
-	opacity: 0.8;
+	opacity: 0.7;
+	border-radius: 5px;
 }
 
 /* top up thumb */
