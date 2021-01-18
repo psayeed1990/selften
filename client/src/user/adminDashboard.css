@@ -7,11 +7,20 @@
 }
 #admin-links {
 	width: 90%;
-	background: #232642;
+	background: #fff;
+	border-radius: 0;
+	box-shadow: 5px 0 10px 2px #ddd;
+	margin-top: -12px;
 }
 #admin-links .card-header {
-	color: #fff;
+	color: #979494;
+	text-transform: uppercase;
 }
 .dashboard-form {
 	padding: 30px;
+}
+.list-group-item {
+	background-color: white;
+	margin: 0;
+	padding: 0;
 }

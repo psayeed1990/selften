@@ -2,8 +2,8 @@
 	/* background-color: #010326; */
 	display: grid;
 	grid-template-columns: auto auto auto;
-	padding-bottom: 65px;
-	padding-top: 85px;
+	margin-bottom: 65px;
+	margin-top: 85px;
 	text-align: center;
 	/* border: 2px solid #8e8e8e; */
 }

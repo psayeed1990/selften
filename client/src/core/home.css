@@ -28,8 +28,8 @@
 	.showCategories .product-img {
 		width: 60px;
 	}
-	.showCategories .product-img {
-		padding: 0px;
+	.middle-slide {
+		box-shadow: 0 0 0;
 	}
 	.showCategories {
 		padding: 20px 0;
