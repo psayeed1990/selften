@@ -80,15 +80,17 @@ const AddTopupThumb = () => {
     const newPostForm = () => (
         <form className="mb-3 m-5" onSubmit={clickSubmit}>
             <h4>Game Thumbnail Photo</h4>
-            <div className="form-group">
-                <label className="btn btn-secondary">
-                    <input onChange={handleChange('thumb')} type="file" name="thumb" accept="image/*" />
-                </label>
+            <div className="custom-file">
+                <label className="custom-file-label" for="customFile">Choose a photo</label>
+                    <input onChange={handleChange('thumb')} class="custom-file-input" id="customFile" type="file" name="thumb" accept="image/*" />
+                
             </div>
-            <div className="form-group col-md-4">
+            <div class="input-group mb-3">
                     
-                <label className="text-muted">Type</label>
-                <select name="type" onChange={handleChange('type')} className="form-control">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Type</label>
+                </div>
+                <select name="type" onChange={handleChange('type')}  className="custom-select" id="inputGroupSelect01">
                     <option disabled selected>Please select type</option>
                     <option value="inGame">In Game</option>
                     <option value="idCode">Id Code</option>
