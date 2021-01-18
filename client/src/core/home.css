@@ -27,7 +27,7 @@
 
 @media only screen and (max-width: 768px) {
 	.showCategories .product-img {
-		width: 60px;
+		width: 70%;
 	}
 	.middle-slide {
 		box-shadow: 0 0 0;
@@ -39,7 +39,7 @@
 
 @media only screen and (max-width: 500px) {
 	.center-flex .product-img {
-		padding: 5px;
+		padding: 10px 5px 5px 5px;
 	}
 	.thumb-show .product-img {
 		width: 100%;
