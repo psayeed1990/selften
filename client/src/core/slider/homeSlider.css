@@ -2,8 +2,8 @@
 	/* background-color: #010326; */
 	display: grid;
 	grid-template-columns: auto auto auto;
-	margin-bottom: 65px;
-	margin-top: 85px;
+	padding-bottom: 65px;
+	padding-top: 85px;
 	text-align: center;
 	/* border: 2px solid #8e8e8e; */
 }
@@ -21,15 +21,17 @@
 .middle-slide {
 	position: relative;
 	z-index: 1;
-	/* box-shadow: -1px 0px 37px 8px #530404; */
+	box-shadow: -1px 0px 5px 1px #463333;
 	/* border: 1px #0e0835 dashed; */
 	filter: brightness(90%);
 	transform: scale(1.6);
 }
 .left-slide {
 	margin-right: -30%;
+	opacity: 0.3;
 }
 .right-slide {
+	opacity: 0.4;
 	margin-left: -30%;
 }
 .slides img {
