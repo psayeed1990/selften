@@ -199,7 +199,9 @@ select {
 	.user-menu .nav-link {
 		border-bottom: 1px solid #ddd;
 	}
-
+	.top-bar img {
+		width: 20px;
+	}
 	.menu-icon {
 		display: block;
 	}
@@ -228,6 +230,7 @@ select {
 	.top-search {
 		text-align: center;
 		padding: 0 0 6px 0;
+		margin: 20px auto;
 	}
 	.top-menu {
 		grid-template-columns: auto;
@@ -240,7 +243,6 @@ select {
 	}
 	.top-bar img {
 		margin: 0 5px 0 10px;
-		width: 12px;
 	}
 	.top-bar-left {
 		display: block;

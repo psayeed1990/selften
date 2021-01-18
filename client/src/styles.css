@@ -41,6 +41,7 @@ h6:hover {
 	max-width: 300px;
 }
 .submit-btn {
+	cursor: pointer;
 	background: #243679;
 	color: white;
 	border: 0;
