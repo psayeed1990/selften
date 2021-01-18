@@ -44,10 +44,11 @@ h6:hover {
 }
 .form-control {
 	border: 2px solid #ced4da;
+	border-left: 4px solid #e87a1a !important;
 }
 .showCategories .home-categories {
 	text-align: center;
-	background: #e8fbe0;
+	background: #fff;
 	padding-top: 10px;
 }
 .showCategories {
@@ -149,7 +150,6 @@ a {
 	width: 100px;
 	text-align: center;
 	margin: 0 auto;
-	background: #f4f2ca;
 	padding: 10px;
 	border-radius: 8px;
 }
@@ -238,6 +238,10 @@ a {
 	padding: 4px;
 	background-color: white;
 	display: none;
+}
+
+.center-flexs .product-img {
+	padding: 0;
 }
 @media only screen and (max-width: 850px) {
 	body {
