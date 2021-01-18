@@ -170,14 +170,14 @@ select {
 	z-index: 999;
 	cursor: pointer;
 	padding: 6px;
-	background: #1b1b8a;
+	background: #5a265e;
 	opacity: 0.6;
 	box-shadow: 0 0px 4px #6c6666;
 	display: none;
 	border: 1px solid #888;
 }
 #dashboard-menu img {
-	background: #3232b7;
+	background: #5a265e;
 	opacity: 0.6;
 }
 .footer-link a {
