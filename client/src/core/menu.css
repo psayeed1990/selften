@@ -166,16 +166,20 @@ select {
 .menu-icon {
 	margin-top: 10px;
 	position: fixed;
-	width: 30px;
+	width: 35px;
 	z-index: 999;
 	cursor: pointer;
-	padding: 3px;
-	background-color: white;
+	padding: 6px;
+	background: #1b1b8a;
+	opacity: 0.8;
 	box-shadow: 0 0px 4px #6c6666;
 	display: none;
 	border: 1px solid #888;
 }
-
+#dashboard-menu img {
+	background: #3232b7;
+	opacity: 0.8;
+}
 .footer-link a {
 	height: 35px;
 	display: block;
