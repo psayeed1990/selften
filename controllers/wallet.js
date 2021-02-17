@@ -8,6 +8,33 @@ const MessagePair = require('./../models/messagePair');
 const Message = require('./../models/message');
 const ManualPaymentRequest = require('../models/manualPaymentRequest');
 
+exports.getAllPaymentRequest = async (req, res, next) => {
+	try {
+		const manualPaymentReq = await ManualPaymentRequest.find({
+			status: 'pending',
+		});
+		return res.json(manualPaymentReq);
+	} catch (err) {
+		return res.status(400).json({
+			error: 'Could not find any payment request',
+		});
+	}
+};
+
+exports.getAllPaymentRequestByUser = async (req, res, next) => {
+	try {
+		const { userId } = req.params;
+		const manualPaymentReqs = await ManualPaymentRequest.find({
+			user: userId,
+		});
+		return res.json(manualPaymentReqs);
+	} catch (err) {
+		return res.status(400).json({
+			error: 'Could not find any payment request',
+		});
+	}
+};
+
 exports.manualPaymentRequest = async (req, res, next) => {
 	try {
 		const { userId, phone, amount, transactionId } = req.params;

@@ -8,10 +8,12 @@ const {
 	addWallet,
 	manualPaymentRequest,
 	manualPaymentUpdateStatus,
+	getAllPaymentRequest,
+	getAllPaymentRequestByUser,
 } = require('./../controllers/wallet');
 const { userById } = require('../controllers/user');
 
-//manual payment
+// request manual payment
 router.post(
 	'/wallet/manual-payment-request/:userId/:amount/:phone/:transactionId',
 	requireSignin,
@@ -19,6 +21,24 @@ router.post(
 	manualPaymentRequest
 );
 
+// get all payment request. Only for admin
+router.get(
+	'/wallet/manual-payment-request/:userId',
+	requireSignin,
+	isAuth,
+	isAdmin,
+	getAllPaymentRequest
+);
+
+// get all payment requested by a user
+router.get(
+	'/wallet/manual-payment-request/by-user/:userId',
+	requireSignin,
+	isAuth,
+	getAllPaymentRequestByUser
+);
+
+//update manual payment status only:- "approved" or "cancelled"
 router.post(
 	'/wallet/manual-payment-request/update-status/:userId/:paymentReqId/:status',
 	requireSignin,
