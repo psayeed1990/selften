@@ -5,6 +5,7 @@ import { getCategories, getFilteredProducts } from "./apiCore";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
+import { Container, Grid } from "@material-ui/core";
 
 const Shop = () => {
     const [myFilters, setMyFilters] = useState({
@@ -96,12 +97,67 @@ const Shop = () => {
     };
 
     return (
+        // <>
+            // <Container>
+            //     <Grid container md={12} spacing={3}>
+            //         <Grid item md={4}>
+            //             {/* <Card>
+
+            //             </Card> */}
+            //         </Grid>
+            //         <Grid container item md={8}>
+            //             {filteredResults.map((product, i) => (
+            //                  <Grid key={i} md={4} item>
+            //                      <Card product={product} />
+            //                  </Grid>
+            //              ))}
+            //         </Grid>
+            //     </Grid>
+            // </Container>
+        // </>
         <Layout
             title="Shop Page"
             description="Search and find books of your choice"
-            className="container-fluid"
+            // className="container-fluid"
         >
-            <div className="row">
+
+            <>
+                <Grid container md={12} spacing={3} style={{padding: '0'}}>
+                    <Grid item md={4}>
+                            <div style={{backgroundColor : "#F5F5F5" , padding : '20px', borderRadius : "15px"}}>
+                                <h4>Filter by categories</h4>
+                                <ul>
+                                    <Checkbox
+                                        categories={categories}
+                                        handleFilters={filters =>
+                                            handleFilters(filters, "category")
+                                        }
+                                    />
+                                </ul>
+
+                                <h4>Filter by price range</h4>
+                                <div>
+                                    <RadioBox
+                                        prices={prices}
+                                        handleFilters={filters =>
+                                            handleFilters(filters, "price")
+                                        }
+                                    />
+                                </div>
+                            </div>
+                    </Grid>
+                    <Grid item md={8}>
+                        <Grid container item md={12} spacing={2} style={{backgroundColor : "#F5F5F5", padding : '15px', margin : '0' , borderRadius : '15px'}}> 
+                            {filteredResults.map((product, i) => (
+                             <Grid key={i} md={4} item>
+                                 <Card product={product} />
+                             </Grid>
+                         ))}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </>
+            {/* <div className="row">
                 <div className="col-md-4">
                     <h4>Filter by categories</h4>
                     <ul>
@@ -136,7 +192,7 @@ const Shop = () => {
                     <hr />
                     {loadMoreButton()}
                 </div>
-            </div>
+            </div> */}
         </Layout>
     );
 };

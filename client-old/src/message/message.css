@@ -1,0 +1,40 @@
+.own-message {
+	background-color: #fa465b;
+	text-align: right;
+	padding: 5px;
+	margin-right: 10px;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #bbb2b2;
+	display: block;
+	color: #e9e9e9;
+}
+.own-msg {
+	text-align: right;
+	border-radius: 5px;
+}
+.sender-msg {
+	color: #fff;
+	padding: 4px;
+	box-shadow: 0 0 5px #bbb2b2;
+	background: #48ad5e;
+	display: block;
+}
+#message .form-control {
+	min-width: 100%;
+}
+sup {
+	color: #677666;
+	padding-left: 4px;
+}
+.mesage-pair {
+	border: 0px solid #999 !important;
+	box-shadow: 0 0 3px #999;
+}
+.msg-text {
+	color: #565864;
+}
+
+.content {
+	margin-top: 100px;
+	padding: 30px;
+}

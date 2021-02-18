@@ -45,6 +45,8 @@ import SeeTopupOrders from './user/SeeTopupOrders';
 import ForgetPassword from './user/ForgetPassword';
 import VerifyPhone from './user/VerifyPhone'
 import Topups from './core/topup/Topups';
+import ChangePassword from './auth/ChangePassword';
+// import Demo from './Demo';
 
 
 const Routes = () => {
@@ -58,9 +60,11 @@ const Routes = () => {
                 <Route path="/shipment-info" exact component={Shipment} />
                 <Route path="/forget-password" exact component={ForgetPassword} />
                 <Route path="/topups" exact component={Topups} />
+                
+                {/* <Route path='/demo' exact component = {Demo} /> */}
 
                 
-
+                <Route path='/changePassword' exact component={ChangePassword} />
 
                 <Route path="/shop" exact component={Shop} />
                 <Route path="/search/:searchText" exact component={SearchPage} />
@@ -73,6 +77,8 @@ const Routes = () => {
                 <Route path="/topup-order/success/:transactionId" exact component={TopupOrderSuccess} />
                 <Route path="/topup-order/fail/:transactionId" exact component={TopupOrderFail} />
                 <Route path="/topups/:id/type/:type" exact component={TopupForm} />
+
+                
                 
                 <UserProvider>
                     <PrivateRoute path="/user/see-your-topup-orders" exact component={ SeeTopupOrders } />

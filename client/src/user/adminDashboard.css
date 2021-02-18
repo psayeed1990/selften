@@ -29,3 +29,13 @@ h4 {
 	text-transform: uppercase;
 	font-family: lato;
 }
+@media screen and (max-width: 599px) {
+	.customSize{
+		padding: 15px !important;
+		margin-top: 50px !important;
+	}
+  .fullWidth{
+	  width: 100% !important;
+	  justify-content: flex-start !important;
+  }
+}

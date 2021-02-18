@@ -25,6 +25,14 @@
 	height: 210px;
 }
 
+
+.react-multiple-carousel__arrow--left {
+    left: calc(0% + 1px) !important;
+}
+.react-multiple-carousel__arrow--right {
+    right: calc(0% + 1px) !important;
+}
+
 @media only screen and (max-width: 768px) {
 	.showCategories .product-img {
 		width: 70%;
