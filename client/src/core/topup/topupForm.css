@@ -1,0 +1,28 @@
+.topup-form label {
+	margin-bottom: 1px;
+	font-size: 20px;
+	margin-top: 25px;
+}
+
+.select-recharge {
+	padding: 5px;
+	margin-left: 15px;
+	border: 2px solid rgb(194, 191, 191);
+	color: rgb(78, 76, 74);
+	border-radius: 6px;
+	text-align: center;
+	transition: border 2s linear;
+}
+.check-mark {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0.3s linear, opacity 0.3s linear;
+}
+.security-code {
+	margin-left: 5px;
+}
+.topup-form-wrapper {
+	max-width: 900px;
+	width: 90%;
+	margin: 0 auto;
+}

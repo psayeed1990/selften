@@ -1,0 +1,110 @@
+h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+  color: rgb(0, 0, 0) !important;
+}
+#footerScetion{
+  background-color: #ffffff;
+  color : #000;
+}
+.footerTextCenter{
+    display: flex;
+    flex-direction: column;
+  }
+  .socilaIcon{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin-top: 10px;
+    color : #000 !important ;
+  }
+  .iconHover{
+    margin :5px 8px;
+    transform: scale(1);
+    transition: all .5s ease-in-out;
+  }
+  .iconHover:hover{
+    transform: scale(1.1);
+    color :#C1394F !important
+  }
+  #footerScetion{
+    box-shadow: 5px 5px 10px gray;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .footerPlayIcon {
+    margin-left: -10px;
+  }
+  .normalLink {
+    text-decoration: none !important;
+    color : #000;
+    /* margin-right: 10px; */
+  }
+  .normalLink:hover {
+    text-decoration: none !important;
+    color :#C1394F !important
+  }
+  
+  @media screen and (max-width: 599px) {
+      .footerTextCenter {
+        text-align: center !important;
+        margin: auto;
+      }
+     #footerInfo {
+        width: 85% !important;
+        overflow: hidden !important;
+        margin: auto !important;
+        text-align: center !important;
+        padding: 15px 0 !important;
+      }
+      .footerTextCenter {
+        padding-left: 0px !important;
+      }
+      #playStoreIcon{
+         flex-direction: row !important;
+         margin : auto !important;
+      }
+      #footerLogo{
+        margin : auto !important;
+      }
+      #FooterLogoImg{
+        width: 80% !important;
+      }
+      .socilaIcon{
+        flex-direction: row !important;
+      }
+      .socilaIcon a {
+        margin: 5px 10px !important;
+      }
+      #copyRightText{
+        font-size: 14 !important;
+      }
+  }
+  
+  @media screen and (max-width: 960px) {
+    #playStoreIcon{
+      margin-bottom: 0 !important;
+    }
+  }
+  
+  @media screen and (max-width: 599px) {
+    .footerMargin{
+      margin-top: 12px !important;
+    }
+    .responsiveCenter{
+      display: flex !important;
+      justify-content: center !important;
+    }
+  }
+  
+  @media screen and (max-width: 360px) {
+    #footerSocialIcon{
+      display : flex;
+      flex-direction: column !important;
+    }
+    #footerSocialIcon ul li {
+      margin :0 15px !important;
+    }
+    .footerPlayIcon {
+      margin-left: 0;
+    }
+  }

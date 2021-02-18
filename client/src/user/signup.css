@@ -1,0 +1,27 @@
+#otp-form {
+	width: 70%;
+	margin: 0 auto;
+}
+.otp-input {
+	background-color: #fff;
+	border: 1px solid #bcbcbc;
+	color: #444;
+	border-radius: 3px;
+	margin: 3px;
+	padding: 3px;
+	text-align: center;
+}
+.otp-text {
+	font-size: 0.9rem;
+	color: #555;
+}
+.sms-sent-text {
+	width: max-content;
+	background: #7cb33a;
+	padding: 3px 20px;
+	border-radius: 3px;
+	color: #fff;
+}
+.otp-width {
+	max-width: 700px;
+}

@@ -1,0 +1,15 @@
+#menu-list-grow-custom {
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100%;
+    text-transform: none;
+}
+
+.nav-links li {
+    padding: 5px 3px !important; 
+    opacity: inherit;
+}
+
+#menu-list-grow-custom{
+
+}
