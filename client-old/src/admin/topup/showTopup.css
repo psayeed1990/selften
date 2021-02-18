@@ -1,0 +1,20 @@
+.thumb-show {
+	width: 130px;
+}
+
+.thumb-show h6 {
+	font-size: 1rem;
+	color: #444242;
+	padding: 4px;
+}
+
+.thumb-show .product-img {
+	width: 70%;
+	height: 150px;
+}
+
+.heading {
+	text-align: center;
+	font-weight: 300;
+	margin: 20px;
+}

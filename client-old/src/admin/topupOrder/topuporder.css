@@ -1,0 +1,33 @@
+/* .topup-order-h6 {
+	text-transform: uppercase;
+	background: #d4e0f7;
+	color: #1e193c;
+	padding: 3px;
+}
+.topup-orders-list h6 {
+	margin: 3px 0;
+} */
+
+.topup-orders-list h5 {
+	width: max-content;
+	padding: 4px;
+	background: #ff6173;
+	color: white;
+	text-transform: uppercase;
+	font-size: 0.7rem;
+}
+.btn-assign {
+	font-size: 0.8rem;
+	background: #fff;
+	color: #5b5656;
+}
+.topup-orders-list h6 {
+	font-size: 0.8rem;
+}
+.topup-order-h6 {
+	color: #48ad5e;
+	font-size: 1rem !important;
+}
+.topup-orders-list .submit-btn {
+	font-size: 0.9rem;
+}
