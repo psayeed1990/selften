@@ -156,6 +156,8 @@ const TopupForm = () => {
 
     }, [selectRecharge])
 
+    // console.log(selectRecharges);
+
     const handleChange = name => event => {
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
 
@@ -409,10 +411,17 @@ const TopupForm = () => {
                     selectRecharges.map((c, i) => {
                         return (
                             <Grid item xs={12} md={4} key={i}>
-                                <p id={c._id} className="cursor-pointer select-recharge" style={{ marginLeft: '-2px' }} onClick={() => { selectARechargePackage(c._id) }}>
-                                    <img className="check-mark" id={`${c._id}-check-mark`} src="/images/icons/check-mark.svg" width="20" />
-                                    <span>{c.packageName} </span>
-                                </p>
+                                <div id={c._id} className="cursor-pointer select-recharge" style={{ marginLeft: '-2px', padding: '15px', cursor: "pointer", textAlign: 'center' }} onClick={() => { selectARechargePackage(c._id) }}>
+                                    <img className="check-mark" id={`${c._id}-check-mark`}  width="0" />
+                                    {/* <br/> */}
+                                   
+                                    <span style={{marginLeft: '10px'}}>{c.packageName} </span>
+                                    <br/>
+                                    <span style={{marginLeft: '10px'}}>BDT {c.packageAmount} </span>
+
+                                    {/* <span>{c.price} </span> */}
+
+                                </div>
                             </Grid>
                         )
 
@@ -459,12 +468,12 @@ const TopupForm = () => {
 
                         :
                         <Fragment>
-                            <div className="form-group col-md-6" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            {/* <div className="form-group col-md-6" style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div>FreeFire (In Game) 520 Diamonds</div>
                                 <label className="text-muted">Amount to pay: {amount ? <b>{amount}</b> : <b>0</b>}</label>
-                            </div>
+                            </div> */}
 
-                            <div className="money">
+                            <div className="money" style={{marginTop: "20px"}}>
 
                                 <h4 style={{textTransform: "capitalize", marginBottom: "15px"}}>Available Payment Methods: {wallet ? wallet.amount : <span>Loading...</span>}</h4>
                             </div>
@@ -493,7 +502,8 @@ const TopupForm = () => {
                             {/* <h4>Admin Balance: { adminLimit }</h4> */}
 
                             {diamondValue && amount ?
-                                <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
+                                // <p>You will receive - {parseInt(amount / diamondValue)} Diamonds </p>
+                                <div></div>
                                 :
                                 <Fragment></Fragment>
                             }

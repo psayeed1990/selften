@@ -5,7 +5,7 @@ import ShowThumb from '../../core/ShowThumb';
 import './showTopup.css';
 import TopCateogry from '../../common/TopCategory';
 import CategorySkeleton from '../../common/CategorySkeleton';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import Card from '../../common/material/Card';
 import SliceText from '../../utils/SliceText';
 import { API } from "../../config";
@@ -31,10 +31,11 @@ const ShowTopups = () => {
     return (
         <Fragment>
             <Grid container spacing={3}>
+
                 {
                     topupThumbnails.length > 0 ?
-                        topupThumbnails.map((thumb, i) => (
-                            <Grid item xs={12} sm={6} md={4} lg={2}>
+                       topupThumbnails.map((thumb, i) => (
+                            <Grid item xs={4} sm={4} md={5} lg={2}>
                                 <Link to={`/topups/${thumb._id}/type/${thumb.type}`} style={{textDecoration: 'none'}}>
                                     <Card image={`${API}/topup-thumbs/photo/${thumb._id}`} text={thumb.title} style={{border: 'none', hover: 'none'}}>
                                         <div style={{ padding: '10px' }}>
@@ -47,15 +48,22 @@ const ShowTopups = () => {
                                         </div>
                                     </Card>
                                 </Link>
-                            </Grid>
+                            </Grid> 
+                            
+                      
+
                         ))
+
                         :
 
                         <Fragment>
                             <CategorySkeleton height={200} item={[1, 2, 3, 4, 5]} />
                         </Fragment>
                 }
+                <div style={{margin: '0 auto'}}>
+                <Button style={{ marginTop: "20px" }} variant="outlined" color="primary">View All Games</Button>
 
+                </div>
                 
             </Grid>
             {/* <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '20px'}}>

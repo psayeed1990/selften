@@ -16,8 +16,9 @@ const Layout = ({
             <Menu />
             <div style={{ marginTop: '66px', }}></div>
             <div style={{ paddingBottom: '7px', backgroundColor: "white" }}></div>
-            <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
-                <div className={className}>{children}</div>
+
+            <Container className="layout-container">
+                <div >{children}</div>
             </Container>
             <div style={{ paddingTop: '7px', backgroundColor: "white" }}></div>
 
@@ -25,7 +26,10 @@ const Layout = ({
             <Hidden smDown>
                 <Footer />
             </Hidden>
+            
+
             <Hidden mdUp>
+            <div style={{ marginBottom: '66px', }}></div>
                 <BottomMenu />
             </Hidden>
         </div>

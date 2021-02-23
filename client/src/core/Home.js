@@ -5,14 +5,16 @@ import Card from './Card';
 import { getCategories } from './apiCore';
 import ShowTopups from '../admin/topup/ShowTopups';
 import HomeSLider from './slider/HomeSlider';
+import MobileHomeSLider from './slider/MobileHomeSLider';
 import { Link } from 'react-router-dom';
 import ShowThumb from './ShowThumb';
 import PopularCategory from '../common/PopularCategory';
+import SinglePopularCategory from '../common/SinglePopularCategory';
 import CategorySkeleton from '../common/CategorySkeleton';
 import HomeAppliance from '../common/HomeAppliance';
 
 import './home.css';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Typography, Hidden } from '@material-ui/core';
 import SkeletonPost from '../utils/skeletonPost/SkeletonPost';
 import DigitalGoods from './DigitalGoods';
 import VisitShop from './VisitShop';
@@ -67,40 +69,53 @@ const Home = () => {
             description="Buy gaming products"
             className="container-fluid"
         >
-
-            <HomeSLider />
+            <Hidden smDown>
+                <HomeSLider />
+            </Hidden>
+            <Hidden mdUp>
+                <MobileHomeSLider />
+            </Hidden>
             <div >
-              
-                <div style={{ margin: '0 auto', textAlign: 'center', backgroundColor: "#F4F5F7", padding: "40px 15px" }}>
-                    <Typography variant="h5"style={{marginBottom: "10px"}} >Top Categories</Typography>
 
-                    {
-                        categories.length > 0 ?
-                            <>
-                                <PopularCategory height={160} item={categories} />
-                                <Button style={{ marginTop: "20px" }} variant="outlined" color="primary">View All Popular Category</Button>
-                            </>
-                            :
-                            <Fragment>
-                                    <CategorySkeleton height={160} item = {[1,2,3,4,5]} />
-                            </Fragment>
-                    }
-                </div>
-
-                <div style={{ textAlign: 'center',  padding: "40px 35px" }}>
-                    <Typography variant="h5" style={{textAlign: 'left'}} >New Games</Typography>
+                <div className="showTopUps">
+                    <Typography variant="h5" style={{ textAlign: 'left', marginBottom: "10px" }} >New Games</Typography>
                     <ShowTopups />
                 </div>
 
-                <div style={{backgroundColor: "#F4F5F7", padding: "40px 35px" }}>
-                    <HomeAppliance   />
+
+                <div className="topCategories">
+                    <Typography variant="h5" style={{ marginBottom: "10px" }} >Top Categories</Typography>
+
+
+                    {
+                        categories.length > 0 ?
+
+                            <>
+                                <Hidden smDown>
+                                    <PopularCategory height={160} item={categories} />
+                                    <Button style={{ marginTop: "20px" }} variant="outlined" color="primary">View All Popular Category</Button>
+                                </Hidden>
+                                <Hidden mdUp>
+                                    <SinglePopularCategory item={categories} />
+                                </Hidden>
+                            </>
+
+                            :
+                            <Fragment>
+                                <CategorySkeleton height={160} item={[1, 2, 3, 4, 5, 6]} />
+                            </Fragment>
+                    }
+
+
                 </div>
 
-               
+                <div className="homeAppliance">
+                    <HomeAppliance />
+                </div>
 
 
                 {/* <h2 className="mb-4">New Arrivals</h2> */}
-                <div style={{ textAlign: 'center', marginBottom: "40px" }}>
+                {/* <div style={{ textAlign: 'center', marginBottom: "40px" }}>
                     <Typography variant="h5" style={{ marginTop: '40px', marginBottom: "10px", textAlign: 'left' }}>Products By Arrival</Typography>
                     <div className="row" style={{ display: "flex", justifyContent: 'center' }}>
 
@@ -112,28 +127,28 @@ const Home = () => {
                             skeletonPosts
                         }
                     </div>
-                </div>
+                </div> */}
 
-                <div style={{ textAlign: 'center', marginBottom: "20px" }}>
+                {/* <div style={{ textAlign: 'center', marginBottom: "20px" }}>
                     <Typography variant="h5" style={{ marginTop: '40px', marginBottom: "10px" }}>Products By Sell</Typography>
                     {/* <h2 className="mb-4">Best Sellers</h2> */}
-                    <div className="row" style={{ display: "flex", justifyContent: 'center' }}>
+                {/* <div className="row" style={{ display: "flex", justifyContent: 'center' }}>
                         {productsBySell.length > 0 ? productsBySell.map((product, i) => (
                             <div key={i} className="col-md-4 mb-3">
                                 <Card product={product} />
                             </div>
                         )) : skeletonPosts}
                     </div>
-                </div>
+                </div> */}
 
-                <div style={{  marginBottom: "20px" }}>
+                {/* <div style={{  marginBottom: "20px" }}>
                     <DigitalGoods />
-                </div>
+                </div> */}
 
                 {/* <div style={{  marginBottom: "20px" }}>
                     <VisitShop />
                 </div> */}
-                
+
             </div>
         </Layout>
     );
@@ -231,12 +246,12 @@ export default Home;
 
 //                             </div>
 //                             <div  className="col-md-6 col-6">
-                                
+
 //                                 <div className="row view-all"><Link exact to="/topups">View All Categories</Link></div>
-                            
-                                
+
+
 //                             </div>
-                    
+
 //             </div> */}
 //                 <div className="row center-flex" style={{ margin: '0 auto' }}>
 

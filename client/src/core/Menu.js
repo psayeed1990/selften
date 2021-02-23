@@ -17,6 +17,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Drawer from '../common/material/drawerLeft/Drawer';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth";
@@ -215,6 +216,12 @@ function PrimarySearchAppBar({ history }) {
         <>
 
             <Hidden smDown>
+{/* 
+                <Link style={{ textDecoration: "none", marginRight: '30px' }}>
+                    <Badge badgeContent={itemTotal()} color="primary">
+                    <MailOutlineIcon/>
+                    </Badge>
+                </Link> */}
 
 
                 <Link to="/cart" style={{ textDecoration: "none", marginRight: '30px' }}>
@@ -223,7 +230,7 @@ function PrimarySearchAppBar({ history }) {
                     </Badge>
                 </Link>
 
-                <Link to="/cart" style={{ textDecoration: "none", marginRight: '30px' }}>
+                <Link  to="/user/messages" style={{ textDecoration: "none", marginRight: '30px' }}>
                     <Badge badgeContent={itemTotal()} color="primary">
                         <NotificationsIcon />
                     </Badge>
@@ -280,33 +287,39 @@ function PrimarySearchAppBar({ history }) {
 
     return (
         <div className={classes.grow}>
+           
             <AppBar position="fixed" style={{ backgroundColor: 'white', color: "black", }} >
-                <Toolbar>
+            <Container>
+                <Toolbar className="toolBar">
                     <div className={classes.sectionMobile}>
                         <Drawer />
                     </div>
-                    <Link
-                        style={{ textDecoration: 'none' }}
-                        to='/'>
-                        <img src={require('../images/logo/Logo.png')} style={{ width: "140px", marginLeft: '10px' }} />
+                    <Hidden smDown>
+                        <Link
+                            style={{ textDecoration: 'none' }}
+                            to='/'>
+                            <img src={require('../images/logo/Logo.png')} style={{ width: "140px", marginLeft: '10px' }} />
 
-                    </Link>
+                        </Link>
+                    </Hidden>
 
 
                     <div className={`${classes.search} inputContainer`} style={{ height: "45px", marginLeft: '100px', border: '2px solid #BD1F58', borderRadius: '10px', backgroundColor: "#white", }}>
                         <InputBase
                             className={`${classes.input} topSearch`}
-                            placeholder="Search Products"
+                            placeholder="Search "
                             // style={{width: "400px"}}
                             inputProps={{ 'aria-label': 'Search Products' }}
                         />
-                        <IconButton type="submit" aria-label="search" style={{ height: "42px", backgroundColor: '#BD1F58', color: 'white', borderRadius: "0px 7px 6px 0px", marginRight: '-1px' }}>
+                        <IconButton type="submit" aria-label="search" style={{ height: "43px", backgroundColor: '#BD1F58', color: 'white', borderRadius: "0px 7px 6px 0px", marginRight: '-1px', marginTop: '-1px' }}>
                             <SearchIcon style={{ borderRadius: "none" }} />
                         </IconButton>
 
                     </div>
-
+                    <Hidden smDown>
                     <div className={classes.grow} />
+                    </Hidden>
+                    <Hidden smDown>
 
                     <div style={{ display: "flex", alignItems: 'center' }}>
                         {isAuthenticated() ?
@@ -315,40 +328,19 @@ function PrimarySearchAppBar({ history }) {
                         }
 
                     </div>
+                    </Hidden>
 
 
 
 
-                    <div className={classes.sectionDesktop}>
-
-                        {/* <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton> */}
-                    </div>
 
 
-                    <div className={classes.sectionMobile}>
-                        {/* <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton> */}
-                    </div>
                 </Toolbar>
+                </Container>
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
+           
         </div>
     );
 }

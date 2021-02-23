@@ -1,19 +1,45 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { getWallet } from '../core/apiCore';
-import {getUserProfile} from './../user/apiUser';
-import {addToWallet} from './../admin/apiAdmin';
+import { getUserProfile } from './../user/apiUser';
+import { addToWallet } from './../admin/apiAdmin';
 import Layout from '../core/Layout';
 import { isAuthenticated } from './../auth';
 import { AdminLinks } from '../user/AdminDashboard';
 import { UserLinks } from '../user/UserDashboard';
 import { Link } from 'react-router-dom';
 import './refillWallet.css';
+import { Grid, Card, Typography, Button } from '@material-ui/core';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import SwapVertIcon from '@material-ui/icons/SwapVert';
 
-const RefillWallet = ()=>{
+const useStyles = makeStyles({
+    root: {
+        minWidth: 275,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    title: {
+        fontSize: 14,
+    },
+    pos: {
+        marginBottom: 12,
+    },
+});
+
+
+const RefillWallet = () => {
+    const classes = useStyles();
+
     const [profile, setProfile] = useState({});
     const [wallet, setWallet] = useState(0);
-    const {user, token} = isAuthenticated();
-    const { role} = user;
+    const { user, token } = isAuthenticated();
+    const { role } = user;
     const [values, setValues] = useState({
         amount: 0,
         loading: '',
@@ -22,22 +48,22 @@ const RefillWallet = ()=>{
         addedBalance: '',
     });
 
-    const {amount, loading, error, formData, addedBalance} = values;
+    const { amount, loading, error, formData, addedBalance } = values;
 
-    
 
-    const init = async ()=>{
+
+    const init = async () => {
         const datas = await getWallet(user._id, token);
         setWallet(datas.amount);
         const data = await getUserProfile(user, token);
         setProfile(data);
-        
-        setValues({...values, formData: new FormData()})
+
+        setValues({ ...values, formData: new FormData() })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[])
+    }, [])
 
 
     const showError = () => (
@@ -59,20 +85,20 @@ const RefillWallet = ()=>{
             </div>
         );
 
-    
-    const refillWallet = async (event)=>{
+
+    const refillWallet = async (event) => {
         event.preventDefault();
-        try{
+        try {
             const data = await addToWallet(user, token, formData);
-            if (data.error){
-                return setValues({...values, error: data.error})
+            if (data.error) {
+                return setValues({ ...values, error: data.error })
             }
             window.location.replace(data.GatewayPageURL);
-        }catch(err){
-            setValues({...values, error: 'Could not perform'})
+        } catch (err) {
+            setValues({ ...values, error: 'Could not perform' })
         }
-        
-        
+
+
     }
 
     const handleChange = name => event => {
@@ -81,19 +107,59 @@ const RefillWallet = ()=>{
         setValues({ ...values, [name]: value });
     };
 
-    return(
+    return (
         <Layout title="Request a topup" description={`G'day ${user.name}, ready to add a new topup request?`}>
-            
-            <div className="row">
-                
-                <div className="col-md-3">{role === 1 ?
-                    <AdminLinks />
-                    :
-                    <UserLinks />
-                }</div>
-                <div className="col-md-9 m-b-250 mb-5">
-                
-                    {showLoading()}
+
+            <Grid container spacing={3}>
+                <Grid item md={3}>
+
+                    <div>{role === 1 ?
+                        <AdminLinks />
+                        :
+                        <UserLinks />
+                    }</div>
+                </Grid>
+
+                <Grid item md={9}>
+                    <Card className={classes.root} variant="outlined">
+                        <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                <ShoppingCartIcon style={{ marginRight: "10px" }} />
+                               I am Buyer
+                            </Typography>
+                            <div style={{ margin: '40px 10px', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <Typography variant="h5">$0. 00</Typography>
+                                    <Typography variant="body1" style={{ margin: '10px 5px' }}>Account Balance: 6</Typography>
+                                    <Button variant="contained" color="primary">
+                                        <SwapVertIcon style={{ marginRight: '10px' }} />
+                                    Top up account balance
+                                </Button>
+                                </div>
+                            </div>
+
+                        </CardContent>
+                        <hr />
+                        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: "13px" }}>
+                            <div style={{ textAlign: 'center' }}>
+                                <Typography variant="h5">0</Typography>
+                                <Typography variant="body1" >Total Orders</Typography>
+                            </div>
+                            <div style={{ textAlign: 'center' }}>
+                                <Typography variant="h5">567</Typography>
+                                <Typography variant="body1" >Total Spend</Typography>
+                            </div>
+                        </div>
+                        {/* <CardActions>
+                            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                                <Button size="small">Learn More</Button>
+                                <Button size="small">Learn More</Button>
+                            </div>
+                           
+                        </CardActions> */}
+                    </Card>
+
+                    {/* {showLoading()}
                     {showSuccess()}
                     {showError()}
                     <form className="row wallet" onSubmit={refillWallet}>
@@ -113,17 +179,16 @@ const RefillWallet = ()=>{
                                 <input type="submit" className="btn-primary submit-btn" value="Add via credit card, bKash etc" />
 
                             }
-
-
-                            
+  
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </form> */}
+                </Grid>
+
+            </Grid>
         </Layout>
-        
-            
-        
+
+
+
     )
 }
 

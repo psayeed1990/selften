@@ -31,6 +31,7 @@ const Signin = () => {
                 setValues({ ...values, error: data.error, loading: false });
             } else {
                 authenticate(data, () => {
+                    console.log(data);
                     setValues({
                         ...values,
                         redirectToReferrer: true

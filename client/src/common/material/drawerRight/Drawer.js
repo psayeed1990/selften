@@ -13,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import Settings from './settings/Settings';
 import Apps from './apps/Apps';
+import { signout, isAuthenticated } from "../../../auth";
 
 import { IconButton, ListItemIcon, Typography } from '@material-ui/core';
 import HttpsIcon from '@material-ui/icons/Https';
@@ -26,6 +27,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TemporaryDrawer(props) {
+  const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState(false);
 
@@ -107,8 +110,17 @@ export default function TemporaryDrawer(props) {
             <ListItemText primary="My Cupons" />
           </ListItem>
         </Link>
-        <Link to="/refund-return-policy" style={{ textDecoration: "none" }}>
-          <ListItem button >
+        <Link   
+          onClick={() =>
+                    signout(() => {
+                        history.push("/");
+                      })
+                    }  
+            style={{ textDecoration: "none" }}>
+          <ListItem 
+            button  
+           
+          >
             <ListItemIcon><ExitToAppIcon /></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>

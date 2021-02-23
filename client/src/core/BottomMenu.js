@@ -8,6 +8,8 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import DrawerRight from '../common/material/drawerRight/Drawer';
 import { useHistory } from "react-router-dom";
+import { signout, isAuthenticated } from "../auth";
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 
 const useStyles = makeStyles({
   root: {
@@ -41,7 +43,11 @@ export default function LabelBottomNavigation() {
 
       <BottomNavigationAction label="Notification" value="notification" icon={<NotificationsIcon />} />
 
+    {isAuthenticated() ? 
       <BottomNavigationAction label="Account" value="account" icon={<DrawerRight />} />
+      :
+      <BottomNavigationAction onClick = {()=> history.push('/user/login')} label="Login" value="notification" icon={<AssignmentIndIcon />} />
+    }
      
     </BottomNavigation>
   );

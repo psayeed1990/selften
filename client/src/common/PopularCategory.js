@@ -23,15 +23,15 @@ const responsive = {
   },
   desktop: {
     breakpoint: { max: 3000, min: 700 },
-    items: 5,
+    items: 6,
   },
   tablet: {
-    breakpoint: { max: 700, min: 464 },
-    items: 3,
+    breakpoint: { max: 700, min: 500 },
+    items: 5,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
+    breakpoint: { max: 500, min: 0 },
+    items: 3,
   },
 };
 
@@ -73,7 +73,7 @@ height,
   const classess = useStyles();
 
   return (
-    <Container>
+    // <Container>
       <div style={{ paddingTop: "10px",}}>
         {item && (
           <Carousel
@@ -89,7 +89,7 @@ height,
                 style={{ textDecoration: "none" }}
                 to={`/categories/${item._id}`}
               >
-                <div  style={{margin: '0 10px'}}>
+                <div style={{margin: '0 10px'}}>
                   <Card className={classess.root}>
                     <CardActionArea>
                       <CardMedia
@@ -116,7 +116,7 @@ height,
           </Carousel>
         )}
       </div>
-    </Container>
+    // </Container>
   );
 }
 

@@ -97,7 +97,7 @@ const MenuListComposition = ({ history, hdieName }) => {
           {!hdieName &&
             <span id="menuName" style={{ color: 'black', }}>
               <SliceText number={12}>
-                MD: Faruk Hosain
+                 {JSON.parse(localStorage.getItem('jwt')).user.name}
             </SliceText>
             </span>
           }

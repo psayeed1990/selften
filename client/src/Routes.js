@@ -46,7 +46,7 @@ import ForgetPassword from './user/ForgetPassword';
 import VerifyPhone from './user/VerifyPhone'
 import Topups from './core/topup/Topups';
 import ChangePassword from './auth/ChangePassword';
-// import Demo from './Demo';
+import Demo from './Demo';
 
 
 const Routes = () => {
@@ -61,7 +61,7 @@ const Routes = () => {
                 <Route path="/forget-password" exact component={ForgetPassword} />
                 <Route path="/topups" exact component={Topups} />
                 
-                {/* <Route path='/demo' exact component = {Demo} /> */}
+                <Route path='/demo' exact component = {Demo} />
 
                 
                 <Route path='/changePassword' exact component={ChangePassword} />
@@ -87,7 +87,7 @@ const Routes = () => {
 
                     <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
                     <AdminRoute path="/admin/refill-wallet" exact component={ RefillWallet } />
-                    <PrivateRoute path="/user/refill-wallet" exact component={ RefillWallet } />
+                   
                     <PrivateRoute path="/user/coupons" exact component={ ShowCoupon } />
                     <AdminRoute path="/admin/add-coupons" exact component={ AddCoupon } />
                     <AdminRoute path="/admin/add-slider" exact component={ AddSlider } />

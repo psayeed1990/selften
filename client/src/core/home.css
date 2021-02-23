@@ -45,6 +45,25 @@
 	}
 }
 
+
+.showTopUps {
+	text-align: center;
+	padding: 40px 35px;
+}
+
+.topCategories {
+	margin: 0 auto;
+	text-align: center;
+	background-color: #F4F5F7;
+	padding: 15px 15px; 
+}
+
+.homeAppliance {
+	padding: 40px 35px;
+}
+
+
+
 @media only screen and (max-width: 500px) {
 	.center-flex .product-img {
 		padding: 10px 5px 5px 5px;
@@ -56,4 +75,20 @@
 	.site-name-footer {
 		font-size: 0.6rem;
 	}
+	.showTopUps {
+		padding: 0px;
+		margin-bottom: 30px;
+	}
+	
+.topCategories {
+	padding: 15px 0px; 
+	background-color: white;
+}
+
+.homeAppliance {
+	padding: 0px 0px;
+}
+
+
+
 }

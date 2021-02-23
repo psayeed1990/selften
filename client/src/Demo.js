@@ -1,36 +1,53 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import FolderIcon from '@material-ui/icons/Folder';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { TextField } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  root: {
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-    width: '100%',
-  },
-});
 
-export default function LabelBottomNavigation() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState('recents');
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+export default function OutlinedCard() {
+ 
 
   return (
-    <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-      <BottomNavigationAction label="Recents" value="recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
-      <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon />} />
-    </BottomNavigation>
+    <div style={{margin: "100px"}}>
+              <div style={{textAlign: "center", marginBottom: "-20px"}}>
+        <Button 
+          sizes="small" 
+          variant="contained" 
+          style={{textAlign: 'center', backgroundColor: "#CCF9E2", borderRadius: '10px', color: "#57C797", boxShadow: 'none', fontWeight: "bold"}}>
+            SelfTen Credits
+        </Button>
+        </div>
+        <div style={{textAlign: "right", marginTop: "-20px", marginRight: '-10px' }}><p style={{color: "#57C797", fontSize: "19px", fontWeight: "bold"}}>+5</p></div>
+
+    <Card variant="outlined">
+      <CardContent>
+        <div style={{textAlign: "center"}}>
+          <TextField 
+            id="standard-basic" 
+            size="small"  
+            placeholder="Voucher Code" 
+            variant="outlined" 
+            style={{borderRadius: "20px"}}
+          />
+        <Button 
+          sizes="large" 
+          variant="contained" 
+          style={{textAlign: 'center', padding: "8px 15px",  borderRadius: 'none', color: "white", boxShadow: 'none', marginLeft: "5px"}}
+          color="primary"
+        >
+           Apply
+        </Button>
+
+        </div>
+       
+       
+      </CardContent>
+   
+    </Card>
+    </div>
   );
 }
